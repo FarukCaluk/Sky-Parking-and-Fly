@@ -4,7 +4,7 @@ Airport parking and shuttle-transfer website for Sarajevo, rebuilt with an Apple
 glass surfaces, spring-physics motion, dark mode and a mobile-first layout that scales from 320 px phones
 to 4K displays. All copy is in Bosnian.
 
-**Live site:** _added after the first deployment_
+**Live site:** https://sky-parking-and-fly.vercel.app
 
 ## Highlights
 
@@ -96,5 +96,6 @@ counts as a day; day counting uses calendar arithmetic so a DST change never add
 
 ## Deployment
 
-The repo includes a `vercel.json` (static Vite build, immutable asset caching, security headers). Import the
-repository in Vercel, or run `npx vercel --prod`.
+Deployed on Vercel as the `sky-parking-and-fly` project — https://sky-parking-and-fly.vercel.app. The repo includes a
+`vercel.json` (static Vite build, immutable asset caching, security headers) and pins Node 22 via `engines`.
+To deploy elsewhere, import the repository in Vercel or run `npx vercel --prod`.
