@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="bs" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Sky Parking &amp; Fly — Siguran aerodromski parking i shuttle transfer</title>
+    <meta
+      name="description"
+      content="Čuvan parking nekoliko minuta od terminala, video nadzor 24/7, besplatan shuttle i osigurana vozila. Izračunajte cijenu i rezervišite online za manje od minute."
+    />
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="bs_BA" />
+    <meta property="og:title" content="Sky Parking &amp; Fly — Parkirajte bez brige. Letite bez stresa." />
+    <meta
+      property="og:description"
+      content="Siguran aerodromski parking s besplatnim shuttleom, video nadzorom 24/7 i osiguranjem vozila."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Apply the stored / system theme before first paint to avoid a flash. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('spf-theme');
+          var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var root = document.documentElement;
+          root.classList.toggle('dark', dark);
+          root.style.colorScheme = dark ? 'dark' : 'light';
+        } catch (e) {
+          /* storage unavailable — CSS media query fallback applies */
+        }
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ParkingFacility",
+        "name": "Sky Parking & Fly",
+        "description": "Čuvan aerodromski parking s besplatnim shuttle transferom do terminala.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Aerodromska 12",
+          "addressLocality": "Ilidža",
+          "postalCode": "71210",
+          "addressCountry": "BA"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "00:00",
+          "closes": "23:59"
+        },
+        "priceRange": "5–15 KM / dan",
+        "currenciesAccepted": "BAM",
+        "publicAccess": true,
+        "isAccessibleForFree": false
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Za rezervaciju parkinga potrebno je omogućiti JavaScript.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
