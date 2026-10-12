@@ -2,6 +2,13 @@ import { SITE } from '@/data/site';
 import type { BookingConfirmation } from '@/types';
 import { parseISODate, parseTime } from './date';
 
+export interface IcsLabels {
+  dropOff: string;
+  pickUp: string;
+  description: (reference: string, plate: string, phone: string) => string;
+  calendarName: string;
+}
+
 const pad = (n: number): string => String(n).padStart(2, '0');
 
 /** `20261020T100000` — floating local time, so the calendar app shows the airport time as entered. */
@@ -65,22 +72,22 @@ function buildEvent({ uid, summary, date, time, description, location, dtstamp }
   ];
 }
 
-export function buildIcs(confirmation: BookingConfirmation): string {
+export function buildIcs(confirmation: BookingConfirmation, labels: IcsLabels): string {
   const { reference, createdAt, request } = confirmation;
   const { stay, vehicle } = request;
   const dtstamp = createdAt.replace(/[-:]/g, '').replace(/\.\d+/, '');
   const location = `${SITE.name}, ${SITE.address.street}, ${SITE.address.city}`;
-  const description = `Rezervacija ${reference} · vozilo ${vehicle.plate.toUpperCase()} · ${SITE.phone.display}`;
+  const description = labels.description(reference, vehicle.plate.toUpperCase(), SITE.phone.display);
 
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    `PRODID:-//${SITE.name}//Rezervacije//BS`,
+    `PRODID:-//${SITE.name}//${labels.calendarName}//${request.locale.slice(0, 2).toUpperCase()}`,
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     ...buildEvent({
-      uid: `${reference}-dolazak`,
-      summary: 'Parking — ostavljanje vozila',
+      uid: `${reference}-arrival`,
+      summary: labels.dropOff,
       date: stay.dropOffDate,
       time: stay.dropOffTime,
       description,
@@ -88,8 +95,8 @@ export function buildIcs(confirmation: BookingConfirmation): string {
       dtstamp,
     }),
     ...buildEvent({
-      uid: `${reference}-povratak`,
-      summary: 'Parking — preuzimanje vozila',
+      uid: `${reference}-return`,
+      summary: labels.pickUp,
       date: stay.pickUpDate,
       time: stay.pickUpTime,
       description,

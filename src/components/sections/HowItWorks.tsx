@@ -2,20 +2,19 @@ import { Card } from '@/components/ui/Card';
 import { Container, Section, SectionHeading } from '@/components/ui/Layout';
 import { Reveal } from '@/components/ui/Reveal';
 import { PROCESS_STEPS } from '@/data/content';
+import { useI18n } from '@/i18n/context';
 
 export function HowItWorks() {
-  return (
-    <Section id="kako-radi" className="pb-8 pt-12 sm:pb-12 sm:pt-16 lg:pt-20">
-      <Container>
-        <SectionHeading
-          eyebrow="Kako radi"
-          title="Od rezervacije do polijetanja — četiri koraka."
-          description="Bez papira, bez čekanja na rampi i bez trčanja do terminala s kuferima."
-        />
+  const { t } = useI18n();
 
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {PROCESS_STEPS.map(({ icon: Icon, title, text }, index) => (
-            <li key={title} className="min-w-0">
+  return (
+    <Section className="pb-4 pt-12 sm:pb-6 sm:pt-16 lg:pt-20">
+      <Container>
+        <SectionHeading eyebrow={t.how.eyebrow} title={t.how.title} description={t.how.description} />
+
+        <ol className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PROCESS_STEPS.map(({ id, icon: Icon }, index) => (
+            <li key={id} className="min-w-0">
               <Reveal delay={index * 0.08} className="h-full">
                 <Card interactive className="h-full">
                   <div className="flex items-start justify-between">
@@ -29,8 +28,8 @@ export function HowItWorks() {
                       0{index + 1}
                     </span>
                   </div>
-                  <h3 className="mt-6 text-xl font-bold tracking-[-0.025em]">{title}</h3>
-                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-muted">{text}</p>
+                  <h3 className="mt-6 text-xl font-bold tracking-[-0.025em]">{t.how.steps[id].title}</h3>
+                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-muted">{t.how.steps[id].text}</p>
                 </Card>
               </Reveal>
             </li>

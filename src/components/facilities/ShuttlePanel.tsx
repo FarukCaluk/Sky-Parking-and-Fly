@@ -5,6 +5,8 @@ import { Card } from '@/components/ui/Card';
 import { SITE } from '@/data/site';
 import { useNow } from '@/hooks/useNow';
 import { usePrefersReducedMotion } from '@/hooks/useMediaQuery';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import { cn } from '@/utils/cn';
 import { formatCountdown, nextDepartures, type UpcomingDeparture } from '@/utils/shuttle';
 
@@ -14,14 +16,10 @@ const PLANE =
 
 function ShuttleMap() {
   const reduced = usePrefersReducedMotion();
+  const { t } = useI18n();
 
   return (
-    <svg
-      viewBox="0 0 480 320"
-      className="size-full"
-      role="img"
-      aria-label={`Karta rute: shuttle vozi od parkinga do terminala za ${SITE.shuttleMinutes} minuta`}
-    >
+    <svg viewBox="0 0 480 320" className="size-full" role="img" aria-label={t.shuttle.mapAria(SITE.shuttleMinutes)}>
       <rect width="480" height="320" rx="24" className="fill-surface-2" />
 
       {/* Terrain */}
@@ -59,7 +57,7 @@ function ShuttleMap() {
         </text>
       </g>
       <text x="92" y="278" textAnchor="middle" className="fill-ink text-[12px] font-semibold">
-        Sky Parking
+        {t.shuttle.parkingLabel}
       </text>
 
       {/* Terminal pin */}
@@ -77,7 +75,7 @@ function ShuttleMap() {
         />
       </g>
       <text x="392" y="132" textAnchor="middle" className="fill-ink text-[12px] font-semibold">
-        Terminal · SJJ
+        {t.shuttle.terminalLabel}
       </text>
 
       {/* Travel-time chip */}
@@ -92,7 +90,7 @@ function ShuttleMap() {
           style={{ stroke: 'var(--line-strong)' }}
         />
         <text y="4.5" textAnchor="middle" className="fill-ink text-[11.5px] font-bold">
-          {SITE.shuttleMinutes} min
+          {t.shuttle.minutesChip(SITE.shuttleMinutes)}
         </text>
       </g>
 
@@ -129,9 +127,10 @@ function ShuttleMap() {
 }
 
 function DepartureList({ title, items }: { title: string; items: UpcomingDeparture[] }) {
+  const { t } = useI18n();
   return (
     <div>
-      <h4 className="mb-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-faint">{title}</h4>
+      <h3 className="mb-2 text-xs font-semibold uppercase tracking-[0.1em] text-ink-faint">{title}</h3>
       <ul className="divide-y divide-line overflow-hidden rounded-2xl border border-line">
         {items.map((d, i) => (
           <li
@@ -140,9 +139,9 @@ function DepartureList({ title, items }: { title: string; items: UpcomingDepartu
           >
             <span className="text-lg font-bold tracking-[-0.03em] tabular">{d.time}</span>
             <span className="flex items-center gap-2 text-sm text-ink-muted">
-              {i === 0 && <Badge tone="solid">Sljedeći</Badge>}
+              {i === 0 && <Badge tone="solid">{t.shuttle.next}</Badge>}
               <span className={cn('tabular', i === 0 && 'font-semibold text-accent')}>
-                {formatCountdown(d.inMinutes)}
+                {formatCountdown(d.inMinutes, t.shuttle.countdown)}
               </span>
             </span>
           </li>
@@ -153,22 +152,23 @@ function DepartureList({ title, items }: { title: string; items: UpcomingDepartu
 }
 
 export function ShuttlePanel({ className }: { className?: string }) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const now = useNow(15_000);
   const fromParking = nextDepartures(now, 'parking', 3);
   const fromTerminal = nextDepartures(now, 'terminal', 3);
+  const distance = `${fmt.number(SITE.terminalDistanceKm, 1)} km`;
 
   return (
     <Card className={cn('p-4 sm:p-6', className)}>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3 px-1">
         <div>
-          <h3 className="text-xl font-bold tracking-[-0.025em]">Besplatan shuttle</h3>
-          <p className="mt-0.5 text-sm text-ink-muted">
-            {SITE.terminalDistance} do terminala · {SITE.shuttleMinutes} minuta vožnje
-          </p>
+          <h2 className="text-xl font-bold tracking-[-0.025em]">{t.shuttle.panelTitle}</h2>
+          <p className="mt-0.5 text-sm text-ink-muted">{t.shuttle.subtitle(distance, SITE.shuttleMinutes)}</p>
         </div>
         <Badge tone="success">
           <Clock className="size-3.5" aria-hidden="true" />
-          Svakih 15 min · noću 30 min
+          {t.shuttle.frequency}
         </Badge>
       </div>
 
@@ -178,10 +178,10 @@ export function ShuttlePanel({ className }: { className?: string }) {
         </div>
 
         <div className="flex flex-col gap-4" aria-live="polite">
-          <DepartureList title="Polasci s parkinga" items={fromParking} />
-          <DepartureList title="Polasci s terminala" items={fromTerminal} />
+          <DepartureList title={t.shuttle.fromParking} items={fromParking} />
+          <DepartureList title={t.shuttle.fromTerminal} items={fromTerminal} />
           <div className="mt-auto flex flex-col gap-2 rounded-2xl bg-ink/[0.045] p-4 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between">
-            <p className="leading-snug">Sletjeli ste? Javite nam se i shuttle vas čeka ispred izlaza.</p>
+            <p className="leading-snug">{t.shuttle.landed}</p>
             <Button
               size="sm"
               variant="secondary"
@@ -189,7 +189,7 @@ export function ShuttlePanel({ className }: { className?: string }) {
               leftIcon={<PhoneCall className="size-4" aria-hidden="true" />}
               className="shrink-0"
             >
-              Pozovi
+              {t.shuttle.call}
             </Button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { BookingConfirmation } from '@/types';
+import { MESSAGES } from '@/i18n/messages';
 import { buildIcs } from './ics';
 
 const confirmation: BookingConfirmation = {
@@ -25,7 +26,7 @@ const confirmation: BookingConfirmation = {
 };
 
 describe('buildIcs', () => {
-  const ics = buildIcs(confirmation);
+  const ics = buildIcs(confirmation, MESSAGES.bs.booking.ics);
 
   it('produces a CRLF-terminated calendar with both events', () => {
     expect(ics.startsWith('BEGIN:VCALENDAR\r\n')).toBe(true);
@@ -49,5 +50,13 @@ describe('buildIcs', () => {
 
   it('references the booking code', () => {
     expect(ics).toContain('SPF-7K3M9Q');
+  });
+
+  it('localises event titles', () => {
+    expect(ics).toContain('SUMMARY:Parking — ostavljanje vozila');
+    const en = buildIcs(confirmation, MESSAGES.en.booking.ics);
+    expect(en).toContain('SUMMARY:Parking — vehicle drop-off');
+    const de = buildIcs(confirmation, MESSAGES.de.booking.ics);
+    expect(de).toContain('SUMMARY:Parkplatz — Fahrzeugabgabe');
   });
 });

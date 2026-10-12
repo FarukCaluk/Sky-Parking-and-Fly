@@ -54,9 +54,15 @@ export function nextDepartures(
   return result;
 }
 
-/** Human readable countdown: `sada`, `za 7 min`, `za 1 h 05 min`. */
-export function formatCountdown(minutes: number): string {
-  if (minutes <= 0) return 'sada';
-  if (minutes < 60) return `za ${minutes} min`;
-  return `za ${Math.floor(minutes / 60)} h ${pad(minutes % 60)} min`;
+export interface CountdownLabels {
+  now: string;
+  minutes: (n: number) => string;
+  hours: (hours: number, minutes: string) => string;
+}
+
+/** Human readable countdown in the active language: `now`, `in 7 min`, `in 1 h 05 min`. */
+export function formatCountdown(minutes: number, labels: CountdownLabels): string {
+  if (minutes <= 0) return labels.now;
+  if (minutes < 60) return labels.minutes(minutes);
+  return labels.hours(Math.floor(minutes / 60), pad(minutes % 60));
 }

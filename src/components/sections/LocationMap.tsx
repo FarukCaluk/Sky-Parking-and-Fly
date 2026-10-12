@@ -2,33 +2,35 @@ import { ExternalLink, MapPin, Navigation, Plane } from 'lucide-react';
 import { useState, type KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/Button';
 import { MAPS_LINKS, SITE } from '@/data/site';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import { cn } from '@/utils/cn';
 
 type PinId = 'parking' | 'terminal';
 
-const PINS: Record<PinId, { x: number; y: number; title: string; lines: string[]; icon: typeof MapPin }> = {
-  parking: {
-    x: 128,
-    y: 214,
-    title: SITE.name,
-    lines: [SITE.address.street, SITE.address.city],
-    icon: MapPin,
-  },
-  terminal: {
-    x: 396,
-    y: 92,
-    title: 'Terminal aerodroma Sarajevo',
-    lines: [`${SITE.terminalDistance} od parkinga`, `Shuttle ${SITE.shuttleMinutes} min, besplatno`],
-    icon: Plane,
-  },
+const PINS: Record<PinId, { x: number; y: number; icon: typeof MapPin }> = {
+  parking: { x: 128, y: 214, icon: MapPin },
+  terminal: { x: 396, y: 92, icon: Plane },
 };
 
 const ROUTE = 'M128 214 C 190 214, 214 140, 270 132 S 360 100, 396 92';
 
 /** Interactive, dependency-free map preview. Pins are keyboard-focusable and reveal their details below. */
 export function LocationMap() {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const [selected, setSelected] = useState<PinId>('parking');
-  const pin = PINS[selected];
+
+  const copy = t.contact.map;
+  const distance = `${fmt.number(SITE.terminalDistanceKm, 1)} km`;
+  const details: Record<PinId, { title: string; lines: string[] }> = {
+    parking: { title: SITE.name, lines: [SITE.address.street, SITE.address.city] },
+    terminal: {
+      title: copy.terminalTitle,
+      lines: [copy.distance(distance), copy.shuttleLine(SITE.shuttleMinutes)],
+    },
+  };
+  const pin = details[selected];
 
   const pinHandlers = (id: PinId) => ({
     onClick: () => setSelected(id),
@@ -48,7 +50,7 @@ export function LocationMap() {
           preserveAspectRatio="xMidYMid slice"
           className="absolute inset-0 size-full"
           role="group"
-          aria-label="Karta lokacije"
+          aria-label={copy.aria}
         >
           <path
             d="M-10 290 C 90 262, 140 322, 250 310 S 440 280, 530 316 L 530 350 L -10 350 Z"
@@ -87,7 +89,7 @@ export function LocationMap() {
                 transform={`translate(${p.x} ${p.y})`}
                 role="button"
                 tabIndex={0}
-                aria-label={p.title}
+                aria-label={details[id].title}
                 aria-pressed={active}
                 className="cursor-pointer outline-none [&:focus-visible>circle:last-of-type]:stroke-brand-500 [&:focus-visible>circle:last-of-type]:stroke-[3]"
                 {...pinHandlers(id)}
@@ -133,7 +135,7 @@ export function LocationMap() {
           rel="noopener noreferrer"
           rightIcon={<ExternalLink className="size-4" aria-hidden="true" />}
         >
-          Google Maps
+          {copy.google}
         </Button>
         <Button
           variant="secondary"
@@ -142,7 +144,7 @@ export function LocationMap() {
           rel="noopener noreferrer"
           rightIcon={<ExternalLink className="size-4" aria-hidden="true" />}
         >
-          Apple Maps
+          {copy.apple}
         </Button>
       </div>
     </div>

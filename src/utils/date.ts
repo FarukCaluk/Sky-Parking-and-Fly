@@ -3,38 +3,22 @@
  * Avoiding `Date` arithmetic across DST boundaries keeps billing deterministic.
  */
 
-export const WEEKDAYS_LONG = ['nedjelja', 'ponedjeljak', 'utorak', 'srijeda', 'četvrtak', 'petak', 'subota'] as const;
-export const WEEKDAYS_SHORT = ['ned', 'pon', 'uto', 'sri', 'čet', 'pet', 'sub'] as const;
-/** Monday-first header for calendars */
-export const CALENDAR_HEADER = ['pon', 'uto', 'sri', 'čet', 'pet', 'sub', 'ned'] as const;
-export const MONTHS_LONG = [
-  'januar',
-  'februar',
-  'mart',
-  'april',
-  'maj',
-  'juni',
-  'juli',
-  'august',
-  'septembar',
-  'oktobar',
-  'novembar',
-  'decembar',
-] as const;
-export const MONTHS_SHORT = [
-  'jan',
-  'feb',
-  'mar',
-  'apr',
-  'maj',
-  'jun',
-  'jul',
-  'aug',
-  'sep',
-  'okt',
-  'nov',
-  'dec',
-] as const;
+/**
+ * Language-specific date vocabulary. Every dictionary exposes this shape as `messages.date`,
+ * so date maths stays pure and the same helpers format Bosnian, English and German.
+ */
+export interface DateLocale {
+  /** Sunday first, matching `Date#getDay()` */
+  weekdaysLong: readonly string[];
+  weekdaysShort: readonly string[];
+  /** Monday first, for calendar column headers */
+  calendarHeader: readonly string[];
+  monthsLong: readonly string[];
+  monthsShort: readonly string[];
+  short: (weekday: string, day: number, month: string) => string;
+  long: (weekday: string, day: number, month: string, year: number) => string;
+  monthTitle: (month: string, year: number) => string;
+}
 
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 const ISO_TIME = /^([01]\d|2[0-3]):([0-5]\d)$/;
@@ -118,22 +102,27 @@ export function billableDays(dropOffDate: string, dropOffTime: string, pickUpDat
   return Math.max(1, dayDiff + (to > from ? 1 : 0));
 }
 
-export function formatDateShort(isoDate: string): string {
+export function formatDateShort(isoDate: string, locale: DateLocale): string {
   const parts = parseISODate(isoDate);
   if (!parts) return '—';
   const date = new Date(parts.year, parts.month, parts.day);
-  return `${WEEKDAYS_SHORT[date.getDay()]}, ${parts.day}. ${MONTHS_SHORT[parts.month]}`;
+  return locale.short(locale.weekdaysShort[date.getDay()] ?? '', parts.day, locale.monthsShort[parts.month] ?? '');
 }
 
-export function formatDateLong(isoDate: string): string {
+export function formatDateLong(isoDate: string, locale: DateLocale): string {
   const parts = parseISODate(isoDate);
   if (!parts) return '—';
   const date = new Date(parts.year, parts.month, parts.day);
-  return `${WEEKDAYS_LONG[date.getDay()]}, ${parts.day}. ${MONTHS_LONG[parts.month]} ${parts.year}.`;
+  return locale.long(
+    locale.weekdaysLong[date.getDay()] ?? '',
+    parts.day,
+    locale.monthsLong[parts.month] ?? '',
+    parts.year,
+  );
 }
 
-export function formatMonthTitle(year: number, month: number): string {
-  return `${MONTHS_LONG[month]} ${year}.`;
+export function formatMonthTitle(year: number, month: number, locale: DateLocale): string {
+  return locale.monthTitle(locale.monthsLong[month] ?? '', year);
 }
 
 /** Half-hour slots across the day: 00:00 … 23:30 */

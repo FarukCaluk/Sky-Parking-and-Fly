@@ -1,7 +1,6 @@
 import { EXTRAS, MAX_STAY_DAYS, PRICING_TIERS, VAT_RATE, VEHICLES } from '@/data/pricing';
 import type { CoverType, ExtraId, PriceLine, PricingTier, Quote, StayDraft, StayErrors, VehicleType } from '@/types';
 import { addDays, billableDays, nextSlot, toDate, toISODate } from './date';
-import { formatDays, formatKM } from './format';
 
 const round2 = (n: number): number => Math.round(n * 100) / 100;
 /** Daily rates are rounded to the nearest 0.50 KM so the price list stays tidy. */
@@ -36,13 +35,8 @@ export function calculateQuote({ days: rawDays, cover, vehicle, extras }: QuoteI
   const parking = round2(ratePerDay * days);
 
   const extraLines: PriceLine[] = EXTRAS.filter((e) => extras.includes(e.id)).map((e) => {
-    const amount = e.billing === 'perDay' ? round2(e.price * days) : e.price;
-    return {
-      id: e.id,
-      label: e.label,
-      detail: e.billing === 'perDay' ? `${days} × ${formatKM(e.price)}` : undefined,
-      amount,
-    };
+    const quantity = e.billing === 'perDay' ? days : 1;
+    return { id: e.id, billing: e.billing, quantity, unit: e.price, amount: round2(e.price * quantity) };
   });
   const extrasTotal = round2(extraLines.reduce((sum, l) => sum + l.amount, 0));
   const total = round2(parking + extrasTotal);
@@ -69,28 +63,27 @@ export function stayDays(stay: StayDraft): number | null {
   return Number.isFinite(days) ? days : null;
 }
 
+/** Validate a stay. Returns machine-readable codes — the visible text comes from the active dictionary. */
 export function validateStay(stay: StayDraft, now: Date = new Date()): StayErrors {
   const errors: StayErrors = {};
   const dropOff = toDate(stay.dropOffDate, stay.dropOffTime);
   const pickUp = toDate(stay.pickUpDate, stay.pickUpTime);
 
   if (!dropOff) {
-    errors.dropOff = 'Odaberite datum i vrijeme ostavljanja vozila.';
+    errors.dropOff = 'dropOffMissing';
   } else if (dropOff.getTime() < now.getTime() - 60_000) {
-    errors.dropOff = 'Vrijeme ostavljanja vozila je već prošlo.';
+    errors.dropOff = 'dropOffPast';
   }
 
   if (!pickUp) {
-    errors.pickUp = 'Odaberite datum i vrijeme preuzimanja vozila.';
+    errors.pickUp = 'pickUpMissing';
   } else if (dropOff && pickUp.getTime() <= dropOff.getTime()) {
-    errors.pickUp = 'Preuzimanje mora biti nakon ostavljanja vozila.';
+    errors.pickUp = 'pickUpBeforeDropOff';
   }
 
   if (!errors.dropOff && !errors.pickUp) {
     const days = stayDays(stay);
-    if (days !== null && days > MAX_STAY_DAYS) {
-      errors.range = `Online rezervacija je moguća do ${formatDays(MAX_STAY_DAYS)}. Za duži boravak nas kontaktirajte.`;
-    }
+    if (days !== null && days > MAX_STAY_DAYS) errors.range = 'rangeTooLong';
   }
 
   return errors;

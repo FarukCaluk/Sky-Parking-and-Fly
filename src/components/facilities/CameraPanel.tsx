@@ -3,6 +3,7 @@ import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import { CAMERAS } from '@/data/facilities';
 import { useCameraFeed } from '@/hooks/useCameraFeed';
 import { useNow } from '@/hooks/useNow';
+import { useI18n } from '@/i18n/context';
 import type { CameraStream } from '@/types';
 import { cn } from '@/utils/cn';
 import { FeedScene } from './FeedScene';
@@ -25,6 +26,8 @@ interface ViewportProps {
 
 /** One camera connection. Mounted with a key so switching cameras restarts from "connecting". */
 function CameraViewport({ camera, index, onRetry }: ViewportProps) {
+  const { t } = useI18n();
+  const text = t.facilities.camera;
   const { status, frameSrc, latencyMs, mode } = useCameraFeed(camera);
   const now = useNow(1000);
 
@@ -33,7 +36,7 @@ function CameraViewport({ camera, index, onRetry }: ViewportProps) {
       {mode === 'nextframe' && frameSrc ? (
         <img
           src={frameSrc}
-          alt={`Kamera: ${camera.label}`}
+          alt={text.imageAlt(text.cameras[camera.id].label)}
           decoding="async"
           className="absolute inset-0 size-full object-cover"
         />
@@ -69,7 +72,7 @@ function CameraViewport({ camera, index, onRetry }: ViewportProps) {
         </time>
       </div>
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 font-mono text-[0.6875rem] uppercase tracking-wider text-white/70 sm:p-5 sm:text-xs">
-        <p className="min-w-0 truncate">{camera.zone}</p>
+        <p className="min-w-0 truncate">{text.cameras[camera.id].zone}</p>
         <p className="shrink-0 tabular">
           {mode === 'nextframe' ? 'NextFrame' : 'Demo'}
           {latencyMs !== null && status === 'live' && ` · ${latencyMs} ms`}
@@ -83,7 +86,7 @@ function CameraViewport({ camera, index, onRetry }: ViewportProps) {
         >
           <p className="flex items-center gap-2.5 text-sm font-medium">
             <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />
-            Povezivanje s kamerom…
+            {text.connecting}
           </p>
         </div>
       )}
@@ -95,14 +98,14 @@ function CameraViewport({ camera, index, onRetry }: ViewportProps) {
         >
           <div>
             <VideoOff className="mx-auto size-8 text-white/60" aria-hidden="true" />
-            <p className="mt-3 text-sm font-semibold">Kamera trenutno nije dostupna</p>
+            <p className="mt-3 text-sm font-semibold">{text.offline}</p>
             <button
               type="button"
               onClick={onRetry}
               className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-full bg-white/10 px-4 text-sm font-semibold transition-colors hover:bg-white/20"
             >
               <RefreshCw className="size-4" aria-hidden="true" />
-              Pokušaj ponovo
+              {text.retry}
             </button>
           </div>
         </div>
@@ -112,6 +115,8 @@ function CameraViewport({ camera, index, onRetry }: ViewportProps) {
 }
 
 export function CameraPanel() {
+  const { t } = useI18n();
+  const text = t.facilities.camera;
   const [activeId, setActiveId] = useState(CAMERAS[0]?.id ?? 'entrance');
   const [attempt, setAttempt] = useState(0);
   const baseId = useId();
@@ -143,14 +148,14 @@ export function CameraPanel() {
 
   return (
     <section
-      aria-label="Video nadzor uživo"
+      aria-label={text.sectionAria}
       className="flex h-full flex-col rounded-[2rem] border border-white/10 bg-zinc-950 p-3 text-white shadow-[0_30px_70px_-30px_rgb(0_0_0/0.7)] sm:p-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-3 px-2 pb-3 pt-1 sm:px-3">
-        <h3 className="text-lg font-bold tracking-[-0.02em]">Video nadzor uživo</h3>
+        <h2 className="text-lg font-bold tracking-[-0.02em]">{text.title}</h2>
         <div
           role="tablist"
-          aria-label="Kamere"
+          aria-label={text.tabsAria}
           onKeyDown={onKeyDown}
           className="no-scrollbar -mx-1 flex max-w-full gap-1 overflow-x-auto rounded-full bg-white/[0.07] p-1"
         >
@@ -174,7 +179,7 @@ export function CameraPanel() {
                   selected ? 'bg-white text-zinc-900' : 'text-white/65 hover:text-white',
                 )}
               >
-                {cam.label}
+                {text.cameras[cam.id].label}
               </button>
             );
           })}
@@ -195,9 +200,7 @@ export function CameraPanel() {
         />
       </div>
 
-      <p className="px-2 pb-1 pt-3 text-xs leading-relaxed text-white/65 sm:px-3">
-        Prikaz je demonstracija. Kamere se povezuju putem NextFrame sučelja, a snimci se arhiviraju 30 dana.
-      </p>
+      <p className="px-2 pb-1 pt-3 text-xs leading-relaxed text-white/65 sm:px-3">{text.note}</p>
     </section>
   );
 }

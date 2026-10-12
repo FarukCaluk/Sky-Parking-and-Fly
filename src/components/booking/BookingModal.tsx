@@ -6,26 +6,18 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Stepper, type StepperStep } from '@/components/ui/Stepper';
 import { useBooking } from '@/context/bookingContext';
-import { useBookingWizard, type WizardStep } from '@/hooks/useBookingWizard';
+import { useBookingWizard } from '@/hooks/useBookingWizard';
+import { useI18n } from '@/i18n/context';
+import type { Lang } from '@/router/routes';
 import type { BookingRequest } from '@/types';
-import { formatDays } from '@/utils/format';
 import { hasErrors, normalizeFlight, normalizePlate, toInternationalPhone } from '@/utils/validation';
 import { BookingSuccess } from './BookingSuccess';
 import { StayForm } from './StayForm';
 import { StepConfirm } from './StepConfirm';
 import { StepVehicle } from './StepVehicle';
 
-const STEPS: readonly StepperStep[] = [
-  { id: 1, label: 'Detalji' },
-  { id: 2, label: 'Vozilo' },
-  { id: 3, label: 'Potvrda' },
-];
-
-const STEP_TITLES: Record<WizardStep, string> = {
-  1: 'Kada i šta parkirate?',
-  2: 'Vozilo i kontakt',
-  3: 'Pregled i potvrda',
-};
+/** BCP-47 locale stored with each booking so the back office knows the language the guest used. */
+const LOCALES: Record<Lang, string> = { bs: 'bs-BA', en: 'en-US', de: 'de-DE' };
 
 const slide = {
   enter: (direction: number) => ({ opacity: 0, x: direction * 28 }),
@@ -36,6 +28,7 @@ const slide = {
 /** Three-step reservation wizard: stay details → vehicle & contact → review and instant confirmation. */
 export default function BookingModal() {
   const { stay, quote, isBookable, isBookingOpen, closeBooking } = useBooking();
+  const { t, lang } = useI18n();
   const wizard = useBookingWizard();
   const { state } = wizard;
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -62,6 +55,13 @@ export default function BookingModal() {
     headingRef.current?.focus({ preventScroll: true });
   }, [state.step, succeeded, isBookingOpen]);
 
+  const steps: readonly StepperStep[] = [
+    { id: 1, label: t.booking.stepLabels.details },
+    { id: 2, label: t.booking.stepLabels.vehicle },
+    { id: 3, label: t.booking.stepLabels.confirm },
+  ];
+  const stepTitles = { 1: t.booking.stepTitles.one, 2: t.booking.stepTitles.two, 3: t.booking.stepTitles.three };
+
   const focusFirstInvalid = () => {
     window.requestAnimationFrame(() => {
       bodyRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
@@ -85,7 +85,7 @@ export default function BookingModal() {
     },
     total: quote.total,
     currency: 'BAM',
-    locale: 'bs-BA',
+    locale: LOCALES[lang],
   });
 
   const next = () => {
@@ -117,7 +117,7 @@ export default function BookingModal() {
 
   const footer = succeeded ? (
     <Button size="lg" fullWidth onClick={closeBooking}>
-      Gotovo
+      {t.booking.done}
     </Button>
   ) : (
     <div className="flex items-center gap-3">
@@ -127,15 +127,15 @@ export default function BookingModal() {
           size="lg"
           onClick={back}
           disabled={submitting}
-          aria-label="Nazad"
+          aria-label={t.booking.back}
           className="px-4 sm:px-6"
           leftIcon={<ArrowLeft className="size-5" aria-hidden="true" />}
         >
-          <span className="max-sm:hidden">Nazad</span>
+          <span className="max-sm:hidden">{t.booking.back}</span>
         </Button>
       ) : (
         <div className="min-w-0 pl-1" aria-live="polite">
-          <p className="text-xs font-medium text-ink-faint">Ukupno</p>
+          <p className="text-xs font-medium text-ink-faint">{t.booking.total}</p>
           <p className="text-xl font-bold leading-tight tracking-[-0.03em]">
             <AnimatedPrice value={quote.total} />
           </p>
@@ -155,7 +155,7 @@ export default function BookingModal() {
           )
         }
       >
-        {state.step === 3 ? 'Potvrdi rezervaciju' : 'Nastavi'}
+        {state.step === 3 ? t.booking.confirmButton : t.booking.next}
       </Button>
     </div>
   );
@@ -164,11 +164,11 @@ export default function BookingModal() {
     <Modal
       open={isBookingOpen}
       onClose={close}
-      title={succeeded ? 'Hvala vam!' : 'Rezervacija parkinga'}
-      eyebrow={succeeded ? 'Gotovo' : `Korak ${state.step} od 3 · ${formatDays(quote.days)}`}
+      title={succeeded ? t.booking.thanks : t.booking.title}
+      eyebrow={succeeded ? t.booking.done : t.booking.stepEyebrow(state.step, t.units.days(quote.days))}
       size="lg"
       bodyRef={bodyRef}
-      headerExtra={succeeded ? undefined : <Stepper steps={STEPS} current={state.step} />}
+      headerExtra={succeeded ? undefined : <Stepper steps={steps} current={state.step} />}
       footer={footer}
     >
       <AnimatePresence mode="wait" custom={state.direction} initial={false}>
@@ -184,14 +184,14 @@ export default function BookingModal() {
           {succeeded && state.confirmation ? (
             <>
               <h3 ref={headingRef} tabIndex={-1} className="sr-only">
-                Rezervacija je potvrđena
+                {t.booking.confirmedHeading}
               </h3>
               <BookingSuccess confirmation={state.confirmation} />
             </>
           ) : (
             <>
               <h3 ref={headingRef} tabIndex={-1} className="mb-5 text-lg font-bold tracking-[-0.02em] outline-none">
-                {STEP_TITLES[state.step]}
+                {stepTitles[state.step]}
               </h3>
               {state.step === 1 && <StayForm variant="wizard" />}
               {state.step === 2 && <StepVehicle wizard={wizard} />}

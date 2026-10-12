@@ -1,27 +1,38 @@
-import { Car, Hash, Mail, Phone, Plane, Users, User, Palette } from 'lucide-react';
+import { Car, Hash, Mail, Palette, Phone, Plane, User, Users } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import type { BookingWizard } from '@/hooks/useBookingWizard';
+import { useI18n } from '@/i18n/context';
+import { fieldMessage } from '@/i18n/helpers';
+import type { DriverField, VehicleField } from '@/types';
 import { normalizeFlight, normalizePlate } from '@/utils/validation';
 
 export function StepVehicle({ wizard }: { wizard: BookingWizard }) {
+  const { t } = useI18n();
   const { state, errorFor, isValid, setDriver, setVehicle, touch } = wizard;
   const { driver, vehicle } = state;
+  const s = t.booking.vehicleStep;
+
+  /** Visible error text for a field, in the active language. */
+  const error = (field: DriverField | VehicleField): string | undefined => {
+    const code = errorFor(field);
+    return code ? fieldMessage(t, field, code) : undefined;
+  };
 
   return (
     <div className="space-y-6">
       <fieldset>
-        <legend className="mb-3 text-[0.9375rem] font-bold tracking-[-0.015em]">Vaše vozilo</legend>
+        <legend className="mb-3 text-[0.9375rem] font-bold tracking-[-0.015em]">{s.vehicleLegend}</legend>
         <div className="grid gap-x-4 sm:grid-cols-2">
           <Input
-            label="Registarske tablice"
+            label={s.plate}
             name="plate"
             autoComplete="off"
             autoCapitalize="characters"
             spellCheck={false}
-            placeholder="A12-K-345"
+            placeholder={s.platePlaceholder}
             leftIcon={<Hash />}
             value={vehicle.plate}
-            error={errorFor('plate')}
+            error={error('plate')}
             valid={isValid('plate')}
             onChange={(e) => setVehicle('plate', e.target.value.toUpperCase())}
             onBlur={() => {
@@ -31,30 +42,30 @@ export function StepVehicle({ wizard }: { wizard: BookingWizard }) {
             required
           />
           <Input
-            label="Marka i model"
+            label={s.make}
             name="make"
             autoComplete="off"
-            placeholder="Volkswagen Golf 7"
+            placeholder={s.makePlaceholder}
             leftIcon={<Car />}
             value={vehicle.make}
-            error={errorFor('make')}
+            error={error('make')}
             valid={isValid('make')}
             onChange={(e) => setVehicle('make', e.target.value)}
             onBlur={() => touch('make')}
             required
           />
           <Input
-            label="Boja"
+            label={s.color}
             name="color"
             optional
             autoComplete="off"
-            placeholder="Siva"
+            placeholder={s.colorPlaceholder}
             leftIcon={<Palette />}
             value={vehicle.color}
             onChange={(e) => setVehicle('color', e.target.value)}
           />
           <Input
-            label="Broj putnika"
+            label={s.passengers}
             name="passengers"
             type="number"
             inputMode="numeric"
@@ -62,7 +73,7 @@ export function StepVehicle({ wizard }: { wizard: BookingWizard }) {
             max={8}
             leftIcon={<Users />}
             value={vehicle.passengers}
-            error={errorFor('passengers')}
+            error={error('passengers')}
             valid={isValid('passengers')}
             onChange={(e) => setVehicle('passengers', e.target.value)}
             onBlur={() => touch('passengers')}
@@ -70,17 +81,17 @@ export function StepVehicle({ wizard }: { wizard: BookingWizard }) {
           />
         </div>
         <Input
-          label="Broj leta"
+          label={s.flight}
           name="flight"
           optional
           autoComplete="off"
           autoCapitalize="characters"
           spellCheck={false}
-          placeholder="JU 123"
-          hint="Pratimo kašnjenja leta i prilagođavamo shuttle."
+          placeholder={s.flightPlaceholder}
+          hint={s.flightHint}
           leftIcon={<Plane />}
           value={vehicle.flightNumber}
-          error={errorFor('flightNumber')}
+          error={error('flightNumber')}
           valid={isValid('flightNumber')}
           onChange={(e) => setVehicle('flightNumber', e.target.value.toUpperCase())}
           onBlur={() => {
@@ -91,15 +102,15 @@ export function StepVehicle({ wizard }: { wizard: BookingWizard }) {
       </fieldset>
 
       <fieldset>
-        <legend className="mb-3 text-[0.9375rem] font-bold tracking-[-0.015em]">Kontakt podaci</legend>
+        <legend className="mb-3 text-[0.9375rem] font-bold tracking-[-0.015em]">{s.contactLegend}</legend>
         <Input
-          label="Ime i prezime"
+          label={s.fullName}
           name="name"
           autoComplete="name"
-          placeholder="Amar Hodžić"
+          placeholder={s.fullNamePlaceholder}
           leftIcon={<User />}
           value={driver.fullName}
-          error={errorFor('fullName')}
+          error={error('fullName')}
           valid={isValid('fullName')}
           onChange={(e) => setDriver('fullName', e.target.value)}
           onBlur={() => touch('fullName')}
@@ -107,32 +118,32 @@ export function StepVehicle({ wizard }: { wizard: BookingWizard }) {
         />
         <div className="grid gap-x-4 sm:grid-cols-2">
           <Input
-            label="E-mail"
+            label={s.email}
             name="email"
             type="email"
             inputMode="email"
             autoComplete="email"
             autoCapitalize="none"
             spellCheck={false}
-            placeholder="ime@primjer.ba"
+            placeholder={s.emailPlaceholder}
             leftIcon={<Mail />}
             value={driver.email}
-            error={errorFor('email')}
+            error={error('email')}
             valid={isValid('email')}
             onChange={(e) => setDriver('email', e.target.value)}
             onBlur={() => touch('email')}
             required
           />
           <Input
-            label="Telefon"
+            label={s.phone}
             name="tel"
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="061 000 000"
+            placeholder={s.phonePlaceholder}
             leftIcon={<Phone />}
             value={driver.phone}
-            error={errorFor('phone')}
+            error={error('phone')}
             valid={isValid('phone')}
             onChange={(e) => setDriver('phone', e.target.value)}
             onBlur={() => touch('phone')}

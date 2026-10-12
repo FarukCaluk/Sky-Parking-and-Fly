@@ -1,6 +1,9 @@
 import type { DriverDetails, DriverField, VehicleDetails, VehicleField } from '@/types';
 
-export type FieldErrors<K extends string> = Partial<Record<K, string>>;
+/** Why a field is invalid; the visible text comes from `messages.validation[field][code]`. */
+export type ValidationCode = 'required' | 'invalid' | 'range';
+
+export type FieldErrors<K extends string> = Partial<Record<K, ValidationCode>>;
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const FULL_NAME = /^\p{L}{2,}(?:[\s'’.-]+\p{L}+)+$/u;
@@ -35,16 +38,17 @@ export function normalizeFlight(value: string): string {
 
 export function validateDriver(driver: DriverDetails): FieldErrors<DriverField> {
   const errors: FieldErrors<DriverField> = {};
+
   const name = driver.fullName.trim();
-  if (!name) errors.fullName = 'Unesite ime i prezime.';
-  else if (!FULL_NAME.test(name)) errors.fullName = 'Unesite ime i prezime (npr. Amar Hodžić).';
+  if (!name) errors.fullName = 'required';
+  else if (!FULL_NAME.test(name)) errors.fullName = 'invalid';
 
   const email = driver.email.trim();
-  if (!email) errors.email = 'Unesite e-mail adresu.';
-  else if (!EMAIL.test(email)) errors.email = 'E-mail adresa nije ispravna.';
+  if (!email) errors.email = 'required';
+  else if (!EMAIL.test(email)) errors.email = 'invalid';
 
-  if (!driver.phone.trim()) errors.phone = 'Unesite broj telefona.';
-  else if (!isValidPhone(driver.phone)) errors.phone = 'Broj telefona nije ispravan (npr. 061 000 000).';
+  if (!driver.phone.trim()) errors.phone = 'required';
+  else if (!isValidPhone(driver.phone)) errors.phone = 'invalid';
 
   return errors;
 }
@@ -53,19 +57,17 @@ export function validateVehicle(vehicle: VehicleDetails): FieldErrors<VehicleFie
   const errors: FieldErrors<VehicleField> = {};
 
   const plate = normalizePlate(vehicle.plate);
-  if (!plate) errors.plate = 'Unesite registarske tablice.';
-  else if (!PLATE.test(plate)) errors.plate = 'Tablice nisu ispravne (npr. A12-K-345).';
+  if (!plate) errors.plate = 'required';
+  else if (!PLATE.test(plate)) errors.plate = 'invalid';
 
-  if (vehicle.make.trim().length < 2) errors.make = 'Unesite marku i model vozila.';
+  if (vehicle.make.trim().length < 2) errors.make = 'required';
 
   const passengers = Number(vehicle.passengers);
-  if (!vehicle.passengers.trim()) errors.passengers = 'Unesite broj putnika.';
-  else if (!Number.isInteger(passengers) || passengers < 1 || passengers > 8) {
-    errors.passengers = 'Broj putnika mora biti od 1 do 8.';
-  }
+  if (!vehicle.passengers.trim()) errors.passengers = 'required';
+  else if (!Number.isInteger(passengers) || passengers < 1 || passengers > 8) errors.passengers = 'range';
 
   const flight = normalizeFlight(vehicle.flightNumber);
-  if (flight && !FLIGHT.test(flight)) errors.flightNumber = 'Broj leta nije ispravan (npr. JU 123).';
+  if (flight && !FLIGHT.test(flight)) errors.flightNumber = 'invalid';
 
   return errors;
 }

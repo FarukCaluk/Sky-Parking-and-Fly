@@ -10,7 +10,6 @@ export const SITE = {
   address: {
     street: 'Aerodromska 12',
     city: '71210 Ilidža, Sarajevo',
-    country: 'Bosna i Hercegovina',
   },
   /** Parking lot coordinates */
   geo: { lat: 43.8197, lng: 18.3278 },
@@ -22,12 +21,8 @@ export const SITE = {
   whatsapp: '38761000000',
   viber: '%2B38761000000',
   shuttleMinutes: 5,
-  terminalDistance: '1,8 km',
-  hours: [
-    { label: 'Parking i shuttle', value: 'Non-stop, 0–24h' },
-    { label: 'Recepcija', value: 'Non-stop, 0–24h' },
-    { label: 'Administracija', value: 'Pon–Pet, 08–18h' },
-  ],
+  /** Distance in km — formatted per language where shown. */
+  terminalDistanceKm: 1.8,
 } as const;
 
 export const MAPS_LINKS = {

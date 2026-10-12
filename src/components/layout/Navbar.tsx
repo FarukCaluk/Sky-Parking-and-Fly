@@ -3,23 +3,26 @@ import { ArrowRight, Menu, Moon, Phone, Sun, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { PresenceGuard } from '@/components/ui/PresenceGuard';
-import { NAV_LINKS } from '@/data/content';
 import { SITE } from '@/data/site';
 import { useBooking } from '@/context/bookingContext';
-import { useActiveSection } from '@/hooks/useActiveSection';
 import { useDismiss } from '@/hooks/useDismiss';
 import { useScrolled } from '@/hooks/useScrolled';
 import { useTheme } from '@/hooks/useTheme';
+import { useI18n } from '@/i18n/context';
+import { Link } from '@/router/Link';
+import { useRoute } from '@/router/navigation';
+import { NAV_ROUTES } from '@/router/routes';
 import { cn } from '@/utils/cn';
+import { LanguageLinks } from './LanguageLinks';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { Logo } from './Logo';
-
-const SECTION_IDS = NAV_LINKS.map((l) => l.id);
 
 export function Navbar() {
   const { openBooking } = useBooking();
+  const { t } = useI18n();
+  const { route } = useRoute();
   const { theme, toggleTheme } = useTheme();
   const scrolled = useScrolled(8);
-  const active = useActiveSection(SECTION_IDS);
   const [menuOpen, setMenuOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -29,33 +32,38 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
       <div ref={rootRef} className="relative mx-auto max-w-5xl">
         <nav
-          aria-label="Glavna navigacija"
+          aria-label={t.nav.aria}
           className={cn(
             'flex h-14 items-center justify-between gap-2 rounded-full border pl-3.5 pr-2 sm:h-[3.75rem] sm:pl-4',
-            'bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:bg-zinc-900/70',
+            'bg-white/85 backdrop-blur-xl backdrop-saturate-150 dark:bg-zinc-900/80',
             'transition-[box-shadow,border-color] duration-500 ease-apple',
             scrolled
               ? 'border-black/[0.08] shadow-[0_8px_32px_-8px_rgb(0_0_0/0.25)] dark:border-white/[0.12]'
               : 'border-white/50 shadow-[0_8px_32px_-12px_rgb(0_0_0/0.2)] dark:border-white/[0.08]',
           )}
         >
-          <a href="#pocetna" aria-label="Sky Parking & Fly — početna" className="rounded-full">
+          <Link
+            route="home"
+            aria-label={t.nav.homeAria}
+            aria-current={route === 'home' ? 'page' : undefined}
+            className="rounded-full"
+          >
             <Logo />
-          </a>
+          </Link>
 
           <ul className="hidden items-center gap-0.5 lg:flex">
-            {NAV_LINKS.map((link) => (
-              <li key={link.id}>
-                <a
-                  href={`#${link.id}`}
-                  aria-current={active === link.id ? 'location' : undefined}
+            {NAV_ROUTES.map((id) => (
+              <li key={id}>
+                <Link
+                  route={id}
+                  aria-current={route === id ? 'page' : undefined}
                   className={cn(
                     'relative rounded-full px-3.5 py-2 text-sm font-medium tracking-[-0.01em] transition-colors duration-200',
-                    active === link.id ? 'bg-ink/[0.07] text-ink' : 'text-ink-muted hover:text-ink',
+                    route === id ? 'bg-ink/[0.07] text-ink' : 'text-ink-muted hover:text-ink',
                   )}
                 >
-                  {link.label}
-                </a>
+                  {t.nav.pages[id]}
+                </Link>
               </li>
             ))}
           </ul>
@@ -63,15 +71,16 @@ export function Navbar() {
           <div className="flex items-center gap-1">
             <a
               href={`tel:${SITE.phone.e164}`}
-              aria-label={`Nazovite nas: ${SITE.phone.display}`}
-              className="hidden size-10 place-items-center rounded-full text-ink-muted transition-colors hover:bg-ink/[0.07] hover:text-ink sm:grid"
+              aria-label={t.nav.callUs(SITE.phone.display)}
+              className="hidden size-10 place-items-center rounded-full text-ink-muted transition-colors hover:bg-ink/[0.07] hover:text-ink xl:grid"
             >
               <Phone className="size-[1.125rem]" aria-hidden="true" />
             </a>
+            <LanguageSwitcher className="max-sm:hidden" />
             <button
               type="button"
               onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Uključi svijetlu temu' : 'Uključi tamnu temu'}
+              aria-label={theme === 'dark' ? t.nav.switchToLight : t.nav.switchToDark}
               className="grid size-10 place-items-center rounded-full text-ink-muted transition-[background-color,color,transform] duration-200 hover:bg-ink/[0.07] hover:text-ink active:scale-90 max-[22rem]:hidden"
             >
               {theme === 'dark' ? (
@@ -81,14 +90,14 @@ export function Navbar() {
               )}
             </button>
             <Button size="sm" onClick={openBooking} className="ml-1 px-4 max-[22rem]:px-3">
-              Rezerviši
+              {t.nav.book}
             </Button>
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              aria-label={menuOpen ? 'Zatvori meni' : 'Otvori meni'}
+              aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
               className="grid size-10 place-items-center rounded-full text-ink transition-[background-color,transform] duration-200 hover:bg-ink/[0.07] active:scale-90 lg:hidden"
             >
               {menuOpen ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
@@ -109,24 +118,26 @@ export function Navbar() {
                 className="overflow-hidden rounded-[1.75rem] border border-white/50 bg-white/85 p-2 shadow-[0_30px_80px_-20px_rgb(0_0_0/0.45)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10 dark:bg-zinc-900/90"
               >
                 <ul>
-                  {NAV_LINKS.map((link) => (
-                    <li key={link.id}>
-                      <a
-                        href={`#${link.id}`}
+                  {NAV_ROUTES.map((id) => (
+                    <li key={id}>
+                      <Link
+                        route={id}
                         onClick={() => setMenuOpen(false)}
+                        aria-current={route === id ? 'page' : undefined}
                         className={cn(
                           'flex min-h-12 items-center justify-between rounded-2xl px-4 text-[1.0625rem] font-semibold tracking-[-0.015em]',
                           'transition-colors duration-200 hover:bg-ink/[0.06]',
-                          active === link.id ? 'text-accent' : 'text-ink',
+                          route === id ? 'text-accent' : 'text-ink',
                         )}
                       >
-                        {link.label}
+                        {t.nav.pages[id]}
                         <ArrowRight className="size-4 text-ink-faint" aria-hidden="true" />
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
                 <div className="mt-1 grid gap-2 border-t border-line p-2 pt-3">
+                  <LanguageLinks onNavigate={() => setMenuOpen(false)} />
                   <Button
                     size="lg"
                     fullWidth
@@ -135,7 +146,7 @@ export function Navbar() {
                       openBooking();
                     }}
                   >
-                    Rezerviši parking
+                    {t.nav.bookParking}
                   </Button>
                   <Button
                     size="md"
@@ -150,7 +161,7 @@ export function Navbar() {
                       )
                     }
                   >
-                    {theme === 'dark' ? 'Svijetla tema' : 'Tamna tema'}
+                    {theme === 'dark' ? t.nav.lightTheme : t.nav.darkTheme}
                   </Button>
                   <Button
                     size="md"

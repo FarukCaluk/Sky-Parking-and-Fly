@@ -1,14 +1,15 @@
 import { BadgeCheck, Star } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
-import { Container, Section, SectionHeading } from '@/components/ui/Layout';
+import { Container, Section } from '@/components/ui/Layout';
 import { Reveal } from '@/components/ui/Reveal';
 import { GOOGLE_RATING, STATS, TESTIMONIALS } from '@/data/content';
 import { useAnimatedNumber } from '@/hooks/useAnimatedNumber';
 import { useInViewOnce } from '@/hooks/useInViewOnce';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import type { StatItem, Testimonial } from '@/types';
 import { cn } from '@/utils/cn';
-import { formatNumberBs } from '@/utils/format';
 
 const AVATAR_GRADIENTS = [
   'from-sky-400 to-blue-600',
@@ -20,11 +21,12 @@ const AVATAR_GRADIENTS = [
 ] as const;
 
 function Stars({ count, className }: { count: number; className?: string }) {
+  const { t } = useI18n();
   return (
     <span
       className={cn('flex items-center gap-0.5 text-amber-400', className)}
       role="img"
-      aria-label={`Ocjena ${count} od 5`}
+      aria-label={t.reviews.ratingLabel(count)}
     >
       {Array.from({ length: 5 }, (_, i) => (
         <Star key={i} className={cn('size-4', i >= count && 'text-ink/15')} fill="currentColor" strokeWidth={0} />
@@ -34,6 +36,8 @@ function Stars({ count, className }: { count: number; className?: string }) {
 }
 
 function GoogleBadge() {
+  const { t } = useI18n();
+  const fmt = useFormat();
   return (
     <div className="inline-flex items-center gap-3 rounded-full border border-line bg-surface py-2 pl-2.5 pr-5 shadow-card">
       <span
@@ -46,31 +50,39 @@ function GoogleBadge() {
       </span>
       <span className="text-left">
         <span className="flex items-center gap-2">
-          <span className="text-lg font-bold leading-none tracking-[-0.03em] tabular">{GOOGLE_RATING.score}</span>
+          <span className="text-lg font-bold leading-none tracking-[-0.03em] tabular">
+            {fmt.number(GOOGLE_RATING.score, 1)}
+          </span>
           <Stars count={5} className="[&>svg]:size-3.5" />
         </span>
-        <span className="mt-1 block text-xs leading-none text-ink-muted">{GOOGLE_RATING.count} Google recenzija</span>
+        <span className="mt-1 block text-xs leading-none text-ink-muted">
+          {t.reviews.googleCount(fmt.number(GOOGLE_RATING.count))}
+        </span>
       </span>
     </div>
   );
 }
 
 function Stat({ stat }: { stat: StatItem }) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const [ref, seen] = useInViewOnce<HTMLDivElement>(0.5);
   const value = useAnimatedNumber(seen ? stat.value : 0, 1800);
 
   return (
     <div ref={ref} className="px-4 py-6 text-center sm:py-8">
       <p className="text-[clamp(2.25rem,1.6rem+2.4vw,3.5rem)] font-bold leading-none tracking-[-0.045em] tabular">
-        {formatNumberBs(value, stat.decimals ?? 0)}
+        {fmt.number(value, stat.decimals ?? 0)}
         <span className="text-ink-muted">{stat.suffix}</span>
       </p>
-      <p className="mt-2 text-sm text-ink-muted">{stat.label}</p>
+      <p className="mt-2 text-sm text-ink-muted">{t.reviews.stats[stat.id]}</p>
     </div>
   );
 }
 
 function ReviewCard({ review, index }: { review: Testimonial; index: number }) {
+  const { t } = useI18n();
+  const item = t.reviews.items[review.id];
   const initials = review.name
     .split(' ')
     .map((part) => part[0])
@@ -83,11 +95,11 @@ function ReviewCard({ review, index }: { review: Testimonial; index: number }) {
         <Stars count={review.rating} />
         <Badge tone="success">
           <BadgeCheck className="size-3.5" aria-hidden="true" />
-          Verifikovan putnik
+          {t.reviews.verified}
         </Badge>
       </div>
       <blockquote className="mt-4 flex-1 text-[1.0625rem] leading-relaxed tracking-[-0.01em]">
-        „{review.quote}“
+        „{item.quote}“
       </blockquote>
       <div className="mt-6 flex items-center gap-3">
         <span
@@ -102,7 +114,7 @@ function ReviewCard({ review, index }: { review: Testimonial; index: number }) {
         <div className="min-w-0">
           <cite className="block truncate text-[0.9375rem] font-semibold not-italic">{review.name}</cite>
           <p className="truncate text-[0.8125rem] text-ink-muted">
-            {review.city} · let za {review.trip}
+            {item.city} · {t.reviews.flightTo(item.trip)}
           </p>
         </div>
       </div>
@@ -110,22 +122,19 @@ function ReviewCard({ review, index }: { review: Testimonial; index: number }) {
   );
 }
 
+/** Google rating, headline statistics and the review grid. */
 export default function Testimonials() {
-  return (
-    <Section className="border-y border-line bg-surface">
-      <Container>
-        <SectionHeading
-          eyebrow="Recenzije"
-          title="Putnici nam vjeruju svoja vozila."
-          description="Hiljade putnika iz cijele Bosne i Hercegovine i dijaspore ostavlja auto kod nas — evo šta kažu."
-        />
+  const { t } = useI18n();
 
-        <Reveal className="mt-8 flex justify-center">
+  return (
+    <Section className="pt-4 sm:pt-6 lg:pt-8">
+      <Container>
+        <Reveal className="flex justify-center">
           <GoogleBadge />
         </Reveal>
 
         <Reveal className="mt-10">
-          <div className="grid grid-cols-2 divide-line overflow-hidden rounded-[1.75rem] border border-line bg-canvas max-lg:divide-y lg:grid-cols-4 lg:divide-x">
+          <div className="grid grid-cols-2 divide-line overflow-hidden rounded-[1.75rem] border border-line bg-surface max-lg:divide-y lg:grid-cols-4 lg:divide-x">
             {STATS.map((stat) => (
               <div key={stat.id} className="max-lg:odd:border-r max-lg:odd:border-line">
                 <Stat stat={stat} />
@@ -144,9 +153,7 @@ export default function Testimonials() {
           ))}
         </ul>
 
-        <p className="mt-6 text-center text-xs text-ink-faint">
-          Ocjene i recenzije su ilustrativne i bit će zamijenjene stvarnim prije objave.
-        </p>
+        <p className="mt-6 text-center text-xs text-ink-faint">{t.reviews.disclaimer}</p>
       </Container>
     </Section>
   );

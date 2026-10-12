@@ -1,8 +1,9 @@
 import { Check } from 'lucide-react';
 import { EXTRAS } from '@/data/pricing';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import type { ExtraId } from '@/types';
 import { cn } from '@/utils/cn';
-import { formatKM } from '@/utils/format';
 import { EXTRA_ICONS } from './icons';
 
 interface ExtrasChipsProps {
@@ -14,6 +15,8 @@ interface ExtrasChipsProps {
 
 /** Compact multi-select chips for additional services. */
 export function ExtrasChips({ selected, onToggle, labelledBy, className }: ExtrasChipsProps) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   return (
     <div role="group" aria-labelledby={labelledBy} className={cn('flex flex-wrap gap-2', className)}>
       {EXTRAS.map((extra) => {
@@ -38,10 +41,10 @@ export function ExtrasChips({ selected, onToggle, labelledBy, className }: Extra
             ) : (
               <Icon className="size-4" strokeWidth={1.9} aria-hidden="true" />
             )}
-            <span>{extra.shortLabel}</span>
+            <span>{t.pricing.extras[extra.id].shortLabel}</span>
             <span className={cn('tabular text-xs', active ? 'text-white/75' : 'text-ink-faint')}>
-              +{formatKM(extra.price, { withCurrency: false })}
-              {extra.billing === 'perDay' ? '/dan' : ''}
+              +{fmt.km(extra.price, { withCurrency: false })}
+              {extra.billing === 'perDay' ? t.units.perDayShort : ''}
             </span>
           </button>
         );

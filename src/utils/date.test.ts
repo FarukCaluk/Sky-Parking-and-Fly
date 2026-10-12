@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { MESSAGES } from '@/i18n/messages';
 import {
   addDays,
   addMonths,
@@ -7,6 +8,7 @@ import {
   calendarDaysBetween,
   formatDateLong,
   formatDateShort,
+  formatMonthTitle,
   nextSlot,
   parseISODate,
   toDate,
@@ -53,9 +55,25 @@ describe('billableDays', () => {
 
 describe('formatting', () => {
   it('formats short and long dates in Bosnian', () => {
-    expect(formatDateShort('2026-10-12')).toBe('pon, 12. okt');
-    expect(formatDateLong('2026-10-12')).toBe('ponedjeljak, 12. oktobar 2026.');
-    expect(formatDateShort('nope')).toBe('—');
+    const { date } = MESSAGES.bs;
+    expect(formatDateShort('2026-10-12', date)).toBe('pon, 12. okt');
+    expect(formatDateLong('2026-10-12', date)).toBe('ponedjeljak, 12. oktobar 2026.');
+    expect(formatMonthTitle(2026, 9, date)).toBe('oktobar 2026.');
+    expect(formatDateShort('nope', date)).toBe('—');
+  });
+
+  it('formats dates in English', () => {
+    const { date } = MESSAGES.en;
+    expect(formatDateShort('2026-10-12', date)).toBe('Mon, Oct 12');
+    expect(formatDateLong('2026-10-12', date)).toBe('Monday, October 12, 2026');
+    expect(formatMonthTitle(2026, 9, date)).toBe('October 2026');
+  });
+
+  it('formats dates in German', () => {
+    const { date } = MESSAGES.de;
+    expect(formatDateShort('2026-10-12', date)).toBe('Mo, 12. Okt');
+    expect(formatDateLong('2026-10-12', date)).toBe('Montag, 12. Oktober 2026');
+    expect(formatMonthTitle(2026, 3, date)).toBe('April 2026');
   });
 });
 

@@ -2,11 +2,15 @@ import { ArrowRight, Star } from 'lucide-react';
 import { m } from 'framer-motion';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { buttonStyles } from '@/components/ui/buttonStyles';
 import { Container } from '@/components/ui/Layout';
 import { GlassContainer } from '@/components/ui/GlassContainer';
 import { GOOGLE_RATING, VALUE_PROPS } from '@/data/content';
 import { SITE } from '@/data/site';
 import { useBooking } from '@/context/bookingContext';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
+import { Link } from '@/router/Link';
 import { BookingWidget } from './BookingWidget';
 import { HeroBackdrop } from './HeroBackdrop';
 
@@ -20,9 +24,11 @@ const rise = (delay: number) => ({
 
 export function Hero() {
   const { openBooking } = useBooking();
+  const { t } = useI18n();
+  const fmt = useFormat();
 
   return (
-    <section id="pocetna" className="relative isolate overflow-x-clip text-white xl:flex xl:min-h-svh xl:items-center">
+    <section className="relative isolate overflow-x-clip text-white xl:flex xl:min-h-svh xl:items-center">
       <HeroBackdrop />
 
       <Container className="grid gap-10 pb-24 pt-28 sm:pt-36 xl:grid-cols-[minmax(0,1fr)_30rem] xl:items-center xl:gap-16 xl:pb-28 xl:pt-32">
@@ -33,7 +39,7 @@ export function Hero() {
                 <span className="absolute inline-flex size-full animate-pulse-ring rounded-full bg-emerald-400" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
               </span>
-              Aerodrom Sarajevo · otvoreno 0–24h
+              {t.hero.badge}
             </Badge>
           </m.div>
 
@@ -41,15 +47,14 @@ export function Hero() {
             {...rise(0.15)}
             className="display-title mt-6 text-[clamp(2.5rem,1.35rem+5.4vw,4.75rem)] text-balance xl:text-[3.75rem] 2xl:text-[4rem]"
           >
-            Parkirajte bez brige.
+            {t.hero.titleLine1}
             <span className="block bg-gradient-to-r from-brand-300 via-sky-200 to-cyan-300 bg-clip-text text-transparent">
-              Letite bez stresa.
+              {t.hero.titleLine2}
             </span>
           </m.h1>
 
           <m.p {...rise(0.25)} className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-white/70 sm:text-xl">
-            Čuvan, video nadziran parking {SITE.shuttleMinutes} minuta od terminala. Besplatan shuttle, osigurano vozilo
-            i cijena koju vidite unaprijed.
+            {t.hero.lead(SITE.shuttleMinutes)}
           </m.p>
 
           <m.div {...rise(0.35)} className="mt-8 flex flex-col gap-3 min-[26rem]:flex-row">
@@ -59,11 +64,14 @@ export function Hero() {
               rightIcon={<ArrowRight className="size-5" aria-hidden="true" />}
               className="max-sm:w-full"
             >
-              Rezerviši parking
+              {t.hero.cta}
             </Button>
-            <Button size="lg" variant="glass" href="#cijene" className="max-sm:w-full">
-              Pogledaj cijene
-            </Button>
+            <Link
+              route="pricing"
+              className={buttonStyles({ size: 'lg', variant: 'glass', className: 'max-sm:w-full' })}
+            >
+              {t.hero.ctaSecondary}
+            </Link>
           </m.div>
 
           <m.div {...rise(0.42)} className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-white/60">
@@ -73,20 +81,22 @@ export function Hero() {
               ))}
             </span>
             <span>
-              <strong className="font-semibold text-white">{GOOGLE_RATING.score}</strong> na Googleu ·{' '}
-              {GOOGLE_RATING.count} recenzija
+              <strong className="font-semibold text-white">{fmt.number(GOOGLE_RATING.score, 1)}</strong>{' '}
+              {t.hero.ratingSuffix(fmt.number(GOOGLE_RATING.count))}
             </span>
           </m.div>
 
           <m.ul {...rise(0.5)} className="mt-10 grid grid-cols-2 gap-3">
-            {VALUE_PROPS.map(({ icon: Icon, title, text }) => (
-              <li key={title} className="min-w-0">
+            {VALUE_PROPS.map(({ id, icon: Icon }) => (
+              <li key={id} className="min-w-0">
                 <GlassContainer tone="dark" className="h-full rounded-2xl p-4">
                   <span className="mb-3 grid size-9 place-items-center rounded-xl bg-brand-500/20 text-brand-300">
                     <Icon className="size-5" strokeWidth={1.8} aria-hidden="true" />
                   </span>
-                  <p className="text-[0.9375rem] font-semibold leading-snug tracking-[-0.01em]">{title}</p>
-                  <p className="mt-1 text-[0.8125rem] leading-snug text-white/55">{text}</p>
+                  <p className="text-[0.9375rem] font-semibold leading-snug tracking-[-0.01em]">
+                    {t.hero.valueProps[id].title}
+                  </p>
+                  <p className="mt-1 text-[0.8125rem] leading-snug text-white/55">{t.hero.valueProps[id].text}</p>
                 </GlassContainer>
               </li>
             ))}

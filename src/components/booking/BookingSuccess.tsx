@@ -1,19 +1,23 @@
 import { m } from 'framer-motion';
-import { Check, CalendarPlus, Copy, MessageCircle, PhoneCall } from 'lucide-react';
+import { CalendarPlus, Check, Copy, MessageCircle, PhoneCall } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SITE, whatsappLink } from '@/data/site';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import type { BookingConfirmation } from '@/types';
 import { downloadTextFile } from '@/utils/browser';
-import { formatDateShort } from '@/utils/date';
-import { formatDays, formatKM } from '@/utils/format';
 import { buildIcs } from '@/utils/ics';
 import { normalizePlate } from '@/utils/validation';
 
 export function BookingSuccess({ confirmation }: { confirmation: BookingConfirmation }) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const { reference, request } = confirmation;
   const { stay, vehicle } = request;
   const [copied, setCopied] = useState(false);
+  const s = t.booking.success;
+  const plate = normalizePlate(vehicle.plate);
 
   const copy = async () => {
     try {
@@ -25,7 +29,9 @@ export function BookingSuccess({ confirmation }: { confirmation: BookingConfirma
     }
   };
 
-  const shareText = `Rezervacija ${reference} — ${SITE.name}\nOstavljanje: ${formatDateShort(stay.dropOffDate)} u ${stay.dropOffTime}\nPreuzimanje: ${formatDateShort(stay.pickUpDate)} u ${stay.pickUpTime}\nVozilo: ${normalizePlate(vehicle.plate)}`;
+  const dropOff = `${fmt.dateShort(stay.dropOffDate)}, ${stay.dropOffTime}`;
+  const pickUp = `${fmt.dateShort(stay.pickUpDate)}, ${stay.pickUpTime}`;
+  const shareText = s.shareText(reference, SITE.name, dropOff, pickUp, plate);
 
   return (
     <div className="text-center">
@@ -43,23 +49,27 @@ export function BookingSuccess({ confirmation }: { confirmation: BookingConfirma
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h3 className="mt-5 text-2xl font-bold tracking-[-0.03em]">Rezervacija je potvrđena</h3>
+        <h3 className="mt-5 text-2xl font-bold tracking-[-0.03em]">{t.booking.confirmedHeading}</h3>
         <p className="mx-auto mt-2 max-w-sm text-[0.9375rem] leading-relaxed text-ink-muted">
-          Vaše mjesto je zadržano. Rampa će prepoznati tablice{' '}
-          <strong className="font-semibold text-ink">{normalizePlate(vehicle.plate)}</strong> pri dolasku.
+          {s.heldBefore}
+          <strong className="font-semibold text-ink">{plate}</strong>
+          {s.heldAfter}
         </p>
 
         <div className="mx-auto mt-6 max-w-sm overflow-hidden rounded-3xl border border-line bg-surface text-left shadow-card">
           <div className="bg-gradient-to-br from-brand-600 to-brand-800 px-6 py-5 text-white">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">Referentni kod</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/70">{s.referenceCode}</p>
             <div className="mt-1 flex items-center justify-between gap-3">
-              <p className="select-all font-mono text-3xl font-bold tracking-[0.06em]" aria-label={`Kod: ${reference}`}>
+              <p
+                className="select-all font-mono text-3xl font-bold tracking-[0.06em]"
+                aria-label={s.codeAria(reference)}
+              >
                 {reference}
               </p>
               <button
                 type="button"
                 onClick={copy}
-                aria-label="Kopiraj kod"
+                aria-label={s.copyCode}
                 className="grid size-10 shrink-0 place-items-center rounded-full bg-white/15 transition-[background-color,transform] duration-200 hover:bg-white/25 active:scale-90"
               >
                 {copied ? (
@@ -70,7 +80,7 @@ export function BookingSuccess({ confirmation }: { confirmation: BookingConfirma
               </button>
             </div>
             <span className="sr-only" aria-live="polite">
-              {copied ? 'Kod je kopiran' : ''}
+              {copied ? s.codeCopied : ''}
             </span>
           </div>
 
@@ -82,24 +92,20 @@ export function BookingSuccess({ confirmation }: { confirmation: BookingConfirma
 
           <dl className="grid grid-cols-2 gap-x-4 gap-y-4 px-6 py-5 text-sm">
             <div>
-              <dt className="text-ink-faint">Dolazak</dt>
-              <dd className="mt-0.5 font-semibold tabular">
-                {formatDateShort(stay.dropOffDate)}, {stay.dropOffTime}
-              </dd>
+              <dt className="text-ink-faint">{s.arrival}</dt>
+              <dd className="mt-0.5 font-semibold tabular">{dropOff}</dd>
             </div>
             <div>
-              <dt className="text-ink-faint">Povratak</dt>
-              <dd className="mt-0.5 font-semibold tabular">
-                {formatDateShort(stay.pickUpDate)}, {stay.pickUpTime}
-              </dd>
+              <dt className="text-ink-faint">{s.returning}</dt>
+              <dd className="mt-0.5 font-semibold tabular">{pickUp}</dd>
             </div>
             <div>
-              <dt className="text-ink-faint">Trajanje</dt>
-              <dd className="mt-0.5 font-semibold">{formatDays(request.days)}</dd>
+              <dt className="text-ink-faint">{s.duration}</dt>
+              <dd className="mt-0.5 font-semibold">{t.units.days(request.days)}</dd>
             </div>
             <div>
-              <dt className="text-ink-faint">Plaćanje pri preuzimanju</dt>
-              <dd className="mt-0.5 font-semibold tabular">{formatKM(request.total)}</dd>
+              <dt className="text-ink-faint">{s.payOnPickup}</dt>
+              <dd className="mt-0.5 font-semibold tabular">{fmt.km(request.total)}</dd>
             </div>
           </dl>
         </div>
@@ -108,9 +114,9 @@ export function BookingSuccess({ confirmation }: { confirmation: BookingConfirma
           <Button
             variant="secondary"
             leftIcon={<CalendarPlus className="size-[1.125rem]" aria-hidden="true" />}
-            onClick={() => downloadTextFile(`rezervacija-${reference}.ics`, buildIcs(confirmation), 'text/calendar')}
+            onClick={() => downloadTextFile(`${reference}.ics`, buildIcs(confirmation, t.booking.ics), 'text/calendar')}
           >
-            U kalendar
+            {s.addToCalendar}
           </Button>
           <Button
             variant="secondary"
@@ -119,27 +125,27 @@ export function BookingSuccess({ confirmation }: { confirmation: BookingConfirma
             rel="noopener noreferrer"
             leftIcon={<MessageCircle className="size-[1.125rem]" aria-hidden="true" />}
           >
-            Podijeli
+            {s.share}
           </Button>
         </div>
 
         <p className="mx-auto mt-5 flex max-w-sm items-start justify-center gap-2 text-xs leading-relaxed text-ink-faint">
           <PhoneCall className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
           <span>
-            Izmjene ili otkazivanje: najkasnije 24h prije dolaska na{' '}
+            {s.changesBefore}
             <a className="font-medium text-accent hover:underline" href={`tel:${SITE.phone.e164}`}>
               {SITE.phone.display}
-            </a>{' '}
-            ili{' '}
+            </a>
+            {s.changesOr}
             <a
               className="font-medium text-accent hover:underline"
-              href={whatsappLink(`Poštovanje, javljam se u vezi rezervacije ${reference}.`)}
+              href={whatsappLink(s.whatsappGreeting(reference))}
               target="_blank"
               rel="noopener noreferrer"
             >
               WhatsApp
             </a>
-            .
+            {s.changesAfter}
           </span>
         </p>
       </m.div>

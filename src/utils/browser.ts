@@ -21,11 +21,3 @@ export function runWhenIdle(task: () => void, timeout = 2000): void {
     globalThis.setTimeout(task, 400);
   }
 }
-
-/** Smoothly scroll to an in-page section and keep the URL hash in sync. */
-export function scrollToSection(id: string): void {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  history.replaceState(null, '', `#${id}`);
-}

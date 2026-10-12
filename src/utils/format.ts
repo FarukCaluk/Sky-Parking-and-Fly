@@ -1,47 +1,32 @@
 import { CURRENCY_LABEL } from '@/data/pricing';
+import type { Lang } from '@/router/routes';
 
-const GROUP = new Intl.NumberFormat('en-US', { useGrouping: true, maximumFractionDigits: 0 });
+/** Thousands and decimal separators per language. */
+const SEPARATORS: Record<Lang, { group: string; decimal: string }> = {
+  bs: { group: '.', decimal: ',' },
+  de: { group: '.', decimal: ',' },
+  en: { group: ',', decimal: '.' },
+};
 
-/** Format a KM amount the way it is written locally: `1.250 KM`, `12,50 KM`. */
-export function formatKM(amount: number, options: { withCurrency?: boolean } = {}): string {
+/** `52.000` (bs/de) or `52,000` (en); `decimals` fixes the number of fraction digits. */
+export function formatNumber(value: number, lang: Lang, decimals = 0): string {
+  const { group, decimal } = SEPARATORS[lang];
+  const safe = Number.isFinite(value) ? value : 0;
+  const [whole = '0', fraction] = Math.abs(safe).toFixed(decimals).split('.');
+  const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, group);
+  const negative = safe < 0 && Number(Math.abs(safe).toFixed(decimals)) !== 0;
+  return `${negative ? '−' : ''}${grouped}${fraction ? `${decimal}${fraction}` : ''}`;
+}
+
+/** Format a KM amount: `1.250 KM`, `12,50 KM` (bs/de) or `1,250 KM`, `12.50 KM` (en). Whole amounts drop the cents. */
+export function formatKM(amount: number, lang: Lang, options: { withCurrency?: boolean } = {}): string {
   const { withCurrency = true } = options;
   const rounded = Math.round((Number.isFinite(amount) ? amount : 0) * 100) / 100;
-  const negative = rounded < 0;
-  const abs = Math.abs(rounded);
-  const whole = Math.trunc(abs);
-  const cents = Math.round((abs - whole) * 100);
-  const integer = GROUP.format(whole).replace(/,/g, '.');
-  const body = cents === 0 ? integer : `${integer},${String(cents).padStart(2, '0')}`;
-  return `${negative ? '−' : ''}${body}${withCurrency ? ` ${CURRENCY_LABEL}` : ''}`;
-}
-
-/** Bosnian plural: 1 dan / 2–4 dana / 5+ dana (21 dan, 22 dana, 11 dana). */
-export function pluralBs(count: number, forms: readonly [one: string, few: string, many: string]): string {
-  const abs = Math.abs(count);
-  const mod10 = abs % 10;
-  const mod100 = abs % 100;
-  if (mod10 === 1 && mod100 !== 11) return forms[0];
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return forms[1];
-  return forms[2];
-}
-
-/** `7 dana`, `1 dan`, `22 dana` */
-export function formatDays(count: number): string {
-  return `${count} ${pluralBs(count, ['dan', 'dana', 'dana'])}`;
-}
-
-export function formatServices(count: number): string {
-  return `${count} ${pluralBs(count, ['usluga', 'usluge', 'usluga'])}`;
+  const hasCents = Math.round(Math.abs(rounded) * 100) % 100 !== 0;
+  const body = formatNumber(rounded, lang, hasCents ? 2 : 0);
+  return withCurrency ? `${body} ${CURRENCY_LABEL}` : body;
 }
 
 export function formatPercent(value: number): string {
   return `${Math.round(value)}%`;
-}
-
-/** Local number format: `52.000`, `4,9`. */
-export function formatNumberBs(value: number, decimals = 0): string {
-  const fixed = Math.abs(value).toFixed(decimals);
-  const [whole = '0', fraction] = fixed.split('.');
-  const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  return `${value < 0 ? '−' : ''}${grouped}${fraction ? `,${fraction}` : ''}`;
 }

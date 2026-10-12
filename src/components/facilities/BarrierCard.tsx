@@ -1,6 +1,7 @@
 import { ScanLine } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/Card';
+import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 
 type Phase = 'closed' | 'scanning' | 'open';
@@ -9,14 +10,15 @@ const NEXT: Record<Phase, Phase> = { closed: 'scanning', scanning: 'open', open:
 const DURATION: Record<Phase, number> = { closed: 3600, scanning: 1600, open: 3400 };
 const PLATES = ['A12-K-•••', 'K45-M-•••', 'E71-J-•••', 'T08-O-•••', 'J33-A-•••'] as const;
 
-const LABELS: Record<Phase, { title: string; text: string; dot: string }> = {
-  closed: { title: 'Rampa zatvorena', text: 'Čekam vozilo', dot: 'bg-red-500' },
-  scanning: { title: 'Čitam tablice…', text: 'ANPR kamera aktivna', dot: 'bg-amber-400 animate-blink' },
-  open: { title: 'Rampa otvorena', text: 'Rezervacija pronađena', dot: 'bg-emerald-500' },
+const DOT: Record<Phase, string> = {
+  closed: 'bg-red-500',
+  scanning: 'bg-amber-400 animate-blink',
+  open: 'bg-emerald-500',
 };
 
 /** Simulated gate cycle: closed → ANPR scan → open. Replace the timers with gate-controller events in production. */
 export function BarrierCard({ className }: { className?: string }) {
+  const { t } = useI18n();
   const [phase, setPhase] = useState<Phase>('closed');
   const [plate, setPlate] = useState(0);
 
@@ -28,12 +30,12 @@ export function BarrierCard({ className }: { className?: string }) {
     return () => window.clearTimeout(timer);
   }, [phase]);
 
-  const label = LABELS[phase];
+  const label = { ...t.facilities.barrier[phase], dot: DOT[phase] };
 
   return (
     <Card className={className}>
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-lg font-bold tracking-[-0.02em]">Automatska rampa</h3>
+        <h2 className="text-lg font-bold tracking-[-0.02em]">{t.facilities.barrier.title}</h2>
         <ScanLine className="size-5 text-accent" aria-hidden="true" />
       </div>
 

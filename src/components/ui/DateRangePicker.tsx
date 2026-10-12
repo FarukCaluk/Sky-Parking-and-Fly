@@ -2,17 +2,11 @@ import { AnimatePresence, m } from 'framer-motion';
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 import { useDismiss } from '@/hooks/useDismiss';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import { PresenceGuard } from './PresenceGuard';
 import { cn } from '@/utils/cn';
-import {
-  addDays,
-  buildMonthMatrix,
-  CALENDAR_HEADER,
-  formatDateLong,
-  formatDateShort,
-  formatMonthTitle,
-  parseISODate,
-} from '@/utils/date';
+import { addDays, buildMonthMatrix, parseISODate } from '@/utils/date';
 
 type Phase = 'dropOff' | 'pickUp';
 interface ViewMonth {
@@ -61,6 +55,9 @@ export function DateRangePicker({
   className,
 }: DateRangePickerProps) {
   const dialogId = useId();
+  const { t } = useI18n();
+  const fmt = useFormat();
+  const dr = t.dateRange;
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>('dropOff');
   const [draftStart, setDraftStart] = useState(dropOffDate);
@@ -218,7 +215,7 @@ export function DateRangePicker({
       <span className="text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-ink-faint">{label}</span>
       <span className="mt-0.5 flex items-center gap-1.5 text-[0.9375rem] font-semibold tracking-[-0.01em] text-ink tabular">
         <CalendarDays className="size-4 text-accent" aria-hidden="true" />
-        {parseISODate(date) ? formatDateShort(date) : 'Odaberite'}
+        {parseISODate(date) ? fmt.dateShort(date) : dr.choose}
       </span>
     </button>
   );
@@ -227,8 +224,8 @@ export function DateRangePicker({
     <div ref={rootRef} className={className}>
       <div className="relative">
         <div className="grid grid-cols-2 gap-1 rounded-2xl border border-line-strong bg-surface p-1">
-          {segment('dropOff', 'Ostavljam vozilo', dropOffDate, dropOffInvalid)}
-          {segment('pickUp', 'Preuzimam vozilo', pickUpDate, pickUpInvalid)}
+          {segment('dropOff', dr.dropOff, dropOffDate, dropOffInvalid)}
+          {segment('pickUp', dr.pickUp, pickUpDate, pickUpInvalid)}
         </div>
 
         <AnimatePresence>
@@ -249,7 +246,7 @@ export function DateRangePicker({
               <m.div
                 id={dialogId}
                 role="dialog"
-                aria-label="Odabir datuma"
+                aria-label={dr.dialog}
                 initial={{ opacity: 0, y: placement === 'bottom' ? -8 : 8, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{
@@ -265,7 +262,7 @@ export function DateRangePicker({
                 <div className="mb-1 flex items-center justify-between px-1">
                   <button
                     type="button"
-                    aria-label="Prethodni mjesec"
+                    aria-label={dr.prevMonth}
                     disabled={!canGoPrev}
                     onClick={() => setView((v) => shiftMonth(v, -1))}
                     className="grid size-10 place-items-center rounded-full text-ink-muted transition-colors hover:bg-ink/[0.06] hover:text-ink disabled:opacity-30 disabled:hover:bg-transparent"
@@ -273,11 +270,11 @@ export function DateRangePicker({
                     <ChevronLeft className="size-5" aria-hidden="true" />
                   </button>
                   <p className="text-[0.9375rem] font-semibold capitalize tracking-[-0.01em]" aria-live="polite">
-                    {formatMonthTitle(view.year, view.month)}
+                    {fmt.monthTitle(view.year, view.month)}
                   </p>
                   <button
                     type="button"
-                    aria-label="Sljedeći mjesec"
+                    aria-label={dr.nextMonth}
                     disabled={!canGoNext}
                     onClick={() => setView((v) => shiftMonth(v, 1))}
                     className="grid size-10 place-items-center rounded-full text-ink-muted transition-colors hover:bg-ink/[0.06] hover:text-ink disabled:opacity-30 disabled:hover:bg-transparent"
@@ -287,7 +284,7 @@ export function DateRangePicker({
                 </div>
 
                 <div className="grid grid-cols-7 text-center" aria-hidden="true">
-                  {CALENDAR_HEADER.map((d) => (
+                  {t.date.calendarHeader.map((d) => (
                     <span
                       key={d}
                       className="py-1.5 text-[0.6875rem] font-semibold uppercase tracking-wide text-ink-faint"
@@ -300,7 +297,7 @@ export function DateRangePicker({
                 <div
                   ref={gridRef}
                   role="grid"
-                  aria-label={formatMonthTitle(view.year, view.month)}
+                  aria-label={fmt.monthTitle(view.year, view.month)}
                   onKeyDown={onGridKeyDown}
                 >
                   {weeks.map((week, w) => (
@@ -333,7 +330,7 @@ export function DateRangePicker({
                               data-date={iso}
                               disabled={disabled}
                               tabIndex={iso === tabbable ? 0 : -1}
-                              aria-label={`${formatDateLong(iso)}${iso === today ? ' (danas)' : ''}`}
+                              aria-label={`${fmt.dateLong(iso)}${iso === today ? ` (${dr.today})` : ''}`}
                               aria-pressed={selected}
                               onClick={() => select(iso)}
                               onPointerEnter={() => setHover(iso)}
@@ -360,10 +357,10 @@ export function DateRangePicker({
 
                 <p className="mt-2 flex min-h-9 items-center justify-center rounded-xl bg-ink/[0.04] px-3 text-center text-xs font-medium text-ink-muted">
                   {phase === 'dropOff'
-                    ? 'Odaberite dan ostavljanja vozila'
+                    ? dr.hintDropOff
                     : hover && hover >= draftStart
-                      ? `Preuzimanje: ${formatDateShort(hover)}`
-                      : 'Sada odaberite dan preuzimanja'}
+                      ? dr.hintPickUpHover(fmt.dateShort(hover))
+                      : dr.hintPickUp}
                 </p>
               </m.div>
             </PresenceGuard>

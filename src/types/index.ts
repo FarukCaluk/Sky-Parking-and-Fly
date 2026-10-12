@@ -4,11 +4,10 @@ export type CoverType = 'open' | 'covered';
 export type VehicleType = 'car' | 'suv' | 'van' | 'moto';
 export type ExtraId = 'wash' | 'interior' | 'ev' | 'valet' | 'insurance';
 
+export type TierId = 'short' | 'week' | 'extended' | 'long';
+
 export interface PricingTier {
-  id: string;
-  label: string;
-  /** Short marketing hint, e.g. "Vikend" */
-  hint: string;
+  id: TierId;
   minDays: number;
   /** `null` = open ended */
   maxDays: number | null;
@@ -18,19 +17,11 @@ export interface PricingTier {
 
 export interface VehicleOption {
   id: VehicleType;
-  label: string;
-  /** Compact label for tight layouts */
-  shortLabel: string;
-  hint: string;
   multiplier: number;
 }
 
 export interface ExtraService {
   id: ExtraId;
-  label: string;
-  /** Compact label for chips */
-  shortLabel: string;
-  description: string;
   price: number;
   billing: 'once' | 'perDay';
 }
@@ -47,12 +38,17 @@ export interface StayDraft {
 }
 
 export type StayField = 'dropOff' | 'pickUp' | 'range';
-export type StayErrors = Partial<Record<StayField, string>>;
+/** Machine-readable reason; the visible text comes from the active language's dictionary. */
+export type StayErrorCode = 'dropOffMissing' | 'dropOffPast' | 'pickUpMissing' | 'pickUpBeforeDropOff' | 'rangeTooLong';
+export type StayErrors = Partial<Record<StayField, StayErrorCode>>;
 
 export interface PriceLine {
-  id: string;
-  label: string;
-  detail?: string;
+  id: ExtraId;
+  billing: 'once' | 'perDay';
+  /** Number of billed units (days for per-day services, otherwise 1) */
+  quantity: number;
+  /** Price of one unit in KM */
+  unit: number;
   amount: number;
 }
 
@@ -99,7 +95,8 @@ export interface BookingRequest {
   vehicle: VehicleDetails;
   total: number;
   currency: 'BAM';
-  locale: 'bs-BA';
+  /** BCP-47 locale of the language the visitor booked in, e.g. `bs-BA`, `en-US`, `de-DE`. */
+  locale: string;
 }
 
 export interface BookingConfirmation {
@@ -110,23 +107,21 @@ export interface BookingConfirmation {
 
 /* ─────────────── Content ─────────────── */
 
+export type TestimonialId = 't1' | 't2' | 't3' | 't4' | 't5' | 't6';
+
 export interface Testimonial {
-  id: string;
+  id: TestimonialId;
   name: string;
-  city: string;
   rating: 4 | 5;
-  date: string;
-  /** Destination of the flight the reviewer parked for */
-  trip: string;
-  quote: string;
 }
 
+export type StatId = 'travellers' | 'rating' | 'minutes' | 'recommend';
+
 export interface StatItem {
-  id: string;
+  id: StatId;
   value: number;
   suffix: string;
   decimals?: number;
-  label: string;
 }
 
 /* ─────────────── Facilities / live status ─────────────── */
@@ -136,15 +131,12 @@ export type FeedStatus = 'connecting' | 'live' | 'offline';
 
 export interface CameraStream {
   id: CameraId;
-  label: string;
-  zone: string;
   /** Rendering strategy; `simulated` is used when no NextFrame endpoint is configured. */
   source: 'simulated' | 'nextframe';
 }
 
 export interface ParkingSector {
   id: 'covered' | 'open';
-  label: string;
   capacity: number;
 }
 

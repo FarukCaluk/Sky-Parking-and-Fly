@@ -29,19 +29,19 @@ describe('validateDriver', () => {
   });
 
   it('requires a first and last name made of letters', () => {
-    expect(validateDriver({ ...driver, fullName: 'Amar' }).fullName).toBeDefined();
-    expect(validateDriver({ ...driver, fullName: '12 34' }).fullName).toBeDefined();
+    expect(validateDriver({ ...driver, fullName: 'Amar' }).fullName).toBe('invalid');
+    expect(validateDriver({ ...driver, fullName: '12 34' }).fullName).toBe('invalid');
     expect(validateDriver({ ...driver, fullName: 'Đorđe Šašić-Čolić' }).fullName).toBeUndefined();
   });
 
   it('flags every empty field', () => {
     const errors = validateDriver({ fullName: '', email: '', phone: '' });
-    expect(Object.keys(errors).sort()).toEqual(['email', 'fullName', 'phone']);
+    expect(errors).toEqual({ fullName: 'required', email: 'required', phone: 'required' });
   });
 
   it('validates email shape', () => {
-    expect(validateDriver({ ...driver, email: 'amar@' }).email).toBeDefined();
-    expect(validateDriver({ ...driver, email: 'amar@example' }).email).toBeDefined();
+    expect(validateDriver({ ...driver, email: 'amar@' }).email).toBe('invalid');
+    expect(validateDriver({ ...driver, email: 'amar@example' }).email).toBe('invalid');
   });
 });
 
@@ -51,12 +51,13 @@ describe('validateVehicle', () => {
   });
 
   it('checks plate shape, passengers and flight number', () => {
-    expect(validateVehicle({ ...vehicle, plate: 'x' }).plate).toBeDefined();
-    expect(validateVehicle({ ...vehicle, plate: '' }).plate).toBeDefined();
-    expect(validateVehicle({ ...vehicle, passengers: '0' }).passengers).toBeDefined();
-    expect(validateVehicle({ ...vehicle, passengers: '9' }).passengers).toBeDefined();
-    expect(validateVehicle({ ...vehicle, passengers: '2.5' }).passengers).toBeDefined();
+    expect(validateVehicle({ ...vehicle, plate: 'x' }).plate).toBe('invalid');
+    expect(validateVehicle({ ...vehicle, plate: '' }).plate).toBe('required');
+    expect(validateVehicle({ ...vehicle, passengers: '0' }).passengers).toBe('range');
+    expect(validateVehicle({ ...vehicle, passengers: '9' }).passengers).toBe('range');
+    expect(validateVehicle({ ...vehicle, passengers: '2.5' }).passengers).toBe('range');
+    expect(validateVehicle({ ...vehicle, passengers: '' }).passengers).toBe('required');
     expect(validateVehicle({ ...vehicle, flightNumber: 'ju 123' }).flightNumber).toBeUndefined();
-    expect(validateVehicle({ ...vehicle, flightNumber: 'nope' }).flightNumber).toBeDefined();
+    expect(validateVehicle({ ...vehicle, flightNumber: 'nope' }).flightNumber).toBe('invalid');
   });
 });

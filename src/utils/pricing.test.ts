@@ -54,6 +54,8 @@ describe('calculateQuote', () => {
     expect(q.extrasTotal).toBe(18); // 12 + 4 × 1.50
     expect(q.total).toBe(46);
     expect(q.extras.map((l) => l.id)).toEqual(['wash', 'insurance']);
+    expect(q.extras[1]).toMatchObject({ billing: 'perDay', quantity: 4, unit: 1.5, amount: 6 });
+    expect(q.extras[0]).toMatchObject({ billing: 'once', quantity: 1, unit: 12, amount: 12 });
   });
 
   it('keeps VAT as the part of the total that is already included', () => {
@@ -97,23 +99,25 @@ describe('validateStay', () => {
   });
 
   it('rejects a drop-off in the past', () => {
-    expect(validateStay(stay({ dropOffDate: '2026-10-11' }), NOW).dropOff).toBeDefined();
-    expect(validateStay(stay({ dropOffDate: '2026-10-12', dropOffTime: '08:00' }), NOW).dropOff).toBeDefined();
+    expect(validateStay(stay({ dropOffDate: '2026-10-11' }), NOW).dropOff).toBe('dropOffPast');
+    expect(validateStay(stay({ dropOffDate: '2026-10-12', dropOffTime: '08:00' }), NOW).dropOff).toBe('dropOffPast');
   });
 
   it('rejects a pick-up that is not after the drop-off', () => {
-    expect(validateStay(stay({ pickUpDate: '2026-10-20', pickUpTime: '10:00' }), NOW).pickUp).toBeDefined();
-    expect(validateStay(stay({ pickUpDate: '2026-10-19' }), NOW).pickUp).toBeDefined();
+    expect(validateStay(stay({ pickUpDate: '2026-10-20', pickUpTime: '10:00' }), NOW).pickUp).toBe(
+      'pickUpBeforeDropOff',
+    );
+    expect(validateStay(stay({ pickUpDate: '2026-10-19' }), NOW).pickUp).toBe('pickUpBeforeDropOff');
   });
 
   it('rejects stays beyond the online limit', () => {
-    expect(validateStay(stay({ pickUpDate: '2027-02-01' }), NOW).range).toBeDefined();
+    expect(validateStay(stay({ pickUpDate: '2027-02-01' }), NOW).range).toBe('rangeTooLong');
   });
 
   it('reports missing dates', () => {
     const errors = validateStay(stay({ dropOffDate: '', pickUpDate: '' }), NOW);
-    expect(errors.dropOff).toBeDefined();
-    expect(errors.pickUp).toBeDefined();
+    expect(errors.dropOff).toBe('dropOffMissing');
+    expect(errors.pickUp).toBe('pickUpMissing');
   });
 });
 

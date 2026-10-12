@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, type ReactNode, type RefObject } from 'react'
 import { createPortal } from 'react-dom';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
+import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 import { PresenceGuard } from './PresenceGuard';
 
@@ -36,6 +37,7 @@ export function Modal(props: ModalProps) {
 function ModalLayer({ onClose, title, eyebrow, headerExtra, footer, size = 'md', bodyRef, children }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  const { t } = useI18n();
 
   useLockBodyScroll(true);
   useFocusTrap(panelRef, true);
@@ -89,7 +91,7 @@ function ModalLayer({ onClose, title, eyebrow, headerExtra, footer, size = 'md',
           <button
             type="button"
             onClick={onClose}
-            aria-label="Zatvori"
+            aria-label={t.common.close}
             className="-mr-1 grid size-10 shrink-0 place-items-center rounded-full bg-ink/[0.06] text-ink-muted transition-[background-color,transform] duration-200 ease-apple hover:bg-ink/[0.12] hover:text-ink active:scale-90"
           >
             <X className="size-[1.125rem]" strokeWidth={2.4} aria-hidden="true" />

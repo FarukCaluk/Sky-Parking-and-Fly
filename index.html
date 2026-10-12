@@ -19,15 +19,19 @@
       content="Siguran aerodromski parking s besplatnim shuttleom, video nadzorom 24/7 i osiguranjem vozila."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Apply the stored / system theme before first paint to avoid a flash. -->
     <script>
       (function () {
+        var root = document.documentElement;
+        // Language comes from the URL: /en/… and /de/… — everything else is Bosnian
+        var lang = location.pathname.match(/^\/(en|de)(\/|$)/);
+        if (lang) root.lang = lang[1];
         try {
           var stored = localStorage.getItem('spf-theme');
           var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var root = document.documentElement;
           root.classList.toggle('dark', dark);
           root.style.colorScheme = dark ? 'dark' : 'light';
         } catch (e) {
@@ -64,7 +68,10 @@
   </head>
   <body>
     <div id="root"></div>
-    <noscript>Za rezervaciju parkinga potrebno je omogućiti JavaScript.</noscript>
+    <noscript
+      >Za rezervaciju parkinga potrebno je omogućiti JavaScript. · JavaScript is required to book parking. · Zum Buchen
+      eines Parkplatzes ist JavaScript erforderlich.</noscript
+    >
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -193,6 +193,14 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Long German compounds ("Nutzungsbedingungen") must wrap, not overflow a 320 px screen. */
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
   /* Scale the whole interface on very large displays (all sizes are rem-based). */
   @media (min-width: 1920px) {
     html {

@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
-import { COVER_OPTIONS, VEHICLES } from '@/data/pricing';
+import { useI18n } from '@/i18n/context';
+import { useFormat } from '@/i18n/useFormat';
 import type { DriverDetails, Quote, StayDraft, VehicleDetails } from '@/types';
-import { formatDateLong } from '@/utils/date';
-import { formatDays, formatKM } from '@/utils/format';
 import { normalizeFlight, normalizePlate } from '@/utils/validation';
 
 interface ReservationSummaryProps {
@@ -25,53 +24,59 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 
 /** Read-only overview of a reservation, shared by the review step and the success ticket. */
 export function ReservationSummary({ stay, quote, driver, vehicle }: ReservationSummaryProps) {
-  const cover = COVER_OPTIONS.find((c) => c.id === stay.cover)?.label ?? '';
-  const vehicleClass = VEHICLES.find((v) => v.id === stay.vehicle)?.label ?? '';
+  const { t } = useI18n();
+  const fmt = useFormat();
+  const s = t.booking.summary;
   const plate = vehicle ? normalizePlate(vehicle.plate) : '';
   const flight = vehicle ? normalizeFlight(vehicle.flightNumber) : '';
 
   return (
     <dl className="divide-y divide-line">
-      <Row label="Ostavljanje">
-        {formatDateLong(stay.dropOffDate)}
-        <span className="block font-medium text-ink-muted tabular">u {stay.dropOffTime}</span>
+      <Row label={s.dropOff}>
+        {fmt.dateLong(stay.dropOffDate)}
+        <span className="block font-medium text-ink-muted tabular">{s.at(stay.dropOffTime)}</span>
       </Row>
-      <Row label="Preuzimanje">
-        {formatDateLong(stay.pickUpDate)}
-        <span className="block font-medium text-ink-muted tabular">u {stay.pickUpTime}</span>
+      <Row label={s.pickUp}>
+        {fmt.dateLong(stay.pickUpDate)}
+        <span className="block font-medium text-ink-muted tabular">{s.at(stay.pickUpTime)}</span>
       </Row>
-      <Row label="Trajanje">{formatDays(quote.days)}</Row>
-      <Row label="Parking">{cover}</Row>
+      <Row label={s.duration}>{t.units.days(quote.days)}</Row>
+      <Row label={s.parking}>{t.pricing.covers[stay.cover].label}</Row>
       {vehicle && (
-        <Row label="Vozilo">
+        <Row label={s.vehicle}>
           {vehicle.make.trim()}
           <span className="block font-medium text-ink-muted">
-            {plate} · {vehicleClass}
+            {plate} · {t.pricing.vehicles[stay.vehicle].label}
           </span>
         </Row>
       )}
       {vehicle && (
-        <Row label="Putnici">
+        <Row label={s.passengers}>
           {vehicle.passengers}
-          {flight && <span className="block font-medium text-ink-muted">Let {flight}</span>}
+          {flight && <span className="block font-medium text-ink-muted">{s.flight(flight)}</span>}
         </Row>
       )}
       {driver && (
-        <Row label="Kontakt">
+        <Row label={s.contact}>
           {driver.fullName.trim()}
           <span className="block font-medium text-ink-muted">{driver.phone.trim()}</span>
           <span className="block font-medium text-ink-muted">{driver.email.trim()}</span>
         </Row>
       )}
-      <Row label="Cijena parkinga">
-        <span className="tabular">{formatKM(quote.parking)}</span>
+      <Row label={s.parkingPrice}>
+        <span className="tabular">{fmt.km(quote.parking)}</span>
         <span className="block font-medium text-ink-muted tabular">
-          {quote.days} × {formatKM(quote.ratePerDay)}
+          {quote.days} × {fmt.km(quote.ratePerDay)}
         </span>
       </Row>
       {quote.extras.map((line) => (
-        <Row key={line.id} label={line.label}>
-          <span className="tabular">{formatKM(line.amount)}</span>
+        <Row key={line.id} label={t.pricing.extras[line.id].label}>
+          <span className="tabular">{fmt.km(line.amount)}</span>
+          {line.billing === 'perDay' && (
+            <span className="block font-medium text-ink-muted tabular">
+              {line.quantity} × {fmt.km(line.unit)}
+            </span>
+          )}
         </Row>
       ))}
     </dl>

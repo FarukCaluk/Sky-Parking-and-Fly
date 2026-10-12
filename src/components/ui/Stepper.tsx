@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 
 export interface StepperStep {
@@ -15,8 +16,9 @@ interface StepperProps {
 
 /** Progress indicator for the booking wizard — completed steps show a check and fill the connector. */
 export function Stepper({ steps, current, className }: StepperProps) {
+  const { t } = useI18n();
   return (
-    <ol className={cn('flex items-center', className)} aria-label="Koraci rezervacije">
+    <ol className={cn('flex items-center', className)} aria-label={t.booking.stepsAria}>
       {steps.map((step, i) => {
         const done = step.id < current;
         const active = step.id === current;

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useReducer } from 'react';
-import { BookingError, bookingGateway } from '@/services/bookingGateway';
+import { BookingError, bookingGateway, type BookingErrorCode } from '@/services/bookingGateway';
 import type {
   BookingConfirmation,
   BookingRequest,
@@ -8,11 +8,13 @@ import type {
   VehicleDetails,
   VehicleField,
 } from '@/types';
-import { validateDriver, validateVehicle, type FieldErrors } from '@/utils/validation';
+import { validateDriver, validateVehicle, type FieldErrors, type ValidationCode } from '@/utils/validation';
 
 export type WizardStep = 1 | 2 | 3;
 export type TouchableField = DriverField | VehicleField | 'consent';
 export type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
+/** Why a submission failed; the visible text comes from the active dictionary. */
+export type SubmitFailure = BookingErrorCode | 'unknown';
 
 interface WizardState {
   step: WizardStep;
@@ -25,7 +27,7 @@ interface WizardState {
   /** Steps where the visitor pressed "Continue" — all errors become visible there. */
   attempted: Partial<Record<WizardStep, true>>;
   status: SubmitStatus;
-  error: string | null;
+  error: SubmitFailure | null;
   confirmation: BookingConfirmation | null;
 }
 
@@ -38,7 +40,7 @@ type Action =
   | { type: 'go'; step: WizardStep }
   | { type: 'submitting' }
   | { type: 'success'; confirmation: BookingConfirmation }
-  | { type: 'failure'; message: string }
+  | { type: 'failure'; code: SubmitFailure }
   | { type: 'reset' };
 
 const initialState: WizardState = {
@@ -73,7 +75,7 @@ function reducer(state: WizardState, action: Action): WizardState {
     case 'success':
       return { ...state, status: 'success', confirmation: action.confirmation, error: null };
     case 'failure':
-      return { ...state, status: 'error', error: action.message };
+      return { ...state, status: 'error', error: action.code };
     case 'reset':
       return initialState;
   }
@@ -83,8 +85,8 @@ export interface BookingWizard {
   state: WizardState;
   driverErrors: FieldErrors<DriverField>;
   vehicleErrors: FieldErrors<VehicleField>;
-  /** Error to display for a field — only once it was touched or the step was attempted. */
-  errorFor: (field: DriverField | VehicleField) => string | undefined;
+  /** Error code to display for a field — only once it was touched or the step was attempted. */
+  errorFor: (field: DriverField | VehicleField) => ValidationCode | undefined;
   isValid: (field: DriverField | VehicleField) => boolean;
   setDriver: (field: DriverField, value: string) => void;
   setVehicle: (field: VehicleField, value: string) => void;
@@ -103,7 +105,7 @@ export function useBookingWizard(): BookingWizard {
   const vehicleErrors = useMemo(() => validateVehicle(state.vehicle), [state.vehicle]);
 
   const errorFor = useCallback(
-    (field: DriverField | VehicleField): string | undefined => {
+    (field: DriverField | VehicleField): ValidationCode | undefined => {
       const isDriverField = field === 'fullName' || field === 'email' || field === 'phone';
       if (!state.touched[field] && !state.attempted[2]) return undefined;
       return isDriverField ? driverErrors[field] : vehicleErrors[field as VehicleField];
@@ -127,10 +129,7 @@ export function useBookingWizard(): BookingWizard {
       const confirmation = await bookingGateway.submit(request);
       dispatch({ type: 'success', confirmation });
     } catch (error) {
-      dispatch({
-        type: 'failure',
-        message: error instanceof BookingError ? error.message : 'Došlo je do greške. Pokušajte ponovo.',
-      });
+      dispatch({ type: 'failure', code: error instanceof BookingError ? error.code : 'unknown' });
     }
   }, []);
 

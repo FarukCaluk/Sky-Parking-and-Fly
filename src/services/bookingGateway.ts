@@ -3,11 +3,12 @@ import { generateReference } from '@/utils/reference';
 
 export type BookingErrorCode = 'network' | 'timeout' | 'server' | 'aborted';
 
+/** Carries a machine-readable `code`; the UI turns it into text in the visitor's language. */
 export class BookingError extends Error {
   readonly code: BookingErrorCode;
 
-  constructor(code: BookingErrorCode, message: string) {
-    super(message);
+  constructor(code: BookingErrorCode) {
+    super(`Booking failed: ${code}`);
     this.name = 'BookingError';
     this.code = code;
   }
@@ -24,7 +25,7 @@ const STORAGE_KEY = 'spf-bookings';
 function delay(ms: number, signal?: AbortSignal): Promise<void> {
   return new Promise((resolve, reject) => {
     if (signal?.aborted) {
-      reject(new BookingError('aborted', 'Slanje je prekinuto.'));
+      reject(new BookingError('aborted'));
       return;
     }
     const timer = window.setTimeout(() => {
@@ -33,7 +34,7 @@ function delay(ms: number, signal?: AbortSignal): Promise<void> {
     }, ms);
     const onAbort = () => {
       window.clearTimeout(timer);
-      reject(new BookingError('aborted', 'Slanje je prekinuto.'));
+      reject(new BookingError('aborted'));
     };
     signal?.addEventListener('abort', onAbort, { once: true });
   });
@@ -64,22 +65,22 @@ export class HttpBookingGateway implements BookingGateway {
         signal: timeout.signal,
       });
       if (!response.ok) {
-        throw new BookingError('server', 'Server trenutno ne može obraditi rezervaciju. Pokušajte ponovo.');
+        throw new BookingError('server');
       }
       const body: unknown = await response.json().catch(() => null);
       const reference =
         typeof body === 'object' && body !== null && 'reference' in body && typeof body.reference === 'string'
           ? body.reference
           : null;
-      if (!reference) throw new BookingError('server', 'Neispravan odgovor servera. Pokušajte ponovo.');
+      if (!reference) throw new BookingError('server');
       return { reference, createdAt: new Date().toISOString(), request };
     } catch (error) {
       if (error instanceof BookingError) throw error;
-      if (signal?.aborted) throw new BookingError('aborted', 'Slanje je prekinuto.');
+      if (signal?.aborted) throw new BookingError('aborted');
       if (timeout.signal.aborted) {
-        throw new BookingError('timeout', 'Veza je prespora. Provjerite internet i pokušajte ponovo.');
+        throw new BookingError('timeout');
       }
-      throw new BookingError('network', 'Nema veze sa serverom. Provjerite internet i pokušajte ponovo.');
+      throw new BookingError('network');
     } finally {
       window.clearTimeout(timer);
       signal?.removeEventListener('abort', onOuterAbort);

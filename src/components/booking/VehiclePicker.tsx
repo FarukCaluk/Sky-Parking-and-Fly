@@ -1,5 +1,6 @@
 import { useRef, type KeyboardEvent } from 'react';
 import { VEHICLES } from '@/data/pricing';
+import { useI18n } from '@/i18n/context';
 import type { VehicleType } from '@/types';
 import { cn } from '@/utils/cn';
 import { VEHICLE_ICONS } from './icons';
@@ -13,6 +14,7 @@ interface VehiclePickerProps {
 
 /** Icon tiles for the vehicle class — a radio group with roving focus and arrow-key support. */
 export function VehiclePicker({ value, onChange, labelledBy, className }: VehiclePickerProps) {
+  const { t } = useI18n();
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   const index = Math.max(
     0,
@@ -67,7 +69,9 @@ export function VehiclePicker({ value, onChange, labelledBy, className }: Vehicl
             )}
           >
             <Icon className="size-[1.375rem]" strokeWidth={1.8} aria-hidden="true" />
-            <span className="text-[0.8125rem] font-semibold leading-none tracking-[-0.01em]">{vehicle.shortLabel}</span>
+            <span className="text-[0.8125rem] font-semibold leading-none tracking-[-0.01em]">
+              {t.pricing.vehicles[vehicle.id].shortLabel}
+            </span>
           </button>
         );
       })}

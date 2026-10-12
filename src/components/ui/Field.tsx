@@ -1,5 +1,6 @@
 import { CircleAlert } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 
 interface FieldShellProps {
@@ -24,6 +25,7 @@ export function FieldShell({
   className,
   reserveMessage = true,
 }: FieldShellProps) {
+  const { t } = useI18n();
   const message = error ?? hint;
   return (
     <div className={cn('min-w-0', className)}>
@@ -32,7 +34,7 @@ export function FieldShell({
         className="mb-1.5 flex items-baseline justify-between gap-2 text-[0.8125rem] font-medium text-ink-muted"
       >
         <span>{label}</span>
-        {optional && <span className="text-xs font-normal text-ink-faint">Opcionalno</span>}
+        {optional && <span className="text-xs font-normal text-ink-faint">{t.common.optional}</span>}
       </label>
       {children}
       <div

@@ -3,8 +3,10 @@ import { useId, useMemo, useState } from 'react';
 import { DateRangePicker } from '@/components/ui/DateRangePicker';
 import { SegmentedControl } from '@/components/ui/SegmentedControl';
 import { Select } from '@/components/ui/Select';
-import { COVER_OPTIONS, MAX_STAY_DAYS } from '@/data/pricing';
+import { COVER_TYPES, MAX_STAY_DAYS } from '@/data/pricing';
 import { useBooking } from '@/context/bookingContext';
+import { stayMessage } from '@/i18n/helpers';
+import { useI18n } from '@/i18n/context';
 import type { CoverType } from '@/types';
 import { cn } from '@/utils/cn';
 import { nextSlot, TIME_SLOTS } from '@/utils/date';
@@ -28,6 +30,7 @@ const COVER_ICONS: Record<CoverType, typeof Sun> = { open: Sun, covered: Warehou
  */
 export function StayForm({ variant = 'wizard', className }: StayFormProps) {
   const { stay, stayErrors, today, now, update, setDateRange, toggleExtra } = useBooking();
+  const { t } = useI18n();
   const coverLabel = useId();
   const vehicleLabel = useId();
   const extrasLabel = useId();
@@ -37,12 +40,14 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
 
   const coverOptions = useMemo(
     () =>
-      COVER_OPTIONS.map((option) => {
-        const Icon = COVER_ICONS[option.id];
-        return { value: option.id, label: option.label, icon: <Icon className="size-4" aria-hidden="true" /> };
+      COVER_TYPES.map((id) => {
+        const Icon = COVER_ICONS[id];
+        return { value: id, label: t.pricing.covers[id].label, icon: <Icon className="size-4" aria-hidden="true" /> };
       }),
-    [],
+    [t],
   );
+
+  const stayError = stayErrors.dropOff ?? stayErrors.pickUp ?? stayErrors.range;
 
   const earliestToday = nextSlot(now);
   const slotDisabled = (date: string, slot: string) => date === today && slot < earliestToday;
@@ -50,10 +55,10 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
   return (
     <div className={className}>
       <p id={coverLabel} className={cn('mb-1.5 text-[0.8125rem] font-medium text-ink-muted', compact && 'sr-only')}>
-        Vrsta parkinga
+        {t.stayForm.coverLabel}
       </p>
       <SegmentedControl
-        aria-label="Vrsta parkinga"
+        aria-label={t.stayForm.coverLabel}
         options={coverOptions}
         value={stay.cover}
         onChange={(cover) => update({ cover })}
@@ -67,13 +72,13 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
         maxDays={MAX_STAY_DAYS}
         dropOffInvalid={Boolean(stayErrors.dropOff)}
         pickUpInvalid={Boolean(stayErrors.pickUp)}
-        error={stayErrors.dropOff ?? stayErrors.pickUp ?? stayErrors.range}
+        error={stayError ? stayMessage(t, stayError, MAX_STAY_DAYS) : undefined}
         onChange={setDateRange}
       />
 
       <div className="grid grid-cols-2 gap-3">
         <Select
-          label="Vrijeme ostavljanja"
+          label={t.stayForm.dropOffTime}
           value={stay.dropOffTime}
           onChange={(e) => update({ dropOffTime: e.target.value })}
           reserveMessage={false}
@@ -85,7 +90,7 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
           ))}
         </Select>
         <Select
-          label="Vrijeme preuzimanja"
+          label={t.stayForm.pickUpTime}
           value={stay.pickUpTime}
           onChange={(e) => update({ pickUpTime: e.target.value })}
           reserveMessage={false}
@@ -99,7 +104,7 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
       </div>
 
       <p id={vehicleLabel} className="mb-1.5 mt-3 text-[0.8125rem] font-medium text-ink-muted">
-        Vrsta vozila
+        {t.stayForm.vehicleLabel}
       </p>
       <VehiclePicker value={stay.vehicle} onChange={(vehicle) => update({ vehicle })} labelledBy={vehicleLabel} />
 
@@ -113,7 +118,7 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
             className="flex min-h-10 w-full items-center justify-between rounded-xl px-1 text-[0.8125rem] font-medium text-ink-muted transition-colors hover:text-ink"
           >
             <span className="flex items-center gap-2">
-              Dodatne usluge
+              {t.stayForm.extrasLabel}
               {stay.extras.length > 0 && (
                 <span className="grid min-w-5 place-items-center rounded-full bg-brand-600 px-1.5 text-[0.6875rem] font-bold leading-5 text-white">
                   {stay.extras.length}
@@ -143,13 +148,13 @@ export function StayForm({ variant = 'wizard', className }: StayFormProps) {
             </div>
           </div>
           <span id={extrasLabel} className="sr-only">
-            Dodatne usluge
+            {t.stayForm.extrasLabel}
           </span>
         </div>
       ) : (
         <>
           <p id={extrasLabel} className="mb-1.5 mt-4 text-[0.8125rem] font-medium text-ink-muted">
-            Dodatne usluge
+            {t.stayForm.extrasLabel}
           </p>
           <ExtrasChips selected={stay.extras} onToggle={toggleExtra} labelledBy={extrasLabel} />
         </>
