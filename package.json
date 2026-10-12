@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Sky Parking & Fly — airport parking and shuttle transfer platform.",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
