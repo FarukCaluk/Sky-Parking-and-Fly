@@ -11,13 +11,10 @@ export interface DateLocale {
   /** Sunday first, matching `Date#getDay()` */
   weekdaysLong: readonly string[];
   weekdaysShort: readonly string[];
-  /** Monday first, for calendar column headers */
-  calendarHeader: readonly string[];
   monthsLong: readonly string[];
   monthsShort: readonly string[];
   short: (weekday: string, day: number, month: string) => string;
   long: (weekday: string, day: number, month: string, year: number) => string;
-  monthTitle: (month: string, year: number) => string;
 }
 
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
@@ -58,10 +55,6 @@ export function parseTime(value: string): number | null {
   return Number(match[1]) * 60 + Number(match[2]);
 }
 
-export function minutesToTime(minutes: number): string {
-  return `${pad(Math.floor(minutes / 60) % 24)}:${pad(minutes % 60)}`;
-}
-
 /** Local `Date` for an ISO date + time pair, or `null` when either is invalid. */
 export function toDate(isoDate: string, isoTime: string): Date | null {
   const parts = parseISODate(isoDate);
@@ -74,12 +67,6 @@ export function addDays(isoDate: string, amount: number): string {
   const parts = parseISODate(isoDate);
   if (!parts) return isoDate;
   return partsToISO({ year: parts.year, month: parts.month, day: parts.day + amount });
-}
-
-export function addMonths(isoDate: string, amount: number): string {
-  const parts = parseISODate(isoDate);
-  if (!parts) return isoDate;
-  return partsToISO({ year: parts.year, month: parts.month + amount, day: 1 });
 }
 
 /** Whole calendar days between two ISO dates (can be negative). DST-proof. */
@@ -104,14 +91,14 @@ export function billableDays(dropOffDate: string, dropOffTime: string, pickUpDat
 
 export function formatDateShort(isoDate: string, locale: DateLocale): string {
   const parts = parseISODate(isoDate);
-  if (!parts) return '—';
+  if (!parts) return '-';
   const date = new Date(parts.year, parts.month, parts.day);
   return locale.short(locale.weekdaysShort[date.getDay()] ?? '', parts.day, locale.monthsShort[parts.month] ?? '');
 }
 
 export function formatDateLong(isoDate: string, locale: DateLocale): string {
   const parts = parseISODate(isoDate);
-  if (!parts) return '—';
+  if (!parts) return '-';
   const date = new Date(parts.year, parts.month, parts.day);
   return locale.long(
     locale.weekdaysLong[date.getDay()] ?? '',
@@ -119,32 +106,4 @@ export function formatDateLong(isoDate: string, locale: DateLocale): string {
     locale.monthsLong[parts.month] ?? '',
     parts.year,
   );
-}
-
-export function formatMonthTitle(year: number, month: number, locale: DateLocale): string {
-  return locale.monthTitle(locale.monthsLong[month] ?? '', year);
-}
-
-/** Half-hour slots across the day: 00:00 … 23:30 */
-export const TIME_SLOTS: readonly string[] = Array.from({ length: 48 }, (_, i) => minutesToTime(i * 30));
-
-/** Weeks (Monday first) of ISO dates for a month; `null` pads leading/trailing cells. */
-export function buildMonthMatrix(year: number, month: number): (string | null)[][] {
-  const first = new Date(year, month, 1);
-  const leading = (first.getDay() + 6) % 7;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells: (string | null)[] = [];
-  for (let i = 0; i < leading; i += 1) cells.push(null);
-  for (let day = 1; day <= daysInMonth; day += 1) cells.push(partsToISO({ year, month, day }));
-  while (cells.length % 7 !== 0) cells.push(null);
-  const weeks: (string | null)[][] = [];
-  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
-  return weeks;
-}
-
-/** Next half-hour slot at or after `now`, as `HH:mm` (clamped to the last slot of the day). */
-export function nextSlot(now: Date): string {
-  const minutes = now.getHours() * 60 + now.getMinutes();
-  const rounded = Math.min(Math.ceil(minutes / 30) * 30, 23 * 60 + 30);
-  return minutesToTime(rounded);
 }

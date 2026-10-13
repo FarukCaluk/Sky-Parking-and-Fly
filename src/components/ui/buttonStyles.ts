@@ -1,28 +1,26 @@
 import { cn } from '@/utils/cn';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'glass' | 'inverse';
+export type ButtonVariant = 'primary' | 'secondary' | 'onPhoto' | 'text';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 const base =
-  'relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold tracking-[-0.01em] ' +
-  'transition-[transform,background-color,box-shadow,color,border-color,opacity] duration-300 ease-apple ' +
-  'active:scale-[0.97] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45';
+  'group/btn relative inline-flex select-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[6px] font-display font-bold uppercase tracking-[0.07em] ' +
+  'transition-[transform,background-color,color,border-color,box-shadow] duration-300 ease-signal ' +
+  'active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45';
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    'bg-brand-600 text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.28),0_8px_22px_-8px_rgb(0_113_227/0.75)] ' +
-    'hover:bg-brand-700 hover:shadow-[inset_0_1px_0_rgb(255_255_255/0.32),0_12px_30px_-8px_rgb(0_113_227/0.85)] active:bg-brand-800',
-  secondary: 'bg-ink/[0.06] text-ink hover:bg-ink/[0.1] active:bg-ink/[0.14]',
-  ghost: 'text-accent hover:bg-accent-soft active:bg-accent-soft',
-  glass:
-    'border border-white/20 bg-white/10 text-white backdrop-blur-md hover:border-white/30 hover:bg-white/20 active:bg-white/25',
-  inverse: 'bg-ink text-canvas hover:opacity-90 active:opacity-80',
+    'bg-accent text-accent-ink shadow-[0_14px_34px_-14px_rgb(255_139_61/0.75)] ' +
+    'hover:bg-[color-mix(in_oklab,var(--accent)_86%,white)] hover:shadow-[0_18px_40px_-14px_rgb(255_139_61/0.9)]',
+  secondary: 'border border-line-strong text-ink hover:border-ink hover:bg-ink/[0.06]',
+  onPhoto: 'border border-white/45 text-white hover:border-white hover:bg-white/10',
+  text: 'rounded-none px-0 text-accent-text hover:text-ink',
 };
 
 const sizes: Record<ButtonSize, string> = {
-  sm: 'h-10 px-4 text-sm',
-  md: 'h-11 px-5 text-[0.9375rem]',
-  lg: 'h-14 px-8 text-base',
+  sm: 'h-10 px-4 text-[1.0625rem]',
+  md: 'h-12 px-6 text-[1.125rem]',
+  lg: 'h-14 px-8 text-[1.25rem]',
 };
 
 export function buttonStyles(options: {
@@ -32,5 +30,5 @@ export function buttonStyles(options: {
   className?: string;
 }): string {
   const { variant = 'primary', size = 'md', fullWidth, className } = options;
-  return cn(base, variants[variant], sizes[size], fullWidth && 'w-full', className);
+  return cn(base, variants[variant], variant === 'text' ? 'h-auto' : sizes[size], fullWidth && 'w-full', className);
 }

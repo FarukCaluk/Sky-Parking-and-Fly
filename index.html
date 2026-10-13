@@ -1,41 +1,68 @@
 <!doctype html>
-<html lang="bs" class="scroll-smooth">
+<html lang="bs">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Sky Parking &amp; Fly — Siguran aerodromski parking i shuttle transfer</title>
+    <title>Sky Parking &amp; Fly | Privatni parking 800 m od aerodroma Sarajevo</title>
     <meta
       name="description"
-      content="Čuvan parking nekoliko minuta od terminala, video nadzor 24/7, besplatan shuttle i osigurana vozila. Izračunajte cijenu i rezervišite online za manje od minute."
+      content="Ograđen, osvijetljen i video nadziran parking kod aerodroma Sarajevo. Besplatan transfer do terminala i nazad, od 6 KM po danu."
     />
-    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#070c16" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="bs_BA" />
-    <meta property="og:title" content="Sky Parking &amp; Fly — Parkirajte bez brige. Letite bez stresa." />
+    <meta property="og:title" content="Sky Parking &amp; Fly | Privatni parking 800 m od aerodroma Sarajevo" />
     <meta
       property="og:description"
-      content="Siguran aerodromski parking s besplatnim shuttleom, video nadzorom 24/7 i osiguranjem vozila."
+      content="Ograđen, osvijetljen i video nadziran parking kod aerodroma Sarajevo. Besplatan transfer do terminala i nazad."
     />
+    <meta property="og:image" content="__SITE_URL__/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Avion polijeće iznad automobila parkiranih na parkingu Sky Parking &amp; Fly"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-    <!-- Apply the stored / system theme before first paint to avoid a flash. -->
     <script>
       (function () {
         var root = document.documentElement;
-        // Language comes from the URL: /en/… and /de/… — everything else is Bosnian
+        // Language comes from the URL: /en/... and /de/..., everything else is Bosnian
         var lang = location.pathname.match(/^\/(en|de)(\/|$)/);
         if (lang) root.lang = lang[1];
+
+        // Apply the stored / system theme before first paint to avoid a flash.
         try {
           var stored = localStorage.getItem('spf-theme');
           var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
           root.classList.toggle('dark', dark);
           root.style.colorScheme = dark ? 'dark' : 'light';
         } catch (e) {
-          /* storage unavailable — CSS media query fallback applies */
+          /* storage unavailable, the CSS media query fallback applies */
+        }
+
+        // The home page opens on a full-bleed photo: start fetching the right crop before the app boots.
+        if (/^\/(en|de)?\/?$/.test(location.pathname)) {
+          var phone = window.matchMedia('(max-width: 767px)').matches;
+          var link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'image';
+          link.type = 'image/avif';
+          link.setAttribute('fetchpriority', 'high');
+          link.setAttribute('imagesizes', '100vw');
+          link.setAttribute(
+            'imagesrcset',
+            phone
+              ? '/photos/jet-portrait-480.avif 480w, /photos/jet-portrait-800.avif 800w, /photos/jet-portrait-1000.avif 1000w'
+              : '/photos/jet-800.avif 800w, /photos/jet-1200.avif 1200w, /photos/jet-1600.avif 1600w, /photos/jet-2000.avif 2000w',
+          );
+          document.head.appendChild(link);
         }
       })();
     </script>
@@ -45,22 +72,26 @@
         "@context": "https://schema.org",
         "@type": "ParkingFacility",
         "name": "Sky Parking & Fly",
-        "description": "Čuvan aerodromski parking s besplatnim shuttle transferom do terminala.",
+        "description": "Privatni parking 800 m od aerodroma Sarajevo: ograđen, osvijetljen i pod video nadzorom 24/7, uz besplatan transfer do terminala i nazad.",
+        "image": "__SITE_URL__/og.jpg",
+        "telephone": "+38762963901",
+        "email": "info@parkingandfly.ba",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Aerodromska 12",
-          "addressLocality": "Ilidža",
-          "postalCode": "71210",
+          "streetAddress": "Dr Atifa Purivatre 38",
+          "addressLocality": "Sarajevo",
           "addressCountry": "BA"
         },
+        "geo": { "@type": "GeoCoordinates", "latitude": 43.828498, "longitude": 18.328639 },
         "openingHoursSpecification": {
           "@type": "OpeningHoursSpecification",
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
           "opens": "00:00",
           "closes": "23:59"
         },
-        "priceRange": "5–15 KM / dan",
+        "priceRange": "6-8 KM po danu",
         "currenciesAccepted": "BAM",
+        "paymentAccepted": "Cash",
         "publicAccess": true,
         "isAccessibleForFree": false
       }
@@ -69,8 +100,9 @@
   <body>
     <div id="root"></div>
     <noscript
-      >Za rezervaciju parkinga potrebno je omogućiti JavaScript. · JavaScript is required to book parking. · Zum Buchen
-      eines Parkplatzes ist JavaScript erforderlich.</noscript
+      >Za rezervaciju parkinga potrebno je omogućiti JavaScript. Nazovite nas: +387 62 963 901. · JavaScript is required
+      to book parking. Call us: +387 62 963 901. · Zum Reservieren ist JavaScript erforderlich. Rufen Sie uns an: +387
+      62 963 901.</noscript
     >
     <script type="module" src="/src/main.tsx"></script>
   </body>

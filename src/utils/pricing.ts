@@ -1,10 +1,6 @@
-import { EXTRAS, MAX_STAY_DAYS, PRICING_TIERS, VAT_RATE, VEHICLES } from '@/data/pricing';
-import type { CoverType, ExtraId, PriceLine, PricingTier, Quote, StayDraft, StayErrors, VehicleType } from '@/types';
-import { addDays, billableDays, nextSlot, toDate, toISODate } from './date';
-
-const round2 = (n: number): number => Math.round(n * 100) / 100;
-/** Daily rates are rounded to the nearest 0.50 KM so the price list stays tidy. */
-const roundToHalf = (n: number): number => Math.round(n * 2) / 2;
+import { MAX_STAY_DAYS, PRICING_TIERS } from '@/data/pricing';
+import type { PricingTier, Quote, StayDraft, StayErrors } from '@/types';
+import { addDays, billableDays, toDate, toISODate } from './date';
 
 const FIRST_TIER = PRICING_TIERS[0] as PricingTier;
 
@@ -12,48 +8,16 @@ export function resolveTier(days: number): PricingTier {
   return PRICING_TIERS.find((t) => days >= t.minDays && (t.maxDays === null || days <= t.maxDays)) ?? FIRST_TIER;
 }
 
-export function vehicleMultiplier(vehicle: VehicleType): number {
-  return VEHICLES.find((v) => v.id === vehicle)?.multiplier ?? 1;
-}
-
-export function dailyRate(tier: PricingTier, cover: CoverType, vehicle: VehicleType): number {
-  return roundToHalf(tier.rates[cover] * vehicleMultiplier(vehicle));
-}
-
-export interface QuoteInput {
-  days: number;
-  cover: CoverType;
-  vehicle: VehicleType;
-  extras: readonly ExtraId[];
-}
-
-export function calculateQuote({ days: rawDays, cover, vehicle, extras }: QuoteInput): Quote {
-  const days = Math.min(Math.max(1, Math.floor(rawDays) || 1), MAX_STAY_DAYS);
+/** Whole stay at the daily rate of the tier it falls into, as the price list reads: "11-20 days: 7 KM per day". */
+export function calculateQuote(rawDays: number): Quote {
+  const days = Math.max(1, Math.floor(rawDays) || 1);
   const tier = resolveTier(days);
-  const ratePerDay = dailyRate(tier, cover, vehicle);
-  const standardRatePerDay = dailyRate(FIRST_TIER, cover, vehicle);
-  const parking = round2(ratePerDay * days);
-
-  const extraLines: PriceLine[] = EXTRAS.filter((e) => extras.includes(e.id)).map((e) => {
-    const quantity = e.billing === 'perDay' ? days : 1;
-    return { id: e.id, billing: e.billing, quantity, unit: e.price, amount: round2(e.price * quantity) };
-  });
-  const extrasTotal = round2(extraLines.reduce((sum, l) => sum + l.amount, 0));
-  const total = round2(parking + extrasTotal);
-  const savings = round2(standardRatePerDay * days - parking);
-
   return {
     days,
     tier,
-    ratePerDay,
-    standardRatePerDay,
-    parking,
-    extras: extraLines,
-    extrasTotal,
-    total,
-    vat: round2(total - total / (1 + VAT_RATE)),
-    savings,
-    savingsPercent: standardRatePerDay > 0 ? (savings / (standardRatePerDay * days)) * 100 : 0,
+    ratePerDay: tier.rate,
+    total: tier.rate * days,
+    savings: (FIRST_TIER.rate - tier.rate) * days,
   };
 }
 
@@ -63,7 +27,7 @@ export function stayDays(stay: StayDraft): number | null {
   return Number.isFinite(days) ? days : null;
 }
 
-/** Validate a stay. Returns machine-readable codes — the visible text comes from the active dictionary. */
+/** Validate a stay. Returns machine-readable codes; the visible text comes from the active dictionary. */
 export function validateStay(stay: StayDraft, now: Date = new Date()): StayErrors {
   const errors: StayErrors = {};
   const dropOff = toDate(stay.dropOffDate, stay.dropOffTime);
@@ -89,20 +53,13 @@ export function validateStay(stay: StayDraft, now: Date = new Date()): StayError
   return errors;
 }
 
+/** Tomorrow at 10:00 for a week: a plausible trip, so the price shown on first load is meaningful. */
 export function createDefaultStay(now: Date = new Date()): StayDraft {
   const dropOffDate = addDays(toISODate(now), 1);
   return {
     dropOffDate,
     dropOffTime: '10:00',
-    pickUpDate: addDays(dropOffDate, 5),
+    pickUpDate: addDays(dropOffDate, 7),
     pickUpTime: '10:00',
-    cover: 'covered',
-    vehicle: 'car',
-    extras: [],
   };
-}
-
-/** Earliest bookable drop-off time slot for today (used to hint the picker). */
-export function earliestDropOffTime(now: Date = new Date()): string {
-  return nextSlot(now);
 }

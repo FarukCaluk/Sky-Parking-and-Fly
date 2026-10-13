@@ -1,5 +1,5 @@
 /**
- * Sky Parking & Fly Sarajevo logo, outlined to SVG paths (512 × 512 tile coordinates) so it renders
+ * Sky Parking & Fly Sarajevo logo, outlined to SVG paths (512 × 512 coordinates) so it renders
  * identically everywhere without a web-font. Script: Kaushan Script, caps: Barlow Condensed (both SIL OFL).
  */
 export const LOGO_PATHS = {
@@ -14,13 +14,3 @@ export const LOGO_PATHS = {
 
 /** Crop of the lettering only (PARKING&FLY + SARAJEVO) for the horizontal lockup. */
 export const WORDMARK_VIEWBOX = '68 325 376 114';
-
-/** Centres the script "Sky" in the tile and enlarges it — used for the compact mark and favicon. */
-export const MARK_TRANSFORM = 'translate(256 256) scale(1.114) translate(-256 -188)';
-
-export const LOGO_COLORS = {
-  tileFrom: '#14808a',
-  tileTo: '#04313b',
-  teal: '#3fd6cc',
-  orange: '#ff8a1f',
-} as const;

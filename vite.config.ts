@@ -13,11 +13,16 @@ function resolveSiteUrl(): string {
   return vercel ? `https://${vercel}` : 'https://sky-parking-and-fly.vercel.app';
 }
 
-/** Emits `sitemap.xml` (every page in every language, with hreflang alternates) and `robots.txt` from the route table. */
+/**
+ * Emits `sitemap.xml` (every page in every language, with hreflang alternates) and `robots.txt` from the route table,
+ * and writes the public origin into the absolute URLs that social cards and structured data need (`__SITE_URL__`).
+ */
 function seoFiles(): Plugin {
   return {
     name: 'spf-seo-files',
-    apply: 'build',
+    transformIndexHtml(html, ctx) {
+      return html.replaceAll('__SITE_URL__', ctx.server ? '' : resolveSiteUrl());
+    },
     generateBundle() {
       const site = resolveSiteUrl();
       const loc = (lang: (typeof LANGS)[number], route: (typeof ROUTE_IDS)[number]) => `${site}${pathFor(lang, route)}`;

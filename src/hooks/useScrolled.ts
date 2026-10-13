@@ -1,25 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useMotionValueEvent, useScroll } from 'framer-motion';
+import { useState } from 'react';
 
-/** `true` once the page has scrolled past `threshold` px. Passive and rAF-throttled. */
+/** `true` once the page has scrolled past `threshold` px. Driven by Framer Motion's shared scroll observer. */
 export function useScrolled(threshold = 12): boolean {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      setScrolled(window.scrollY > threshold);
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, [threshold]);
-
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(() => typeof window !== 'undefined' && window.scrollY > threshold);
+  useMotionValueEvent(scrollY, 'change', (value) => setScrolled(value > threshold));
   return scrolled;
 }

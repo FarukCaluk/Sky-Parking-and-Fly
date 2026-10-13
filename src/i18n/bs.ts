@@ -1,9 +1,11 @@
 /**
- * Bosnian (default language) — the source of truth for the shape of every dictionary.
+ * Bosnian (default language) - the source of truth for the shape of every dictionary.
  * `en.ts` and `de.ts` are typed as `Messages`, so a missing or extra key is a compile error.
+ *
+ * Facts (prices, distances, opening hours, FAQ) come from parkingandfly.ba.
  */
 
-/** Bosnian plural: 1 dan / 2–4 dana / 5+ dana (21 dan, 22 dana, 11 dana). */
+/** Bosnian plural: 1 dan / 2-4 dana / 5+ dana (21 dan, 22 dana, 11 dana). */
 function pluralBs(count: number, one: string, few: string, many: string): string {
   const abs = Math.abs(count);
   const mod10 = abs % 10;
@@ -13,54 +15,72 @@ function pluralBs(count: number, one: string, few: string, many: string): string
   return many;
 }
 
+/** One question of the FAQ. `list` and `after` exist only on the price answer. */
+export interface FaqItem {
+  q: string;
+  a: string;
+  list?: readonly { label: string; value: string }[];
+  after?: string;
+}
+
 export const bs = {
   meta: {
     siteName: 'Sky Parking & Fly',
     ogLocale: 'bs_BA',
     pages: {
       home: {
-        title: 'Sky Parking & Fly — Siguran aerodromski parking i shuttle transfer',
+        title: 'Sky Parking & Fly | Privatni parking 800 m od aerodroma Sarajevo',
         description:
-          'Čuvan parking nekoliko minuta od terminala, video nadzor 24/7, besplatan shuttle i osigurana vozila. Izračunajte cijenu i rezervišite online za manje od minute.',
+          'Ograđen, osvijetljen i video nadziran parking kod aerodroma Sarajevo. Besplatan transfer do terminala i nazad, od 6 KM po danu.',
       },
       pricing: {
-        title: 'Cijene i kalkulator parkinga — Sky Parking & Fly',
+        title: 'Cijene parkinga | Sky Parking & Fly',
         description:
-          'Transparentne cijene aerodromskog parkinga: natkriveno i nenatkriveno, popust za duži boravak i kalkulator koji odmah računa ukupan iznos s PDV-om.',
+          'Parking kod aerodroma Sarajevo: 8 KM po danu (1-10 dana), 7 KM (11-20 dana), 6 KM (21+ dana). Transfer i nadzor su uključeni. Izračunajte svoj boravak.',
       },
       facilities: {
-        title: 'Objekat i sigurnost — Sky Parking & Fly',
+        title: 'Objekat i sigurnost | Sky Parking & Fly',
         description:
-          'Video nadzor uživo, automatske rampe s prepoznavanjem tablica, osoblje 0–24h i stvarno stanje zauzetosti parkinga na jednom mjestu.',
+          'Ograđen i osvijetljen parking, video nadzor 24/7 i osoblje na licu mjesta. Pogledajte kako izgleda naš parking kod aerodroma Sarajevo.',
       },
       shuttle: {
-        title: 'Besplatan shuttle do terminala — Sky Parking & Fly',
+        title: 'Besplatan transfer do terminala | Sky Parking & Fly',
         description:
-          'Besplatan shuttle svakih 15 minuta do terminala aerodroma Sarajevo. Pogledajte rutu, raspored polazaka i vrijeme do sljedećeg shuttlea.',
+          'Oko minut vožnje do ulaza u terminal, uz pomoć s prtljagom. Po povratku pošaljite poruku ili nas nazovite i vozač dolazi po vas.',
       },
       reviews: {
-        title: 'Recenzije putnika — Sky Parking & Fly',
-        description: 'Šta kažu putnici koji su kod nas ostavili vozilo: ocjene, iskustva i verifikovane recenzije.',
+        title: 'Recenzije putnika | Sky Parking & Fly',
+        description: 'Šta kažu putnici koji su ostavili auto na našem parkingu kod aerodroma Sarajevo.',
+      },
+      faq: {
+        title: 'Česta pitanja | Sky Parking & Fly',
+        description:
+          'Odgovori na najčešća pitanja o privatnom parkiranju kod aerodroma Sarajevo: sigurnost, rezervacija, plaćanje, cijene, transfer, ključevi i kašnjenje leta.',
       },
       contact: {
-        title: 'Kontakt — Sky Parking & Fly',
+        title: 'Kontakt | Sky Parking & Fly',
         description:
-          'Javite nam se putem WhatsAppa, Vibera, telefona ili e-maila. Radno vrijeme, adresa i lokacija parkinga na karti.',
+          'Nazovite nas ili pošaljite poruku na WhatsApp ili Viber. Dr Atifa Purivatre 38, Sarajevo. Otvoreno 24/7, uključujući praznike.',
+      },
+      reservation: {
+        title: 'Rezervacija parkinga | Sky Parking & Fly',
+        description:
+          'Odaberite datume, pogledajte okvirnu cijenu i pošaljite rezervaciju putem WhatsAppa, Vibera ili e-maila.',
       },
       terms: {
-        title: 'Uslovi korištenja — Sky Parking & Fly',
-        description: 'Uslovi korištenja usluge parkinga i shuttle transfera.',
+        title: 'Uslovi korištenja | Sky Parking & Fly',
+        description: 'Uslovi korištenja usluge parkinga i transfera.',
       },
       privacy: {
-        title: 'Politika privatnosti — Sky Parking & Fly',
-        description: 'Kako obrađujemo i štitimo vaše lične podatke.',
+        title: 'Politika privatnosti | Sky Parking & Fly',
+        description: 'Kako postupamo s podacima koje nam pošaljete.',
       },
       cookies: {
-        title: 'Politika kolačića — Sky Parking & Fly',
-        description: 'Koje podatke ova stranica pohranjuje u vašem pregledniku.',
+        title: 'Politika kolačića | Sky Parking & Fly',
+        description: 'Šta ova stranica pohranjuje u vašem pregledniku.',
       },
       notFound: {
-        title: 'Stranica nije pronađena — Sky Parking & Fly',
+        title: 'Stranica nije pronađena | Sky Parking & Fly',
         description: 'Tražena stranica ne postoji.',
       },
     },
@@ -69,9 +89,7 @@ export const bs = {
   common: {
     skipToContent: 'Preskoči na sadržaj',
     close: 'Zatvori',
-    optional: 'Opcionalno',
-    back: 'Nazad',
-    loading: 'Učitavanje…',
+    optional: 'Nije obavezno',
   },
 
   language: {
@@ -83,21 +101,23 @@ export const bs = {
 
   nav: {
     aria: 'Glavna navigacija',
-    homeAria: 'Sky Parking & Fly — početna',
+    homeAria: 'Sky Parking & Fly, početna',
     pages: {
       home: 'Početna',
       pricing: 'Cijene',
       facilities: 'Objekat',
       shuttle: 'Shuttle',
       reviews: 'Recenzije',
+      faq: 'Pitanja',
       contact: 'Kontakt',
+      reservation: 'Rezervacija',
       terms: 'Uslovi korištenja',
       privacy: 'Politika privatnosti',
       cookies: 'Politika kolačića',
     },
     book: 'Rezerviši',
-    bookParking: 'Rezerviši parking',
     callUs: (phone: string) => `Nazovite nas: ${phone}`,
+    menu: 'Meni',
     openMenu: 'Otvori meni',
     closeMenu: 'Zatvori meni',
     switchToLight: 'Uključi svijetlu temu',
@@ -109,7 +129,6 @@ export const bs = {
   date: {
     weekdaysLong: ['nedjelja', 'ponedjeljak', 'utorak', 'srijeda', 'četvrtak', 'petak', 'subota'],
     weekdaysShort: ['ned', 'pon', 'uto', 'sri', 'čet', 'pet', 'sub'],
-    calendarHeader: ['pon', 'uto', 'sri', 'čet', 'pet', 'sub', 'ned'],
     monthsLong: [
       'januar',
       'februar',
@@ -127,485 +146,448 @@ export const bs = {
     monthsShort: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
     short: (weekday: string, day: number, month: string) => `${weekday}, ${day}. ${month}`,
     long: (weekday: string, day: number, month: string, year: number) => `${weekday}, ${day}. ${month} ${year}.`,
-    monthTitle: (month: string, year: number) => `${month} ${year}.`,
+    at: (date: string, time: string) => `${date} u ${time}`,
   },
 
   units: {
     days: (n: number) => `${n} ${pluralBs(n, 'dan', 'dana', 'dana')}`,
-    dayWord: (n: number) => pluralBs(n, 'dan', 'dana', 'dana'),
-    services: (n: number) => `${n} ${pluralBs(n, 'usluga', 'usluge', 'usluga')}`,
-    perDayShort: '/dan',
-    perDayLong: 'po danu',
-    kmPerDay: 'KM / dan',
+    perDay: 'po danu',
   },
 
-  validation: {
-    stay: {
-      dropOffMissing: 'Odaberite datum i vrijeme ostavljanja vozila.',
-      dropOffPast: 'Vrijeme ostavljanja vozila je već prošlo.',
-      pickUpMissing: 'Odaberite datum i vrijeme preuzimanja vozila.',
-      pickUpBeforeDropOff: 'Preuzimanje mora biti nakon ostavljanja vozila.',
-      rangeTooLong: (maxDays: number) =>
-        `Online rezervacija je moguća do ${maxDays} ${pluralBs(maxDays, 'dan', 'dana', 'dana')}. Za duži boravak nas kontaktirajte.`,
-    },
-    fullName: { required: 'Unesite ime i prezime.', invalid: 'Unesite ime i prezime (npr. Amar Hodžić).' },
-    email: { required: 'Unesite e-mail adresu.', invalid: 'E-mail adresa nije ispravna.' },
-    phone: { required: 'Unesite broj telefona.', invalid: 'Broj telefona nije ispravan (npr. 061 000 000).' },
-    plate: { required: 'Unesite registarske tablice.', invalid: 'Tablice nisu ispravne (npr. A12-K-345).' },
-    make: { required: 'Unesite marku i model vozila.' },
-    passengers: { required: 'Unesite broj putnika.', range: 'Broj putnika mora biti od 1 do 8.' },
-    flightNumber: { invalid: 'Broj leta nije ispravan (npr. JU 123).' },
-  },
-
-  pricing: {
-    tiers: {
-      short: { label: '1–3 dana', hint: 'Kratki put' },
-      week: { label: '4–7 dana', hint: 'Sedmica' },
-      extended: { label: '8–14 dana', hint: 'Produženi' },
-      long: { label: '15+ dana', hint: 'Dugoročni' },
-    },
-    vehicles: {
-      car: { label: 'Automobil', shortLabel: 'Auto', hint: 'Putnički' },
-      suv: { label: 'SUV', shortLabel: 'SUV', hint: 'Terenac / crossover' },
-      van: { label: 'Kombi', shortLabel: 'Kombi', hint: 'Do 3,5 t' },
-      moto: { label: 'Motor', shortLabel: 'Motor', hint: 'Motocikl' },
-    },
-    covers: {
-      open: { label: 'Nenatkriveno', description: 'Osvijetljen i ograđen otvoreni sektor' },
-      covered: { label: 'Natkriveno', description: 'Zaštita od snijega, grada i sunca' },
-    },
-    extras: {
-      wash: {
-        label: 'Vanjsko pranje',
-        shortLabel: 'Vanjsko pranje',
-        description: 'Ručno pranje i sušenje dok ste na putu.',
-      },
-      interior: {
-        label: 'Unutrašnje čišćenje',
-        shortLabel: 'Unutrašnje čišćenje',
-        description: 'Usisavanje, čišćenje stakala i armature.',
-      },
-      ev: {
-        label: 'Punjenje električnog vozila',
-        shortLabel: 'Punjenje EV',
-        description: 'Pun akumulator na vašem povratku.',
-      },
-      valet: {
-        label: 'VIP preuzimanje na terminalu',
-        shortLabel: 'VIP preuzimanje',
-        description: 'Vozilo vam dostavljamo ispred izlaza.',
-      },
-      insurance: {
-        label: 'Proširena zaštita vozila',
-        shortLabel: 'Proširena zaštita',
-        description: 'Kasko pokriće do 50.000 KM.',
-      },
-    },
+  photos: {
+    jet: 'Avion polijeće iznad automobila parkiranih na parkingu Sky Parking & Fly, a iza njih se vide planine',
+    entrance:
+      'Ulaz na parking: siva limena ograda s plavom tablom Sky Parking & Fly i strelicom ULAZ, a iza nje šljunčani parking s automobilima',
+    sign: 'Tabla Sky Parking & Fly Sarajevo: parking kod aerodroma Sarajevo, 24h nadzor i transfer, ULAZ i telefon 062/963/901',
+    pole: 'Plava oznaka Privatni parking i stub s video nadzornom kamerom i reflektorom',
   },
 
   hero: {
-    badge: 'Aerodrom Sarajevo · otvoreno 0–24h',
-    titleLine1: 'Parkirajte bez brige.',
-    titleLine2: 'Letite bez stresa.',
-    lead: (minutes: number) =>
-      `Čuvan, video nadziran parking ${minutes} minuta od terminala. Besplatan shuttle, osigurano vozilo i cijena koju vidite unaprijed.`,
-    cta: 'Rezerviši parking',
-    ctaSecondary: 'Pogledaj cijene',
-    ratingSuffix: (count: string) => `na Googleu · ${count} recenzija`,
-    valueProps: {
-      secure: { title: 'Čuvan parking', text: 'Ograđen prostor s osobljem 0–24h' },
-      cctv: { title: 'Video nadzor 24/7', text: '48 kamera, snimci 30 dana' },
-      shuttle: { title: 'Besplatan shuttle', text: 'Do terminala za 5 minuta' },
-      insured: { title: 'Osigurana vozila', text: 'Osiguranje od odgovornosti' },
-    },
+    title: 'Parking 800 metara od aerodroma',
+    lead: 'Ograđen i osvijetljen parking pod video nadzorom 24/7, uz besplatan transfer do terminala i nazad.',
   },
 
-  widget: {
-    title: 'Brza rezervacija',
-    noDeposit: 'Bez avansa',
-    estimate: 'Procjena cijene',
-    rateLine: (rate: string) => `${rate} / dan · PDV uključen`,
-    saving: (amount: string) => `Ušteda ${amount}`,
-    continue: 'Nastavi na rezervaciju',
-    footnote: 'Plaćanje pri preuzimanju · Besplatno otkazivanje do 24h prije dolaska',
+  stayBar: {
+    aria: 'Termin boravka',
+    arrival: 'Dolazak',
+    departure: 'Odlazak',
+    date: 'Datum',
+    time: 'Vrijeme',
+    estimate: 'Okvirna cijena',
+    line: (days: string, rate: string) => `${days} × ${rate} po danu`,
   },
 
-  stayForm: {
-    coverLabel: 'Vrsta parkinga',
-    dropOffTime: 'Vrijeme ostavljanja',
-    pickUpTime: 'Vrijeme preuzimanja',
-    vehicleLabel: 'Vrsta vozila',
-    extrasLabel: 'Dodatne usluge',
+  stayErrors: {
+    dropOffMissing: 'Odaberite datum i vrijeme dolaska.',
+    dropOffPast: 'Vrijeme dolaska je već prošlo.',
+    pickUpMissing: 'Odaberite datum i vrijeme odlaska.',
+    pickUpBeforeDropOff: 'Odlazak mora biti nakon dolaska.',
+    rangeTooLong: (maxDays: number) =>
+      `Za boravak duži od ${maxDays} ${pluralBs(maxDays, 'dan', 'dana', 'dana')} nazovite nas, dogovorit ćemo posebnu cijenu.`,
   },
 
-  dateRange: {
-    dropOff: 'Ostavljam vozilo',
-    pickUp: 'Preuzimam vozilo',
-    choose: 'Odaberite',
-    dialog: 'Odabir datuma',
-    prevMonth: 'Prethodni mjesec',
-    nextMonth: 'Sljedeći mjesec',
-    today: 'danas',
-    hintDropOff: 'Odaberite dan ostavljanja vozila',
-    hintPickUp: 'Sada odaberite dan preuzimanja',
-    hintPickUpHover: (date: string) => `Preuzimanje: ${date}`,
-  },
-
-  how: {
-    eyebrow: 'Kako radi',
-    title: 'Od rezervacije do polijetanja — četiri koraka.',
-    description: 'Bez papira, bez čekanja na rampi i bez trčanja do terminala s kuferima.',
+  journey: {
+    title: 'Od parkinga do terminala za oko minut',
+    lead: 'Ostavite auto, a mi vas vozimo. Na povratku dolazimo po vas.',
     steps: {
       book: {
-        title: 'Rezervišite online',
-        text: 'Odaberite termin i usluge — cijenu vidite odmah, a potvrda stiže za nekoliko sekundi.',
+        title: 'Rezervišite',
+        text: 'Odaberite datume i pošaljite upit. Potvrdu dobijate porukom ili e-mailom.',
       },
-      arrive: {
-        title: 'Dolazak bez čekanja',
-        text: 'Kamera prepoznaje vaše tablice i otvara rampu. Naš radnik vas usmjerava na rezervisano mjesto.',
+      park: {
+        title: 'Parkirajte',
+        text: 'Parkirate sami ili nam ostavite ključ, kako vam je lakše. Pomažemo s koferima, kolicima i dječijim sjedalicama.',
       },
-      shuttle: {
-        title: 'Shuttle do terminala',
-        text: 'Besplatan prijevoz sa prtljagom — svega pet minuta do prijave za let.',
+      ride: {
+        title: 'Vozimo vas',
+        text: 'Do ulaza u terminal je oko minut vožnje. Besplatno, uključeno u cijenu parkinga.',
       },
-      return: {
-        title: 'Povratak bez stresa',
-        text: 'Javite nam se nakon slijetanja. Shuttle vas čeka, a vozilo je tamo gdje ste ga ostavili.',
+      back: {
+        title: 'Vratite se',
+        text: 'Kad preuzmete prtljag, pošaljite poruku ili nas nazovite. Vozač dolazi po vas i vraća vas do auta.',
       },
+    },
+    map: {
+      aria: 'Shema puta od parkinga do aerodroma: 800 metara, 1 do 2 minute vožnje',
+      parking: 'Parking',
+      airport: 'Aerodrom',
+      distance: '800 m',
+      time: '1-2 min',
+      note: 'Shema, nije u mjerilu',
     },
   },
 
-  home: {
-    exploreEyebrow: 'Istražite',
-    exploreTitle: 'Sve što trebate znati prije polaska.',
-    exploreDescription: 'Cijene, sigurnost, shuttle i iskustva putnika — svako na svojoj stranici.',
-    pricing: {
-      eyebrow: 'Cijene',
-      headline: (price: string) => `od ${price} / dan`,
-      text: 'Transparentan cjenovnik, kalkulator u realnom vremenu i popust za duži boravak.',
-      link: 'Izračunaj cijenu',
+  price: {
+    title: 'Što duže ostajete, to je dan jeftiniji',
+    lead: 'Cijena se računa po danu i zavisi od dužine boravka. Transfer, video nadzor i fizički nadzor su uključeni.',
+    unit: 'KM po danu',
+    daysLabel: 'Koliko dana ostajete',
+    sliderAria: 'Dužina boravka u danima',
+    totalLabel: 'Ukupno',
+    totalFor: (days: string) => `za ${days}`,
+    saving: (amount: string) => `Ušteda ${amount}`,
+    approx: 'Okvirna cijena',
+    tiers: {
+      short: {
+        label: '1-10 dana',
+        hint: 'Idealno rješenje za kraće boravke i brza putovanja.',
+      },
+      mid: {
+        label: '11-20 dana',
+        hint: 'Najpopularniji izbor putnika koji ostaju duže, odličan balans cijene i praktičnosti.',
+      },
+      long: {
+        label: '21+ dana',
+        hint: 'Najpovoljniji paket za dugotrajnije boravke, maksimalna sigurnost po najboljoj cijeni.',
+      },
     },
-    facilities: {
-      eyebrow: 'Objekat',
-      headline: '48 kamera',
-      badge: 'Nadzor 0–24h',
-      text: 'Video nadzor, automatska rampa i osoblje na licu mjesta — a zauzetost možete pratiti uživo.',
-      link: 'Pogledaj objekat',
-    },
-    shuttle: {
-      eyebrow: 'Shuttle',
-      next: 'Sljedeći polazak',
-      text: 'Besplatan prijevoz do terminala svakih 15 minuta, a noću svakih 30.',
-      link: 'Raspored polazaka',
-    },
-    reviews: {
-      eyebrow: 'Recenzije',
-      headline: (score: string) => `${score} / 5`,
-      text: (count: string) => `${count} Google recenzija i hiljade zadovoljnih putnika.`,
-      link: 'Pročitaj iskustva',
-    },
-  },
-
-  calculator: {
-    eyebrow: 'Cijene i usluge',
-    title: 'Cijena koju vidite unaprijed. Bez iznenađenja.',
-    description:
-      'Što duže ostajete, to je dan jeftiniji. Podesite trajanje, vrstu parkinga i usluge — ukupan iznos se računa u trenutku.',
-    coveredAria: 'Natkriveni parking',
-    standard: 'Standard',
-    yourChoice: 'Vaš izbor',
-    noteCar: (vat: string) =>
-      `Cijene za putnički automobil · PDV (${vat}) je uključen · svaki započeti dan (24h) se računa kao cijeli`,
-    noteOther: (vat: string) =>
-      `Cijene za odabrano vozilo · PDV (${vat}) je uključen · svaki započeti dan (24h) se računa kao cijeli`,
-    duration: 'Trajanje boravka',
-    dayLess: 'Jedan dan manje',
-    dayMore: 'Jedan dan više',
-    vehicleTitle: 'Vrsta vozila',
-    extrasTitle: 'Dodatne usluge',
-    summaryTitle: 'Vaša procjena',
-    parking: 'Parking',
-    savings: 'Ušteda za duži boravak',
-    vatIncluded: 'PDV uključen',
-    coveredLower: 'natkriveno',
-    openLower: 'nenatkriveno',
-    reserveFor: (total: string) => `Rezerviši za ${total}`,
+    includedTitle: 'U cijeni parkinga',
     included: [
-      'Besplatan shuttle svakih 15 minuta',
-      'Video nadzor 24/7 i čuvar na licu mjesta',
-      'Osiguranje vozila od odgovornosti',
-      'Pomoć: pokretanje i napuhavanje guma',
+      'Besplatan transfer do aerodroma',
+      'Video nadzor 24/7',
+      'Fizički nadzor',
+      'Ograđen i osvijetljen prostor',
+      'Popust za više dana',
     ],
+    payment: 'Plaćanje gotovinom pri dolasku ili odlasku. Ako želite platiti drugačije, javite nam se unaprijed.',
+    longStay: 'Za duže boravke i stalne klijente odobravamo dodatne popuste i posebne pogodnosti.',
+    currency: 'Sve cijene su u konvertibilnim markama (KM).',
+  },
+
+  lot: {
+    title: 'Vaš auto ne ostaje bez nadzora',
+    facts: {
+      fenced: { title: 'Ograđen prostor', text: 'Pristup imaju samo klijenti i osoblje.' },
+      cctv: { title: 'Video nadzor 24/7', text: 'Parking je pod video nadzorom 24 sata dnevno.' },
+      staff: {
+        title: 'Osoblje na parkingu',
+        text: 'Fizički nadzor, jasna pravila ulaza i izlaza te evidencija kretanja.',
+      },
+      keys: {
+        title: 'Ključevi u vašim rukama',
+        text: 'Auto ostaje zaključan. Ključeve možete zadržati ili nam ih ostaviti na čuvanje.',
+      },
+    },
+    link: 'Pogledaj objekat',
+    entranceCaption: 'Ulaz je desno od table.',
+    poleCaption: 'Kamera i reflektor na stubu.',
+  },
+
+  reviews: {
+    title: 'Šta kažu putnici',
+    lead: 'Iskustva putnika koji su ostavili auto kod nas.',
+    google: 'Ocjena 5,0 na Google Maps',
+    googleLink: 'Sve recenzije na Google Maps',
+    items: {
+      nedim: {
+        title: 'Najbolje iskustvo do sada',
+        quote:
+          'Kada se vratite sa puta i imate nekoga ko vas čeka na izlazu iz aerodroma, to je neprocjenjivo. Sve pohvale za ekipu Sky Parking and Fly.',
+        name: 'Nedim K.',
+      },
+      lejla: {
+        title: 'Veliko olakšanje za putnike',
+        quote: 'Ne moraš misliti o taxi vožnji ni zadržavanju. Ostaviš auto i sve ostalo riješe oni.',
+        name: 'Lejla B.',
+      },
+      jasmin: {
+        title: 'Vraćam se opet!',
+        quote:
+          'Ovo mi je već treći put da koristim Sky Parking and Fly i svaki put sam prezadovoljan. Topla preporuka!',
+        name: 'Jasmin H.',
+      },
+      ajla: {
+        title: 'Pouzdani i brzi',
+        quote:
+          'Kratko čekanje, jasna komunikacija i ljubazno osoblje. Ne mogu da zamislim bolje rješenje kad letim iz Sarajeva.',
+        name: 'Ajla S.',
+      },
+      haris: {
+        title: 'Jednostavna rezervacija',
+        quote: 'Rezervacija je trajala 1 minutu, sve jasno i precizno. Potvrdu sam odmah dobio na e-mail.',
+        name: 'Haris V.',
+      },
+      mirela: {
+        title: 'Super za porodice s djecom',
+        quote:
+          'Putovali smo s malim djetetom i transfer do aerodroma je bio brz i udoban. Ljudi su stvarno susretljivi.',
+        name: 'Mirela D.',
+      },
+    },
+  },
+
+  faq: {
+    title: 'Česta pitanja',
+    lead: 'Ovdje ćete pronaći odgovore na najčešća pitanja o našim uslugama privatnog parkiranja u blizini aerodroma Sarajevo.',
+    all: 'Sva pitanja',
+    more: 'Pogledaj više',
+    items: [
+      {
+        q: 'Da li je Sky Parking and Fly siguran za dugoročno parkiranje?',
+        a: 'Da, naš parking prostor je ograđen, pod videonadzorom i osiguran 24/7. Vaše vozilo je kod nas na sigurnom, bilo da ostaje jedan dan ili više sedmica.',
+      },
+      {
+        q: 'Kako mogu rezervisati svoje parking mjesto online?',
+        a: 'Rezervaciju možete napraviti putem naše web stranice unosom osnovnih podataka i datuma. Potvrdu ćete dobiti odmah putem e-maila ili poruke.',
+      },
+      {
+        q: 'Koje su opcije plaćanja dostupne?',
+        a: 'Naplata se vrši gotovinom po dolasku ili odlasku, u zavisnosti šta Vama više odgovara. Ako želite platiti drugačijim načinom, slobodno nas kontaktirajte unaprijed kako bismo Vam to omogućili i rezervisali mjesto.',
+      },
+      {
+        q: 'Koliko košta parking po danu i po sedmici?',
+        a: 'Cijena parkinga zavisi od dužine boravka:',
+        list: [
+          { label: '1-10 dana', value: '8 KM po danu' },
+          { label: '11-20 dana', value: '7 KM po danu' },
+          { label: '21+ dana', value: '6 KM po danu' },
+        ],
+        after:
+          'Za duži period boravka, SKY Parking and Fly odobrava dodatne popuste i posebne pogodnosti za redovne klijente.',
+      },
+      {
+        q: 'Gdje se tačno nalazi Sky Parking and Fly u odnosu na aerodrom?',
+        a: 'Naš parking se nalazi svega 800m ili minutu vožnje od glavnog ulaza u Sarajevo International Airport. Lokaciju dobijate automatski prilikom rezervacije.',
+      },
+      {
+        q: 'Da li nudite besplatan transfer do i od aerodroma?',
+        a: 'Da, obezbjeđujemo besplatan i brz transfer do terminala i nazad, odmah nakon što parkirate vozilo.',
+      },
+      {
+        q: 'Mogu li ostaviti ključeve od auta kod vas?',
+        a: 'Po želji, da. Možete ih zadržati ili ostaviti kod nas na čuvanje. Ključevi se zaključavaju i čuvaju na sigurnom mjestu.',
+      },
+      {
+        q: 'Da li je parking otvoren 24/7?',
+        a: 'Da, radimo non-stop. Možete nas kontaktirati i parkirati vaše vozilo u bilo koje doba dana ili noći, uključujući praznike.',
+      },
+      {
+        q: 'Šta se dešava ako mi let kasni ili se vraćam kasnije?',
+        a: 'Nema brige, pratimo vaše letove i fleksibilni smo sa vremenom preuzimanja. Vaše vozilo će vas čekati bez dodatnih troškova za manje kašnjenje.',
+      },
+      {
+        q: 'Kako mogu kontaktirati podršku ako imam dodatna pitanja?',
+        a: 'Jednostavno nas pozovite, pošaljite poruku ili nas kontaktirajte putem WhatsApp-a. Tu smo da vam olakšamo svako putovanje.',
+      },
+    ] as FaqItem[],
   },
 
   facilities: {
-    eyebrow: 'Objekat i sigurnost',
-    title: 'Vaše vozilo je pod nadzorom 24 sata dnevno.',
-    description:
-      'Pogledajte kako izgleda parking upravo sada — video nadzor, zauzetost i automatska rampa na jednom mjestu.',
+    title: 'Ograđen. Osvijetljen. Pod nadzorom.',
+    lead: 'Privatni parking kod aerodroma Sarajevo. Vaše vozilo ostaje na ograđenom prostoru, uz stalnu kontrolu i fizičko prisustvo osoblja.',
     features: {
-      cctv: {
-        title: 'Video nadzor 24/7',
-        text: '48 HD kamera pokriva svaki metar parkinga. Snimci se arhiviraju 30 dana.',
-      },
-      anpr: {
-        title: 'Automatske rampe i ANPR',
-        text: 'Prepoznavanje tablica otvara rampu za nekoliko sekundi — bez papira i bez gužve.',
-      },
+      fenced: { title: 'Ograđen prostor', text: 'Pristup imaju samo klijenti i osoblje.' },
+      lit: { title: 'Osvijetljen prostor', text: 'Reflektori na stubovima osvjetljavaju parking.' },
+      cctv: { title: 'Video nadzor 24/7', text: 'Kamere na stubovima prate parking danonoćno.' },
       staff: {
-        title: 'Osoblje na licu mjesta',
-        text: 'Obezbjeđenje i radnik u svakoj smjeni, uključujući noći, praznike i vikende.',
+        title: 'Fizički nadzor',
+        text: 'Osoblje je na parkingu. Imamo jasna pravila ulaza i izlaza i evidenciju kretanja.',
       },
-      lighting: {
-        title: 'Rasvjeta i ograda',
-        text: 'LED osvjetljenje cijelog prostora i ograda visine 2,4 m sa senzorima pokreta.',
+      keys: {
+        title: 'Ključevi',
+        text: 'Auto ostaje zaključan, a ključeve možete zadržati. Ako ih ostavite, zaključavamo ih i čuvamo na sigurnom mjestu.',
       },
-      insurance: {
-        title: 'Osiguranje vozila',
-        text: 'Osiguranje od odgovornosti je uključeno, a kasko do 50.000 KM dodajete po želji.',
-      },
-      help: {
-        title: 'Pomoć na licu mjesta',
-        text: 'Pokretanje akumulatora i napuhavanje guma — besplatno, kad god vam zatreba.',
+      check: {
+        title: 'Pregled pri preuzimanju',
+        text: 'Ako želite, pri preuzimanju zajedno uradimo kratak vizuelni pregled auta.',
       },
     },
-    camera: {
-      title: 'Video nadzor uživo',
-      sectionAria: 'Video nadzor uživo',
-      tabsAria: 'Kamere',
-      connecting: 'Povezivanje s kamerom…',
-      offline: 'Kamera trenutno nije dostupna',
-      retry: 'Pokušaj ponovo',
-      note: 'Prikaz je demonstracija. Kamere se povezuju putem NextFrame sučelja, a snimci se arhiviraju 30 dana.',
-      imageAlt: (label: string) => `Kamera: ${label}`,
-      cameras: {
-        entrance: { label: 'Ulaz i rampa', zone: 'Glavni ulaz' },
-        'covered-a': { label: 'Sektor A', zone: 'Natkriveni parking' },
-        'open-b': { label: 'Sektor B', zone: 'Otvoreni parking' },
-        shuttle: { label: 'Shuttle stanica', zone: 'Točka polaska' },
-      },
-    },
-    occupancy: {
-      title: 'Zauzetost parkinga',
-      live: 'Uživo',
-      free: 'slobodno',
-      status: { full: 'Skoro popunjeno', filling: 'Popunjava se', plenty: 'Dosta mjesta' },
-      sectors: { covered: 'Natkriveni sektor A', open: 'Otvoreni sektor B' },
-    },
-    barrier: {
-      title: 'Automatska rampa',
-      closed: { title: 'Rampa zatvorena', text: 'Čekam vozilo' },
-      scanning: { title: 'Čitam tablice…', text: 'ANPR kamera aktivna' },
-      open: { title: 'Rampa otvorena', text: 'Rezervacija pronađena' },
+    find: {
+      title: 'Kako nas prepoznati',
+      text: 'Tražite plavu tablu s oznakom ULAZ. Ulaz je desno od table.',
+      address: 'Dr Atifa Purivatre 38, Sarajevo',
+      cta: 'Upute za vožnju',
     },
   },
 
   shuttle: {
-    eyebrow: 'Besplatan shuttle',
-    title: 'Do terminala za pet minuta. Svakih petnaest.',
-    description:
-      'Prijevoz s prtljagom je besplatan i uključen u svaku rezervaciju. Pogledajte rutu i vrijeme sljedećeg polaska.',
-    panelTitle: 'Besplatan shuttle',
-    subtitle: (distance: string, minutes: number) => `${distance} do terminala · ${minutes} minuta vožnje`,
-    frequency: 'Svakih 15 min · noću 30 min',
-    mapAria: (minutes: number) => `Karta rute: shuttle vozi od parkinga do terminala za ${minutes} minuta`,
-    parkingLabel: 'Sky Parking',
-    terminalLabel: 'Terminal · SJJ',
-    minutesChip: (minutes: number) => `${minutes} min`,
-    fromParking: 'Polasci s parkinga',
-    fromTerminal: 'Polasci s terminala',
-    next: 'Sljedeći',
-    landed: 'Sletjeli ste? Javite nam se i shuttle vas čeka ispred izlaza.',
-    call: 'Pozovi',
-    countdown: {
-      now: 'sada',
-      minutes: (n: number) => `za ${n} min`,
-      hours: (hours: number, minutes: string) => `za ${hours} h ${minutes} min`,
+    title: 'Besplatan transfer do terminala',
+    lead: 'Do ulaza u terminal vozimo vas oko minut. U oba smjera, uključeno u cijenu parkinga.',
+    howTitle: 'Kako izgleda',
+    steps: [
+      { title: 'Parkirate', text: 'Stižete na parking i parkirate, ili nam predate ključ, kako vam je lakše.' },
+      { title: 'Pomažemo s prtljagom', text: 'Koferi, kolica, dječije sjedalice: pomažemo oko svega.' },
+      { title: 'Vozimo vas do terminala', text: 'Do ulaza u terminal vožnja traje oko jedan minut.' },
+      { title: 'Javite se po povratku', text: 'Čim preuzmete prtljag, pošaljite poruku ili nas nazovite.' },
+      { title: 'Vraćamo vas do auta', text: 'Naš vozač dolazi po vas i vozi vas do auta.' },
+    ],
+    closing:
+      'Sve je uključeno u cijenu parkinga. Bez taksija, bez zvanja prijatelja u 4 ujutro i bez lutanja po kružnim tokovima.',
+    delay: {
+      title: 'Ako let kasni',
+      text: 'Pratimo letove i fleksibilni smo s vremenom preuzimanja. Za manja kašnjenja ne naplaćujemo dodatne troškove.',
     },
-    facts: {
-      free: { title: 'Potpuno besplatno', text: 'Prijevoz i prtljag su uključeni u cijenu parkinga — bez doplate.' },
-      frequent: {
-        title: 'Čest i pouzdan',
-        text: 'Svakih 15 minuta tokom dana i svakih 30 minuta noću, svaki dan u godini.',
-      },
-      onCall: {
-        title: 'Čeka vas nakon leta',
-        text: 'Javite se nakon slijetanja i shuttle vas dočekuje ispred izlaza iz terminala.',
-      },
-    },
-  },
-
-  reviews: {
-    eyebrow: 'Recenzije',
-    title: 'Putnici nam vjeruju svoja vozila.',
-    description: 'Hiljade putnika iz cijele Bosne i Hercegovine i dijaspore ostavlja auto kod nas — evo šta kažu.',
-    googleCount: (count: string) => `${count} Google recenzija`,
-    verified: 'Verifikovan putnik',
-    ratingLabel: (rating: number) => `Ocjena ${rating} od 5`,
-    flightTo: (destination: string) => `let za ${destination}`,
-    disclaimer: 'Ocjene i recenzije su ilustrativne i bit će zamijenjene stvarnim prije objave.',
-    stats: {
-      travellers: 'ispraćenih putnika',
-      rating: 'prosječna ocjena',
-      minutes: 'do terminala',
-      recommend: 'bi nas preporučilo',
-    },
-    items: {
-      t1: {
-        city: 'Sarajevo',
-        date: 'septembar 2026.',
-        trip: 'Istanbul',
-        quote:
-          'Prvi put smo ostavili auto na deset dana i nijednom nismo pomislili na njega. Shuttle je stigao za tri minute, a vozilo nas je dočekalo čisto i na istom mjestu.',
-      },
-      t2: {
-        city: 'Zenica',
-        date: 'august 2026.',
-        trip: 'Frankfurt',
-        quote:
-          'Rezervacija je trajala manje od minute. Rampa me prepoznala po tablicama, bez ikakvih papira. Ovako bi trebalo svugdje da izgleda.',
-      },
-      t3: {
-        city: 'Tuzla',
-        date: 'januar 2026.',
-        trip: 'Beč',
-        quote:
-          'Natkriveni sektor je spas zimi. Poslije sedmice u Beču auto je bio bez snijega i leda, a plaćanje pri preuzimanju je prošlo bez ikakvih iznenađenja.',
-      },
-      t4: {
-        city: 'Mostar',
-        date: 'juli 2026.',
-        trip: 'Dubrovnik',
-        quote:
-          'Odlična usluga i ljubazno osoblje. U jutarnjoj špici shuttle je čekao par minuta, ali nas je s kuferima ukrcao i stigli smo na vrijeme.',
-      },
-      t5: {
-        city: 'Travnik',
-        date: 'juni 2026.',
-        trip: 'Minhen',
-        quote:
-          'Putujemo dva puta godišnje i ovo nam je postao stalni izbor. Javimo se čim sletimo, a shuttle nas već čeka ispred terminala.',
-      },
-      t6: {
-        city: 'Bihać',
-        date: 'oktobar 2026.',
-        trip: 'Cirih',
-        quote:
-          'Vozim kombi pa je bilo teško naći sigurno mjesto. Ovdje je cijena fer, PDV je uključen i nema skrivenih troškova. Preporuka.',
-      },
+    checklist: {
+      title: 'Prije nego krenete',
+      items: [
+        'Brave i prozori: provjerite još jednom, mir u glavi za 30 sekundi.',
+        'Vrijednosti: sklonite s vidljivog mjesta torbice, kablove i držače.',
+        'Fotografija stanja: jedan snimak telefonom čuva živce.',
+        'Gume i tečnosti (za duže boravke): provjerite da se po povratku možete odmah voziti.',
+        'Tajming: dođite 15-20 minuta ranije, ostatak ide brzo jer je vozač tu.',
+      ],
     },
   },
 
   contact: {
-    eyebrow: 'Kontakt',
-    title: 'Tu smo — 0–24h, svaki dan.',
-    description:
-      'Pitanje o rezervaciji, kašnjenju leta ili preuzimanju vozila? Javite se kanalom koji vam najviše odgovara.',
+    title: 'Pozovite nas. Radimo non-stop.',
+    lead: 'Parkirati možete u bilo koje doba dana ili noći, uključujući praznike.',
     channels: {
-      whatsapp: { label: 'WhatsApp', hint: 'Odgovaramo za par minuta' },
+      phone: { label: 'Telefon', hint: 'Svaki dan, 0-24h' },
+      whatsapp: { label: 'WhatsApp', hint: 'Poruka ili poziv' },
       viber: { label: 'Viber', hint: 'Poruka ili poziv' },
-      phone: { label: 'Telefon', hint: 'Non-stop, 0–24h' },
-      email: { label: 'E-mail', hint: 'Odgovor u roku od sat vremena' },
+      email: { label: 'E-mail', hint: 'Za upite i rezervacije' },
     },
-    channelAria: (label: string, value: string) => `${label}: ${value}`,
-    whatsappDates: (from: string, to: string) => `Zdravo! Zanima me parking od ${from} do ${to}.`,
-    whatsappGeneric: 'Zdravo! Zanima me parking na aerodromu.',
-    hours: {
-      title: 'Radno vrijeme',
-      openNow: 'Otvoreno sada',
-      parking: { label: 'Parking i shuttle', value: 'Non-stop, 0–24h' },
-      reception: { label: 'Recepcija', value: 'Non-stop, 0–24h' },
-      admin: { label: 'Administracija', value: 'Pon–Pet, 08–18h' },
-    },
+    whatsappGeneric: 'Pozdrav, želim rezervisati parking.',
+    addressTitle: 'Adresa',
+    hoursTitle: 'Radno vrijeme',
+    hours: 'Non-stop, svaki dan, uključujući praznike',
     map: {
-      aria: 'Karta lokacije',
-      terminalTitle: 'Terminal aerodroma Sarajevo',
-      distance: (distance: string) => `${distance} od parkinga`,
-      shuttleLine: (minutes: number) => `Shuttle ${minutes} min, besplatno`,
+      title: 'Lokacija',
+      show: 'Prikaži kartu',
+      note: 'Karta se učitava tek kad je zatražite.',
+      embedTitle: 'Karta lokacije Sky Parking & Fly',
       google: 'Google Maps',
       apple: 'Apple Maps',
     },
   },
 
+  reservation: {
+    title: 'Rezervacija',
+    lead: 'Odaberite datume, pogledajte okvirnu cijenu i pošaljite upit. Potvrdu dobijate porukom ili e-mailom.',
+    stayTitle: 'Termin',
+    guestTitle: 'Vaši podaci',
+    fields: {
+      name: { label: 'Ime i prezime', placeholder: 'Amar Hodžić' },
+      phone: { label: 'Telefon', placeholder: '061 123 456' },
+      plate: { label: 'Registarske tablice', placeholder: 'A12-K-345' },
+      flight: { label: 'Broj leta', placeholder: 'FR 1234' },
+      note: { label: 'Napomena', placeholder: 'Npr. kombi, dječija sjedalica, dolazak u 4 ujutro' },
+    },
+    errors: {
+      name: { required: 'Unesite ime i prezime.', invalid: 'Ime mora sadržavati slova.' },
+      phone: { invalid: 'Broj telefona nije ispravan (npr. 061 123 456).' },
+      plate: { invalid: 'Tablice nisu ispravne (npr. A12-K-345).' },
+      flight: { invalid: 'Broj leta nije ispravan (npr. FR 1234).' },
+    },
+    summary: {
+      title: 'Vaš upit',
+      stay: 'Boravak',
+      rate: 'Cijena po danu',
+      total: 'Okvirno ukupno',
+    },
+    send: {
+      title: 'Pošaljite upit',
+      hint: 'Poruka se šalje s vašeg uređaja, a mi vam potvrđujemo termin.',
+      whatsapp: 'Pošalji na WhatsApp',
+      viber: 'Viber',
+      email: 'E-mail',
+      call: 'Nazovi',
+      viberCopied: 'Tekst je kopiran. Zalijepite ga u Viber razgovor.',
+      fixErrors: 'Provjerite označena polja.',
+      previewTitle: 'Tekst poruke',
+    },
+    message: {
+      subject: 'Rezervacija parkinga',
+      greeting: 'Pozdrav, želim rezervisati parking.',
+      arrival: (when: string) => `Dolazak: ${when}`,
+      departure: (when: string) => `Odlazak: ${when}`,
+      stay: (days: string, total: string) => `Boravak: ${days}, okvirno ${total}`,
+      name: (value: string) => `Ime: ${value}`,
+      phone: (value: string) => `Telefon: ${value}`,
+      plate: (value: string) => `Vozilo: ${value}`,
+      flight: (value: string) => `Let: ${value}`,
+      note: (value: string) => `Napomena: ${value}`,
+    },
+  },
+
   footer: {
-    ctaTitle: 'Rezervišite mjesto za manje od minute.',
-    ctaText: 'Bez avansa i bez registracije. Plaćate tek kada preuzmete vozilo.',
-    about: (minutes: number) =>
-      `Siguran parking i besplatan shuttle do terminala aerodroma Sarajevo — ${minutes} minuta od ulaza do prijave leta.`,
-    country: 'Bosna i Hercegovina',
-    navAria: 'Navigacija u podnožju',
+    ctaTitle: 'Ostavite auto kod nas',
+    ctaText: 'Rezervišite online ili nas nazovite, 24 sata dnevno.',
+    contact: 'Kontakt',
     pages: 'Stranice',
-    services: 'Usluge',
     legal: 'Pravno',
     language: 'Jezik',
-    rights: (year: number, company: string) => `© ${year} ${company}. Sva prava zadržana.`,
-    priceNote: 'Sve cijene su izražene u KM i uključuju PDV.',
+    navAria: 'Navigacija u podnožju',
+    hours: 'Otvoreno 24/7, uključujući praznike',
+    rights: (year: number) => `© ${year} Sky Parking and Fly. Sva prava zadržana.`,
     toTop: 'Na vrh',
   },
 
   legal: {
     updated: (date: string) => `Ažurirano ${date}`,
-    backHome: 'Na početnu',
     docs: {
       terms: {
         title: 'Uslovi korištenja',
-        updated: '1. oktobar 2026.',
+        updated: '13. oktobar 2026.',
         sections: [
           {
-            heading: '1. Predmet usluge',
-            body: '{{legalName}} pruža uslugu čuvanja vozila na ograđenom i video nadziranom parkingu te besplatan shuttle prijevoz do terminala aerodroma i nazad, u skladu s rezervisanim terminom.',
+            heading: 'Usluga',
+            body: 'Sky Parking and Fly nudi čuvanje vozila na ograđenom, osvijetljenom i video nadziranom parkingu kod aerodroma Sarajevo, uz besplatan transfer do terminala i nazad.',
           },
           {
-            heading: '2. Rezervacija i cijena',
-            body: 'Rezervacija je potvrđena u trenutku kada dobijete referentni kod. Sve cijene su izražene u konvertibilnim markama (KM) i uključuju PDV. Obračun se vrši po svakom započetom periodu od 24 sata, računajući od vremena ostavljanja vozila.',
+            heading: 'Rezervacija',
+            body: 'Rezervaciju možete poslati putem ove stranice (WhatsApp, Viber ili e-mail) ili telefonom. Potvrdu termina dobijate porukom ili e-mailom.',
           },
           {
-            heading: '3. Plaćanje',
-            body: 'Plaćanje se vrši prilikom preuzimanja vozila, gotovinom ili platnom karticom. Online rezervacijom ne naplaćujemo nikakve avanse.',
+            heading: 'Cijena',
+            body: 'Cijena se računa po danu: 8 KM za boravak od 1 do 10 dana, 7 KM od 11 do 20 dana i 6 KM za 21 dan i duže. Iznos prikazan na stranici je okviran, a termin i cijenu potvrđujemo pri rezervaciji.',
           },
           {
-            heading: '4. Otkazivanje i izmjene',
-            body: 'Rezervaciju možete besplatno otkazati ili izmijeniti najkasnije 24 sata prije planiranog dolaska, putem telefona, e-maila ili poruke. U slučaju kasnijeg preuzimanja vozila od rezervisanog, dodatni dani se obračunavaju prema važećem cjenovniku.',
+            heading: 'Plaćanje',
+            body: 'Naplata se vrši gotovinom po dolasku ili odlasku. Za drugi način plaćanja kontaktirajte nas unaprijed.',
           },
           {
-            heading: '5. Odgovornost',
-            body: 'Vozilo je osigurano osiguranjem od odgovornosti operatera. Molimo da u vozilu ne ostavljate dokumente, novac i vrijedne predmete. Za štete nastale zbog više sile ili ranije postojećih oštećenja operater ne odgovara. Prilikom preuzimanja molimo provjerite vozilo i prijavite eventualnu štetu prije napuštanja parkinga.',
+            heading: 'Ključevi i kašnjenje leta',
+            body: 'Ključeve možete zadržati ili ostaviti kod nas na čuvanje. Pratimo letove i fleksibilni smo s vremenom preuzimanja, a za manja kašnjenja ne naplaćujemo dodatne troškove.',
+          },
+          {
+            heading: 'Vrijedne stvari',
+            body: 'Molimo vas da vrijedne stvari, torbice i kablove ne ostavljate na vidljivom mjestu u vozilu.',
           },
         ],
       },
       privacy: {
         title: 'Politika privatnosti',
-        updated: '1. oktobar 2026.',
+        updated: '13. oktobar 2026.',
         sections: [
           {
-            heading: 'Ko obrađuje vaše podatke',
-            body: 'Rukovalac ličnim podacima je {{legalName}}, {{street}}, {{city}}. Za sva pitanja možete nas kontaktirati na {{email}}.',
+            heading: 'Ko smo mi',
+            body: 'Sky Parking and Fly, Dr Atifa Purivatre 38, Sarajevo. Za sva pitanja o podacima pišite nam na info@parkingandfly.ba.',
           },
           {
-            heading: 'Koje podatke prikupljamo',
-            body: 'Za potrebe rezervacije obrađujemo ime i prezime, e-mail adresu, broj telefona, registarske tablice i podatke o vozilu te broj leta ako ga navedete. Video nadzor i sistem za prepoznavanje tablica bilježe vozila na ulazu i izlazu.',
+            heading: 'Šta se dešava s podacima iz obrasca',
+            body: 'Obrazac za rezervaciju na ovoj stranici ne šalje podatke na naš server. Ono što unesete koristi se samo za sastavljanje poruke koju sami šaljete putem WhatsAppa, Vibera ili e-maila. Te usluge pružaju treće strane prema vlastitim pravilima.',
           },
           {
-            heading: 'Svrha i rok čuvanja',
-            body: 'Podatke koristimo isključivo za izvršenje rezervacije, komunikaciju s vama i zaštitu imovine. Podaci o rezervaciji čuvaju se u skladu sa zakonskim rokovima, a snimci video nadzora 30 dana.',
+            heading: 'Podaci koje primamo',
+            body: 'Kad nam pošaljete upit, primamo podatke koje ste naveli u poruci, najčešće ime, termin, broj telefona i registarske tablice. Koristimo ih isključivo za potvrdu termina i komunikaciju s vama.',
+          },
+          {
+            heading: 'Video nadzor',
+            body: 'Parking je pod video nadzorom radi zaštite vozila i imovine.',
           },
           {
             heading: 'Vaša prava',
-            body: 'U skladu sa Zakonom o zaštiti ličnih podataka u Bosni i Hercegovini imate pravo na pristup, ispravku i brisanje podataka. Zahtjev nam pošaljite e-mailom, a odgovorit ćemo u zakonskom roku.',
+            body: 'Za pristup, ispravku ili brisanje podataka koje imamo o vama javite nam se na info@parkingandfly.ba.',
           },
         ],
       },
       cookies: {
         title: 'Politika kolačića',
-        updated: '1. oktobar 2026.',
+        updated: '13. oktobar 2026.',
         sections: [
           {
             heading: 'Šta koristimo',
-            body: 'Ova stranica ne koristi marketinške niti analitičke kolačiće trećih strana. Pohranjujemo samo vašu odabranu temu (svijetla ili tamna) i, ako rezervišete, evidenciju rezervacije u lokalnoj memoriji vašeg preglednika.',
+            body: 'Ova stranica ne koristi kolačiće za praćenje ni oglašavanje. Vaš preglednik pohranjuje samo odabranu temu (svijetla ili tamna).',
           },
           {
-            heading: 'Kako ih obrisati',
-            body: 'Lokalne podatke možete u svakom trenutku obrisati u postavkama svog preglednika. Brisanjem se vraćaju podrazumijevane postavke stranice.',
+            heading: 'Karta',
+            body: 'Karta na stranici Kontakt učitava se tek nakon što je zatražite. Tada se učitava OpenStreetMap, koji primjenjuje vlastita pravila.',
+          },
+          {
+            heading: 'Kako obrisati podatke',
+            body: 'Lokalne podatke možete u svakom trenutku obrisati u postavkama svog preglednika.',
           },
         ],
       },
@@ -615,110 +597,8 @@ export const bs = {
   notFound: {
     code: '404',
     title: 'Stranica nije pronađena',
-    text: 'Stranica koju tražite ne postoji ili je premještena. Provjerite adresu ili se vratite na početnu.',
+    text: 'Stranica koju tražite ne postoji ili je premještena.',
     home: 'Na početnu',
-    pricing: 'Pogledaj cijene',
-  },
-
-  booking: {
-    title: 'Rezervacija parkinga',
-    thanks: 'Hvala vam!',
-    done: 'Gotovo',
-    stepEyebrow: (step: number, days: string) => `Korak ${step} od 3 · ${days}`,
-    stepsAria: 'Koraci rezervacije',
-    stepLabels: { details: 'Detalji', vehicle: 'Vozilo', confirm: 'Potvrda' },
-    stepTitles: { one: 'Kada i šta parkirate?', two: 'Vozilo i kontakt', three: 'Pregled i potvrda' },
-    total: 'Ukupno',
-    next: 'Nastavi',
-    back: 'Nazad',
-    confirmButton: 'Potvrdi rezervaciju',
-    confirmedHeading: 'Rezervacija je potvrđena',
-    vehicleStep: {
-      vehicleLegend: 'Vaše vozilo',
-      plate: 'Registarske tablice',
-      platePlaceholder: 'A12-K-345',
-      make: 'Marka i model',
-      makePlaceholder: 'Volkswagen Golf 7',
-      color: 'Boja',
-      colorPlaceholder: 'Siva',
-      passengers: 'Broj putnika',
-      flight: 'Broj leta',
-      flightPlaceholder: 'JU 123',
-      flightHint: 'Pratimo kašnjenja leta i prilagođavamo shuttle.',
-      contactLegend: 'Kontakt podaci',
-      fullName: 'Ime i prezime',
-      fullNamePlaceholder: 'Amar Hodžić',
-      email: 'E-mail',
-      emailPlaceholder: 'ime@primjer.ba',
-      phone: 'Telefon',
-      phonePlaceholder: '061 000 000',
-    },
-    confirmStep: {
-      totalToPay: 'Ukupno za plaćanje',
-      vatIncluded: 'PDV uključen',
-      ofWhichVat: (vat: string) => `od toga PDV ${vat}`,
-      paymentBefore: 'Plaćanje se vrši ',
-      paymentStrong: 'pri preuzimanju vozila',
-      paymentAfter: ' — gotovinom ili karticom. Ne naplaćujemo avans.',
-      termsSummary: 'Sažetak uslova',
-      show: 'Prikaži',
-      hide: 'Sakrij',
-      terms: [
-        'Besplatno otkazivanje ili izmjena do 24 sata prije dolaska.',
-        'Svaki započeti period od 24 sata obračunava se kao cijeli dan.',
-        'Vozilo je osigurano osiguranjem od odgovornosti operatera.',
-        'Molimo ne ostavljajte dokumente i vrijedne predmete u vozilu.',
-      ],
-      consent:
-        'Upoznat/a sam s uslovima korištenja i politikom privatnosti i slažem se s obradom podataka za potrebe rezervacije.',
-      consentError: 'Potvrdite da ste upoznati s uslovima.',
-    },
-    summary: {
-      dropOff: 'Ostavljanje',
-      pickUp: 'Preuzimanje',
-      at: (time: string) => `u ${time}`,
-      duration: 'Trajanje',
-      parking: 'Parking',
-      vehicle: 'Vozilo',
-      passengers: 'Putnici',
-      flight: (flight: string) => `Let ${flight}`,
-      contact: 'Kontakt',
-      parkingPrice: 'Cijena parkinga',
-    },
-    success: {
-      heldBefore: 'Vaše mjesto je zadržano. Rampa će prepoznati tablice ',
-      heldAfter: ' pri dolasku.',
-      referenceCode: 'Referentni kod',
-      codeAria: (code: string) => `Kod: ${code}`,
-      copyCode: 'Kopiraj kod',
-      codeCopied: 'Kod je kopiran',
-      arrival: 'Dolazak',
-      returning: 'Povratak',
-      duration: 'Trajanje',
-      payOnPickup: 'Plaćanje pri preuzimanju',
-      addToCalendar: 'U kalendar',
-      share: 'Podijeli',
-      changesBefore: 'Izmjene ili otkazivanje: najkasnije 24h prije dolaska na ',
-      changesOr: ' ili ',
-      changesAfter: '.',
-      whatsappGreeting: (reference: string) => `Poštovanje, javljam se u vezi rezervacije ${reference}.`,
-      shareText: (reference: string, company: string, dropOff: string, pickUp: string, plate: string) =>
-        `Rezervacija ${reference} — ${company}\nOstavljanje: ${dropOff}\nPreuzimanje: ${pickUp}\nVozilo: ${plate}`,
-    },
-    errors: {
-      network: 'Nema veze sa serverom. Provjerite internet i pokušajte ponovo.',
-      timeout: 'Veza je prespora. Provjerite internet i pokušajte ponovo.',
-      server: 'Server trenutno ne može obraditi rezervaciju. Pokušajte ponovo.',
-      aborted: 'Slanje je prekinuto.',
-      unknown: 'Došlo je do greške. Pokušajte ponovo.',
-    },
-    ics: {
-      dropOff: 'Parking — ostavljanje vozila',
-      pickUp: 'Parking — preuzimanje vozila',
-      description: (reference: string, plate: string, phone: string) =>
-        `Rezervacija ${reference} · vozilo ${plate} · ${phone}`,
-      calendarName: 'Rezervacije',
-    },
   },
 };
 

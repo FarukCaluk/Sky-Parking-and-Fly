@@ -16,7 +16,9 @@ export const ROUTE_IDS = [
   'facilities',
   'shuttle',
   'reviews',
+  'faq',
   'contact',
+  'reservation',
   'terms',
   'privacy',
   'cookies',
@@ -29,7 +31,10 @@ export const SLUGS: Record<RouteId, Record<Lang, string>> = {
   facilities: { bs: 'objekat', en: 'facilities', de: 'einrichtungen' },
   shuttle: { bs: 'shuttle', en: 'shuttle', de: 'shuttle' },
   reviews: { bs: 'recenzije', en: 'reviews', de: 'bewertungen' },
+  // Same slug as the original site (parkingandfly.ba/cesta-pitanja)
+  faq: { bs: 'cesta-pitanja', en: 'faq', de: 'haeufige-fragen' },
   contact: { bs: 'kontakt', en: 'contact', de: 'kontakt' },
+  reservation: { bs: 'rezervacija', en: 'reservation', de: 'reservierung' },
   terms: { bs: 'uslovi-koristenja', en: 'terms', de: 'nutzungsbedingungen' },
   privacy: { bs: 'politika-privatnosti', en: 'privacy', de: 'datenschutz' },
   cookies: { bs: 'kolacici', en: 'cookies', de: 'cookies' },
@@ -41,6 +46,7 @@ export const NAV_ROUTES = [
   'facilities',
   'shuttle',
   'reviews',
+  'faq',
   'contact',
 ] as const satisfies readonly RouteId[];
 /** Legal pages linked from the footer. */

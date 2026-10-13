@@ -10,69 +10,48 @@ const stay = (patch: Partial<StayDraft> = {}): StayDraft => ({
   dropOffTime: '10:00',
   pickUpDate: '2026-10-25',
   pickUpTime: '10:00',
-  cover: 'covered',
-  vehicle: 'car',
-  extras: [],
   ...patch,
 });
 
 describe('resolveTier', () => {
   it.each([
     [1, 'short'],
-    [3, 'short'],
-    [4, 'week'],
-    [7, 'week'],
-    [8, 'extended'],
-    [14, 'extended'],
-    [15, 'long'],
-    [60, 'long'],
-  ])('%i days → %s', (days, id) => {
+    [10, 'short'],
+    [11, 'mid'],
+    [20, 'mid'],
+    [21, 'long'],
+    [90, 'long'],
+  ])('%i days -> %s', (days, id) => {
     expect(resolveTier(days).id).toBe(id);
   });
 });
 
-describe('calculateQuote', () => {
-  it('prices a covered car for 5 days with the weekly tier', () => {
-    const q = calculateQuote({ days: 5, cover: 'covered', vehicle: 'car', extras: [] });
-    expect(q.ratePerDay).toBe(10.5);
-    expect(q.parking).toBe(52.5);
-    expect(q.total).toBe(52.5);
-    // standard rate 12 × 5 = 60 → saves 7.50
-    expect(q.savings).toBe(7.5);
-    expect(q.savingsPercent).toBeCloseTo(12.5);
-  });
-
-  it('applies the vehicle multiplier and rounds the daily rate to 0.50 KM', () => {
-    expect(calculateQuote({ days: 2, cover: 'open', vehicle: 'suv', extras: [] }).ratePerDay).toBe(10);
-    expect(calculateQuote({ days: 10, cover: 'open', vehicle: 'moto', extras: [] }).ratePerDay).toBe(3.5);
-    expect(calculateQuote({ days: 20, cover: 'covered', vehicle: 'van', extras: [] }).ratePerDay).toBe(11.5);
-  });
-
-  it('adds one-off and per-day extras', () => {
-    const q = calculateQuote({ days: 4, cover: 'open', vehicle: 'car', extras: ['wash', 'insurance'] });
-    expect(q.parking).toBe(28);
-    expect(q.extrasTotal).toBe(18); // 12 + 4 × 1.50
-    expect(q.total).toBe(46);
-    expect(q.extras.map((l) => l.id)).toEqual(['wash', 'insurance']);
-    expect(q.extras[1]).toMatchObject({ billing: 'perDay', quantity: 4, unit: 1.5, amount: 6 });
-    expect(q.extras[0]).toMatchObject({ billing: 'once', quantity: 1, unit: 12, amount: 12 });
-  });
-
-  it('keeps VAT as the part of the total that is already included', () => {
-    const q = calculateQuote({ days: 1, cover: 'open', vehicle: 'car', extras: ['valet'] }); // 8 + 25 = 33
-    expect(q.total).toBe(33);
-    expect(q.vat).toBe(4.79); // 33 − 33 / 1.17 = 4.7949…
-  });
-
-  it('clamps nonsense day counts', () => {
-    expect(calculateQuote({ days: 0, cover: 'open', vehicle: 'car', extras: [] }).days).toBe(1);
-    expect(calculateQuote({ days: 500, cover: 'open', vehicle: 'car', extras: [] }).days).toBe(MAX_STAY_DAYS);
-    expect(calculateQuote({ days: Number.NaN, cover: 'open', vehicle: 'car', extras: [] }).days).toBe(1);
-  });
-
-  it('never reports negative savings in the first tier', () => {
-    const q = calculateQuote({ days: 2, cover: 'open', vehicle: 'car', extras: [] });
+describe('calculateQuote (price list: 8 / 7 / 6 KM per day)', () => {
+  it('prices a short stay at 8 KM per day', () => {
+    const q = calculateQuote(5);
+    expect(q.ratePerDay).toBe(8);
+    expect(q.total).toBe(40);
     expect(q.savings).toBe(0);
+  });
+
+  it('applies the 11-20 day rate to the whole stay', () => {
+    const q = calculateQuote(12);
+    expect(q.ratePerDay).toBe(7);
+    expect(q.total).toBe(84);
+    expect(q.savings).toBe(12);
+  });
+
+  it('applies the 21+ day rate to the whole stay', () => {
+    const q = calculateQuote(30);
+    expect(q.ratePerDay).toBe(6);
+    expect(q.total).toBe(180);
+    expect(q.savings).toBe(60);
+  });
+
+  it('clamps nonsense day counts to one day', () => {
+    expect(calculateQuote(0).days).toBe(1);
+    expect(calculateQuote(Number.NaN).days).toBe(1);
+    expect(calculateQuote(2.9).days).toBe(2);
   });
 });
 
@@ -112,6 +91,7 @@ describe('validateStay', () => {
 
   it('rejects stays beyond the online limit', () => {
     expect(validateStay(stay({ pickUpDate: '2027-02-01' }), NOW).range).toBe('rangeTooLong');
+    expect(MAX_STAY_DAYS).toBe(60);
   });
 
   it('reports missing dates', () => {
@@ -122,10 +102,10 @@ describe('validateStay', () => {
 });
 
 describe('createDefaultStay', () => {
-  it('starts tomorrow and is valid', () => {
+  it('starts tomorrow for a week and is valid', () => {
     const d = createDefaultStay(NOW);
     expect(d.dropOffDate).toBe('2026-10-13');
-    expect(stayDays(d)).toBe(5);
+    expect(stayDays(d)).toBe(7);
     expect(validateStay(d, NOW)).toEqual({});
   });
 });

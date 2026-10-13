@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Sky Parking & Fly — airport parking and shuttle transfer platform.",
+  "description": "Sky Parking & Fly: private parking 800 m from Sarajevo airport with a free transfer to the terminal.",
   "engines": {
     "node": "22.x"
   },
@@ -17,7 +17,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource/barlow-condensed": "^5.3.0",
     "clsx": "^2.1.1",
     "framer-motion": "^14.1.0",
     "lucide-react": "^1.55.0",

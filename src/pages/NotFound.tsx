@@ -1,28 +1,29 @@
-import { buttonStyles } from '@/components/ui/buttonStyles';
+import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout';
 import { useI18n } from '@/i18n/context';
-import { Link } from '@/router/Link';
 import { PageShell } from './PageShell';
 
 export default function NotFound() {
   const { t } = useI18n();
+
   return (
     <PageShell page="notFound">
-      <Container className="grid min-h-[70svh] place-items-center pb-16 pt-32 text-center">
-        <div className="max-w-xl">
-          <p className="display-title bg-gradient-to-br from-brand-400 to-brand-700 bg-clip-text text-[clamp(5rem,3rem+10vw,9rem)] text-transparent">
-            {t.notFound.code}
-          </p>
-          <h1 className="display-title mt-2 text-[clamp(1.75rem,1.2rem+2.4vw,2.75rem)]">{t.notFound.title}</h1>
-          <p className="mt-4 text-pretty text-lg leading-relaxed text-ink-muted">{t.notFound.text}</p>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <Link route="home" className={buttonStyles({ size: 'lg' })}>
-              {t.notFound.home}
-            </Link>
-            <Link route="pricing" className={buttonStyles({ size: 'lg', variant: 'secondary' })}>
-              {t.notFound.pricing}
-            </Link>
-          </div>
+      <Container className="grid min-h-[86dvh] content-center pb-20 pt-32">
+        <p
+          aria-hidden="true"
+          className="display tabular text-[clamp(8rem,3rem+22vw,24rem)] leading-[0.78] text-accent-text"
+        >
+          {t.notFound.code}
+        </p>
+        <h1 className="display text-heading mt-8">{t.notFound.title}</h1>
+        <p className="mt-4 max-w-[44ch] text-lg text-ink-muted">{t.notFound.text}</p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button to="home" arrow>
+            {t.notFound.home}
+          </Button>
+          <Button to="faq" variant="secondary">
+            {t.nav.pages.faq}
+          </Button>
         </div>
       </Container>
     </PageShell>

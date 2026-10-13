@@ -20,6 +20,12 @@ describe('pathFor', () => {
     expect(pathFor('de', 'pricing')).toBe('/de/preise');
     expect(pathFor('de', 'privacy')).toBe('/de/datenschutz');
   });
+
+  it('keeps the FAQ at the same address as the original site', () => {
+    expect(pathFor('bs', 'faq')).toBe('/cesta-pitanja');
+    expect(pathFor('en', 'faq')).toBe('/en/faq');
+    expect(pathFor('de', 'faq')).toBe('/de/haeufige-fragen');
+  });
 });
 
 describe('matchPath', () => {

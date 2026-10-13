@@ -1,32 +1,62 @@
-import { m } from 'framer-motion';
-import type { ReactNode } from 'react';
+import { m, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { useRef, type ReactNode } from 'react';
 import { Container } from '@/components/ui/Layout';
+import { Photo } from '@/components/ui/Photo';
+import type { PhotoId } from '@/data/photos';
 
 interface PageHeaderProps {
-  eyebrow?: string;
   title: ReactNode;
-  description?: ReactNode;
-  /** Optional row of actions under the description */
-  actions?: ReactNode;
+  lead?: ReactNode;
+  photo?: { id: PhotoId; alt: string; position?: string };
+  children?: ReactNode;
 }
 
-/** The `<h1>` block that opens every inner page. Leaves room for the floating navigation bar. */
-export function PageHeader({ eyebrow, title, description, actions }: PageHeaderProps) {
+/** Opens every inner page: the `<h1>`, a short lead and, where there is one, a wide photograph. */
+export function PageHeader({ title, lead, photo, children }: PageHeaderProps) {
   return (
-    <Container className="pb-10 pt-28 sm:pb-14 sm:pt-36 lg:pt-40">
-      <m.header
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="mx-auto max-w-3xl text-center"
-      >
-        {eyebrow && <p className="mb-3 text-sm font-semibold tracking-[-0.005em] text-accent">{eyebrow}</p>}
-        <h1 className="display-title text-[clamp(2.25rem,1.4rem+4vw,4rem)]">{title}</h1>
-        {description && (
-          <p className="mt-5 text-pretty text-[1.0625rem] leading-relaxed text-ink-muted sm:text-lg">{description}</p>
-        )}
-        {actions && <div className="mt-8 flex flex-wrap justify-center gap-3">{actions}</div>}
-      </m.header>
-    </Container>
+    <header>
+      <Container className="pb-12 pt-32 sm:pt-40 lg:pb-16">
+        <m.h1
+          initial={{ y: 28 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="display text-title max-w-[17ch]"
+        >
+          {title}
+        </m.h1>
+        {lead && <p className="mt-8 max-w-[58ch] text-lg text-ink-muted sm:text-xl">{lead}</p>}
+        {children}
+      </Container>
+      {photo && (
+        <Container>
+          <ParallaxPhoto {...photo} />
+        </Container>
+      )}
+    </header>
+  );
+}
+
+function ParallaxPhoto({ id, alt, position }: NonNullable<PageHeaderProps['photo']>) {
+  const frame = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: frame, offset: ['start end', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['-7%', '7%']);
+
+  return (
+    <div
+      ref={frame}
+      className="relative aspect-[4/3] overflow-hidden rounded-[10px] bg-surface-2 sm:aspect-[16/9] lg:aspect-[21/9]"
+    >
+      <m.div style={{ y }} className="absolute inset-x-0 -top-[9%] h-[118%]">
+        <Photo
+          id={id}
+          alt={alt}
+          priority
+          position={position}
+          sizes="(min-width: 1344px) 1344px, 100vw"
+          className="size-full object-cover"
+        />
+      </m.div>
+    </div>
   );
 }

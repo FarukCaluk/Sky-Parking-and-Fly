@@ -14,7 +14,9 @@ const LOADERS: Record<Exclude<PageKey, 'home'>, Loader> = {
   facilities: () => import('./Facilities'),
   shuttle: () => import('./Shuttle'),
   reviews: () => import('./Reviews'),
+  faq: () => import('./Faq'),
   contact: () => import('./Contact'),
+  reservation: () => import('./Reservation'),
   terms: () => import('./Legal').then((m) => ({ default: m.Terms })),
   privacy: () => import('./Legal').then((m) => ({ default: m.Privacy })),
   cookies: () => import('./Legal').then((m) => ({ default: m.Cookies })),
@@ -27,14 +29,16 @@ export const PAGES: Record<PageKey, PageComponent> = {
   facilities: lazy(LOADERS.facilities),
   shuttle: lazy(LOADERS.shuttle),
   reviews: lazy(LOADERS.reviews),
+  faq: lazy(LOADERS.faq),
   contact: lazy(LOADERS.contact),
+  reservation: lazy(LOADERS.reservation),
   terms: lazy(LOADERS.terms),
   privacy: lazy(LOADERS.privacy),
   cookies: lazy(LOADERS.cookies),
   notFound: lazy(LOADERS.notFound),
 };
 
-/** Warm a page's chunk (hover, focus or idle). Failures are ignored — the real navigation will retry. */
+/** Warm a page's chunk (hover, focus or idle). Failures are ignored, the real navigation will retry. */
 export function prefetchPage(page: PageKey): void {
   if (page === 'home') return;
   void LOADERS[page]().catch(() => undefined);
@@ -42,9 +46,9 @@ export function prefetchPage(page: PageKey): void {
 
 registerPrefetcher(prefetchPage);
 
-/** After first paint, fetch the main pages one by one so navigation feels instant. */
+/** After first paint, fetch the pages people go to next, one by one, so navigation feels instant. */
 export function prefetchMainPages(): void {
-  (['pricing', 'facilities', 'shuttle', 'reviews', 'contact'] as const).forEach((page, index) => {
+  (['reservation', 'pricing', 'faq', 'contact', 'facilities'] as const).forEach((page, index) => {
     runWhenIdle(() => prefetchPage(page), 2000 + index * 500);
   });
 }

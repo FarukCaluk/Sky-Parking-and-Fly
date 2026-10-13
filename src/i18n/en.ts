@@ -9,49 +9,59 @@ export const en: Messages = {
     ogLocale: 'en_US',
     pages: {
       home: {
-        title: 'Sky Parking & Fly — Secure airport parking and shuttle transfer',
+        title: 'Sky Parking & Fly | Private parking 800 m from Sarajevo airport',
         description:
-          'Guarded parking minutes from the terminal, 24/7 video surveillance, a free shuttle and insured vehicles. Get your price and book online in under a minute.',
+          'Fenced, lit and video-monitored parking near Sarajevo airport. Free transfer to the terminal and back, from 6 KM per day.',
       },
       pricing: {
-        title: 'Prices and parking calculator — Sky Parking & Fly',
+        title: 'Parking prices | Sky Parking & Fly',
         description:
-          'Transparent airport parking prices: covered and open-air, discounts for longer stays and a calculator that shows the total including VAT instantly.',
+          'Parking near Sarajevo airport: 8 KM per day (1-10 days), 7 KM (11-20 days), 6 KM (21+ days). Transfer and security included. Work out your stay.',
       },
       facilities: {
-        title: 'Facilities and security — Sky Parking & Fly',
+        title: 'Facility and security | Sky Parking & Fly',
         description:
-          'Live video surveillance, automatic barriers with plate recognition, staff on site 24/7 and real-time parking occupancy in one place.',
+          'Fenced and lit parking, 24/7 video surveillance and staff on site. See what our parking near Sarajevo airport looks like.',
       },
       shuttle: {
-        title: 'Free shuttle to the terminal — Sky Parking & Fly',
+        title: 'Free transfer to the terminal | Sky Parking & Fly',
         description:
-          'A free shuttle every 15 minutes to Sarajevo airport terminal. See the route, the departure schedule and the time to the next shuttle.',
+          'About a minute to the terminal entrance, with help for your luggage. On your return, send a message or call and a driver comes to get you.',
       },
       reviews: {
-        title: 'Traveller reviews — Sky Parking & Fly',
-        description: 'What travellers who left their car with us say: ratings, experiences and verified reviews.',
+        title: 'Traveller reviews | Sky Parking & Fly',
+        description: 'What travellers say about leaving their car at our parking near Sarajevo airport.',
+      },
+      faq: {
+        title: 'Frequently asked questions | Sky Parking & Fly',
+        description:
+          'Answers to the most common questions about private parking near Sarajevo airport: security, booking, payment, prices, transfer, keys and flight delays.',
       },
       contact: {
-        title: 'Contact — Sky Parking & Fly',
+        title: 'Contact | Sky Parking & Fly',
         description:
-          'Get in touch via WhatsApp, Viber, phone or e-mail. Opening hours, address and the parking location on the map.',
+          'Call us or message us on WhatsApp or Viber. Dr Atifa Purivatre 38, Sarajevo. Open 24/7, including holidays.',
+      },
+      reservation: {
+        title: 'Book parking | Sky Parking & Fly',
+        description:
+          'Pick your dates, see the estimated price and send your reservation via WhatsApp, Viber or e-mail.',
       },
       terms: {
-        title: 'Terms of use — Sky Parking & Fly',
-        description: 'Terms of use for the parking and shuttle transfer service.',
+        title: 'Terms of use | Sky Parking & Fly',
+        description: 'Terms for the parking and transfer service.',
       },
       privacy: {
-        title: 'Privacy policy — Sky Parking & Fly',
-        description: 'How we process and protect your personal data.',
+        title: 'Privacy policy | Sky Parking & Fly',
+        description: 'How we handle the information you send us.',
       },
       cookies: {
-        title: 'Cookie policy — Sky Parking & Fly',
-        description: 'What data this website stores in your browser.',
+        title: 'Cookie policy | Sky Parking & Fly',
+        description: 'What this site stores in your browser.',
       },
       notFound: {
-        title: 'Page not found — Sky Parking & Fly',
-        description: 'The requested page does not exist.',
+        title: 'Page not found | Sky Parking & Fly',
+        description: 'The page you are looking for does not exist.',
       },
     },
   },
@@ -60,8 +70,6 @@ export const en: Messages = {
     skipToContent: 'Skip to content',
     close: 'Close',
     optional: 'Optional',
-    back: 'Back',
-    loading: 'Loading…',
   },
 
   language: {
@@ -73,21 +81,23 @@ export const en: Messages = {
 
   nav: {
     aria: 'Main navigation',
-    homeAria: 'Sky Parking & Fly — home',
+    homeAria: 'Sky Parking & Fly, home',
     pages: {
       home: 'Home',
-      pricing: 'Prices',
-      facilities: 'Facilities',
+      pricing: 'Pricing',
+      facilities: 'Facility',
       shuttle: 'Shuttle',
       reviews: 'Reviews',
+      faq: 'FAQ',
       contact: 'Contact',
+      reservation: 'Reservation',
       terms: 'Terms of use',
       privacy: 'Privacy policy',
       cookies: 'Cookie policy',
     },
     book: 'Book',
-    bookParking: 'Book parking',
     callUs: (phone: string) => `Call us: ${phone}`,
+    menu: 'Menu',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     switchToLight: 'Switch to light theme',
@@ -99,7 +109,6 @@ export const en: Messages = {
   date: {
     weekdaysLong: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    calendarHeader: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     monthsLong: [
       'January',
       'February',
@@ -117,492 +126,450 @@ export const en: Messages = {
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     short: (weekday: string, day: number, month: string) => `${weekday}, ${month} ${day}`,
     long: (weekday: string, day: number, month: string, year: number) => `${weekday}, ${month} ${day}, ${year}`,
-    monthTitle: (month: string, year: number) => `${month} ${year}`,
+    at: (date: string, time: string) => `${date} at ${time}`,
   },
 
   units: {
     days: (n: number) => `${n} ${plural(n, 'day', 'days')}`,
-    dayWord: (n: number) => plural(n, 'day', 'days'),
-    services: (n: number) => `${n} ${plural(n, 'service', 'services')}`,
-    perDayShort: '/day',
-    perDayLong: 'per day',
-    kmPerDay: 'KM / day',
+    perDay: 'per day',
   },
 
-  validation: {
-    stay: {
-      dropOffMissing: 'Choose a date and time to drop off your vehicle.',
-      dropOffPast: 'The drop-off time has already passed.',
-      pickUpMissing: 'Choose a date and time to pick up your vehicle.',
-      pickUpBeforeDropOff: 'Pick-up must be after drop-off.',
-      rangeTooLong: (maxDays: number) =>
-        `Online booking is available for up to ${maxDays} ${plural(maxDays, 'day', 'days')}. Please contact us for longer stays.`,
-    },
-    fullName: { required: 'Enter your full name.', invalid: 'Enter your first and last name (e.g. Amar Hodžić).' },
-    email: { required: 'Enter your e-mail address.', invalid: 'The e-mail address is not valid.' },
-    phone: { required: 'Enter your phone number.', invalid: 'The phone number is not valid (e.g. 061 000 000).' },
-    plate: { required: 'Enter the licence plate.', invalid: 'The licence plate is not valid (e.g. A12-K-345).' },
-    make: { required: 'Enter the vehicle make and model.' },
-    passengers: {
-      required: 'Enter the number of passengers.',
-      range: 'The number of passengers must be between 1 and 8.',
-    },
-    flightNumber: { invalid: 'The flight number is not valid (e.g. JU 123).' },
-  },
-
-  pricing: {
-    tiers: {
-      short: { label: '1–3 days', hint: 'Short trip' },
-      week: { label: '4–7 days', hint: 'Week' },
-      extended: { label: '8–14 days', hint: 'Extended' },
-      long: { label: '15+ days', hint: 'Long stay' },
-    },
-    vehicles: {
-      car: { label: 'Car', shortLabel: 'Car', hint: 'Passenger car' },
-      suv: { label: 'SUV', shortLabel: 'SUV', hint: 'Off-road / crossover' },
-      van: { label: 'Van', shortLabel: 'Van', hint: 'Up to 3.5 t' },
-      moto: { label: 'Motorbike', shortLabel: 'Bike', hint: 'Motorcycle' },
-    },
-    covers: {
-      open: { label: 'Open-air', description: 'Lit and fenced open-air area' },
-      covered: { label: 'Covered', description: 'Protection from snow, hail and sun' },
-    },
-    extras: {
-      wash: {
-        label: 'Exterior wash',
-        shortLabel: 'Exterior wash',
-        description: 'Hand wash and dry while you are away.',
-      },
-      interior: {
-        label: 'Interior cleaning',
-        shortLabel: 'Interior cleaning',
-        description: 'Vacuuming, windows and dashboard cleaning.',
-      },
-      ev: {
-        label: 'Electric vehicle charging',
-        shortLabel: 'EV charging',
-        description: 'A full battery waiting for your return.',
-      },
-      valet: {
-        label: 'VIP pick-up at the terminal',
-        shortLabel: 'VIP pick-up',
-        description: 'We bring your car to the arrivals exit.',
-      },
-      insurance: {
-        label: 'Extended vehicle protection',
-        shortLabel: 'Extended protection',
-        description: 'Comprehensive cover up to 50,000 KM.',
-      },
-    },
+  photos: {
+    jet: 'A plane takes off above the cars parked at Sky Parking & Fly, with mountains behind',
+    entrance:
+      'The entrance: a grey sheet-metal fence with a blue Sky Parking & Fly sign and an ULAZ (entrance) arrow, and a gravel lot with cars behind it',
+    sign: 'The Sky Parking & Fly Sarajevo sign: parking near Sarajevo airport, 24h surveillance and transfer, ULAZ (entrance) and phone 062/963/901',
+    pole: 'A blue Private parking sign and a pole with a video surveillance camera and a floodlight',
   },
 
   hero: {
-    badge: 'Sarajevo Airport · open 24/7',
-    titleLine1: 'Park without worry.',
-    titleLine2: 'Fly without stress.',
-    lead: (minutes: number) =>
-      `Guarded, video-monitored parking ${minutes} minutes from the terminal. A free shuttle, an insured vehicle and a price you see upfront.`,
-    cta: 'Book parking',
-    ctaSecondary: 'See prices',
-    ratingSuffix: (count: string) => `on Google · ${count} reviews`,
-    valueProps: {
-      secure: { title: 'Guarded parking', text: 'Fenced area with staff 24/7' },
-      cctv: { title: '24/7 video surveillance', text: '48 cameras, footage kept 30 days' },
-      shuttle: { title: 'Free shuttle', text: '5 minutes to the terminal' },
-      insured: { title: 'Insured vehicles', text: 'Liability insurance included' },
-    },
+    title: 'Parking 800 metres from the airport',
+    lead: 'Fenced, lit parking under 24/7 video surveillance, with a free transfer to the terminal and back.',
   },
 
-  widget: {
-    title: 'Quick booking',
-    noDeposit: 'No deposit',
-    estimate: 'Price estimate',
-    rateLine: (rate: string) => `${rate} / day · VAT included`,
-    saving: (amount: string) => `You save ${amount}`,
-    continue: 'Continue to booking',
-    footnote: 'Pay on pick-up · Free cancellation up to 24h before arrival',
+  stayBar: {
+    aria: 'Stay dates',
+    arrival: 'Arrival',
+    departure: 'Departure',
+    date: 'Date',
+    time: 'Time',
+    estimate: 'Estimated price',
+    line: (days: string, rate: string) => `${days} × ${rate} per day`,
   },
 
-  stayForm: {
-    coverLabel: 'Parking type',
-    dropOffTime: 'Drop-off time',
-    pickUpTime: 'Pick-up time',
-    vehicleLabel: 'Vehicle type',
-    extrasLabel: 'Extra services',
+  stayErrors: {
+    dropOffMissing: 'Choose an arrival date and time.',
+    dropOffPast: 'The arrival time has already passed.',
+    pickUpMissing: 'Choose a departure date and time.',
+    pickUpBeforeDropOff: 'Departure must be after arrival.',
+    rangeTooLong: (maxDays: number) =>
+      `For stays longer than ${maxDays} days, call us and we will agree a special price.`,
   },
 
-  dateRange: {
-    dropOff: 'Drop-off',
-    pickUp: 'Pick-up',
-    choose: 'Choose',
-    dialog: 'Date picker',
-    prevMonth: 'Previous month',
-    nextMonth: 'Next month',
-    today: 'today',
-    hintDropOff: 'Choose your drop-off day',
-    hintPickUp: 'Now choose your pick-up day',
-    hintPickUpHover: (date: string) => `Pick-up: ${date}`,
-  },
-
-  how: {
-    eyebrow: 'How it works',
-    title: 'From booking to take-off — four steps.',
-    description: 'No paperwork, no waiting at the barrier and no running to the terminal with your suitcases.',
+  journey: {
+    title: 'From the lot to the terminal in about a minute',
+    lead: 'Leave your car, we drive you. On your return, we come to get you.',
     steps: {
       book: {
-        title: 'Book online',
-        text: 'Choose your dates and services — you see the price right away and the confirmation arrives in seconds.',
+        title: 'Book',
+        text: 'Pick your dates and send your request. You get a confirmation by message or e-mail.',
       },
-      arrive: {
-        title: 'Arrive without waiting',
-        text: 'A camera recognises your licence plate and opens the barrier. Our staff guide you to your reserved space.',
+      park: {
+        title: 'Park',
+        text: 'Park yourself or leave us the key, whichever suits you. We help with suitcases, strollers and child seats.',
       },
-      shuttle: {
-        title: 'Shuttle to the terminal',
-        text: 'A free ride with your luggage — just five minutes to check-in.',
+      ride: {
+        title: 'We drive you',
+        text: 'It is about a minute to the terminal entrance. Free, included in the parking price.',
       },
-      return: {
-        title: 'Return stress-free',
-        text: 'Call us after landing. The shuttle is waiting and your car is exactly where you left it.',
+      back: {
+        title: 'Come back',
+        text: 'Once you have your luggage, send a message or call us. A driver comes to get you and takes you back to your car.',
       },
+    },
+    map: {
+      aria: 'Diagram of the route from the parking to the airport: 800 metres, 1 to 2 minutes by car',
+      parking: 'Parking',
+      airport: 'Airport',
+      distance: '800 m',
+      time: '1-2 min',
+      note: 'Diagram, not to scale',
     },
   },
 
-  home: {
-    exploreEyebrow: 'Explore',
-    exploreTitle: 'Everything you need to know before you fly.',
-    exploreDescription: 'Prices, security, the shuttle and traveller experiences — each on its own page.',
-    pricing: {
-      eyebrow: 'Prices',
-      headline: (price: string) => `from ${price} / day`,
-      text: 'A transparent price list, a real-time calculator and a discount for longer stays.',
-      link: 'Calculate your price',
+  price: {
+    title: 'The longer you stay, the cheaper each day',
+    lead: 'The price is per day and depends on the length of your stay. Transfer, video surveillance and on-site security are included.',
+    unit: 'KM per day',
+    daysLabel: 'How many days are you staying',
+    sliderAria: 'Length of stay in days',
+    totalLabel: 'Total',
+    totalFor: (days: string) => `for ${days}`,
+    saving: (amount: string) => `You save ${amount}`,
+    approx: 'Estimated price',
+    tiers: {
+      short: {
+        label: '1-10 days',
+        hint: 'The ideal solution for short stays and quick trips.',
+      },
+      mid: {
+        label: '11-20 days',
+        hint: 'The most popular choice for travellers staying longer, a great balance of price and convenience.',
+      },
+      long: {
+        label: '21+ days',
+        hint: 'The best value for long stays, maximum security at the best price.',
+      },
     },
-    facilities: {
-      eyebrow: 'Facilities',
-      headline: '48 cameras',
-      badge: 'Monitored 24/7',
-      text: 'Video surveillance, an automatic barrier and staff on site — and you can follow occupancy live.',
-      link: 'See the facilities',
-    },
-    shuttle: {
-      eyebrow: 'Shuttle',
-      next: 'Next departure',
-      text: 'A free ride to the terminal every 15 minutes, and every 30 minutes at night.',
-      link: 'Departure schedule',
-    },
-    reviews: {
-      eyebrow: 'Reviews',
-      headline: (score: string) => `${score} / 5`,
-      text: (count: string) => `${count} Google reviews and thousands of happy travellers.`,
-      link: 'Read the experiences',
-    },
-  },
-
-  calculator: {
-    eyebrow: 'Prices and services',
-    title: 'The price you see upfront. No surprises.',
-    description:
-      'The longer you stay, the cheaper each day gets. Set the duration, parking type and services — the total updates instantly.',
-    coveredAria: 'Covered parking',
-    standard: 'Standard',
-    yourChoice: 'Your choice',
-    noteCar: (vat: string) =>
-      `Prices for a passenger car · VAT (${vat}) included · every started day (24h) counts as a full day`,
-    noteOther: (vat: string) =>
-      `Prices for the selected vehicle · VAT (${vat}) included · every started day (24h) counts as a full day`,
-    duration: 'Length of stay',
-    dayLess: 'One day less',
-    dayMore: 'One day more',
-    vehicleTitle: 'Vehicle type',
-    extrasTitle: 'Extra services',
-    summaryTitle: 'Your estimate',
-    parking: 'Parking',
-    savings: 'Long-stay saving',
-    vatIncluded: 'VAT included',
-    coveredLower: 'covered',
-    openLower: 'open-air',
-    reserveFor: (total: string) => `Book for ${total}`,
+    includedTitle: 'Included in the price',
     included: [
-      'Free shuttle every 15 minutes',
-      '24/7 video surveillance and staff on site',
-      'Vehicle liability insurance',
-      'Help: jump-starts and tyre inflation',
+      'Free transfer to the airport',
+      '24/7 video surveillance',
+      'Physical security',
+      'Fenced and well-lit area',
+      'Discount for longer stays',
+    ],
+    payment: 'Payment in cash on arrival or departure. If you would like to pay another way, contact us in advance.',
+    longStay: 'For longer stays and regular customers we offer extra discounts and special benefits.',
+    currency: 'All prices are in convertible marks (KM, currency code BAM).',
+  },
+
+  lot: {
+    title: 'Your car is never left unwatched',
+    facts: {
+      fenced: { title: 'Fenced area', text: 'Only customers and staff have access.' },
+      cctv: { title: '24/7 video surveillance', text: 'The parking is under video surveillance around the clock.' },
+      staff: {
+        title: 'Staff on site',
+        text: 'Physical security, clear entry and exit rules and a log of movements.',
+      },
+      keys: {
+        title: 'The keys stay with you',
+        text: 'Your car stays locked. You can keep the keys or leave them with us for safekeeping.',
+      },
+    },
+    link: 'See the facility',
+    entranceCaption: 'The entrance is to the right of the sign.',
+    poleCaption: 'Camera and floodlight on a pole.',
+  },
+
+  reviews: {
+    title: 'What travellers say',
+    lead: 'Experiences from travellers who left their car with us.',
+    google: '5.0 rating on Google Maps',
+    googleLink: 'All reviews on Google Maps',
+    items: {
+      nedim: {
+        title: 'Best experience so far',
+        quote:
+          'When you come back from a trip and someone is waiting for you at the airport exit, that is priceless. Full praise to the Sky Parking and Fly team.',
+        name: 'Nedim K.',
+      },
+      lejla: {
+        title: 'A great relief for travellers',
+        quote:
+          'You do not have to think about taxis or waiting. You leave the car and they take care of everything else.',
+        name: 'Lejla B.',
+      },
+      jasmin: {
+        title: 'I am coming back!',
+        quote:
+          'This is already my third time using Sky Parking and Fly and I am very satisfied every time. Highly recommended!',
+        name: 'Jasmin H.',
+      },
+      ajla: {
+        title: 'Reliable and fast',
+        quote:
+          'Short wait, clear communication and friendly staff. I cannot imagine a better solution when flying from Sarajevo.',
+        name: 'Ajla S.',
+      },
+      haris: {
+        title: 'Easy booking',
+        quote:
+          'The reservation took 1 minute, everything was clear and precise. I got the confirmation by e-mail right away.',
+        name: 'Haris V.',
+      },
+      mirela: {
+        title: 'Great for families with children',
+        quote:
+          'We were travelling with a small child and the transfer to the airport was quick and comfortable. The people are really accommodating.',
+        name: 'Mirela D.',
+      },
+    },
+  },
+
+  faq: {
+    title: 'Frequently asked questions',
+    lead: 'Here you will find answers to the most frequently asked questions about our private parking services near Sarajevo Airport.',
+    all: 'All questions',
+    more: 'See more',
+    items: [
+      {
+        q: 'Is Sky Parking and Fly safe for long-term parking?',
+        a: 'Yes, our parking area is fenced, under video surveillance, and secured 24/7. Your vehicle is safe with us, whether it stays for one day or several weeks.',
+      },
+      {
+        q: 'How can I book my parking spot online?',
+        a: 'You can make a reservation through our website by entering basic information and dates. You will receive a confirmation immediately via email or message.',
+      },
+      {
+        q: 'What payment options are available?',
+        a: 'Payment is made in cash upon arrival or departure, depending on what suits you best. If you prefer to pay using another method, feel free to contact us in advance so we can arrange it and reserve your spot.',
+      },
+      {
+        q: 'How much does parking cost per day and per week?',
+        a: 'The parking price depends on the length of stay:',
+        list: [
+          { label: '1-10 days', value: '8 KM per day' },
+          { label: '11-20 days', value: '7 KM per day' },
+          { label: '21+ days', value: '6 KM per day' },
+        ],
+        after:
+          'For longer stays, SKY Parking and Fly offers additional discounts and special benefits for regular clients.',
+      },
+      {
+        q: 'Where exactly is Sky Parking and Fly located in relation to the airport?',
+        a: 'Our parking is located just 800 meters, or a one-minute drive, from the main entrance of Sarajevo International Airport. You will receive the location automatically when you make a reservation.',
+      },
+      {
+        q: 'Do you offer free transfer to and from the airport?',
+        a: 'Yes, we provide a free and fast transfer to the terminal and back, immediately after you park your vehicle.',
+      },
+      {
+        q: 'Can I leave my car keys with you?',
+        a: 'If you wish, yes. You can keep them with yourself or leave them with us for safekeeping. The keys are locked and stored securely.',
+      },
+      {
+        q: 'Is the parking open 24/7?',
+        a: 'Yes, we operate 24/7. You can contact us and park your vehicle at any time of day or night, including holidays.',
+      },
+      {
+        q: 'What happens if my flight is delayed or I return later than planned?',
+        a: 'No worries, we monitor your flights and are flexible with the pickup time. Your vehicle will be waiting for you without extra charges for a minor delay.',
+      },
+      {
+        q: 'How can I contact support if I have additional questions?',
+        a: 'Simply call us, send a message, or contact us via WhatsApp. We are here to make your journey easier.',
+      },
     ],
   },
 
   facilities: {
-    eyebrow: 'Facilities and security',
-    title: 'Your vehicle is watched 24 hours a day.',
-    description:
-      'See what the car park looks like right now — video surveillance, occupancy and the automatic barrier in one place.',
+    title: 'Fenced. Lit. Watched.',
+    lead: 'Private parking near Sarajevo airport. Your vehicle stays in a fenced area, under constant control and with staff on site.',
     features: {
-      cctv: {
-        title: '24/7 video surveillance',
-        text: '48 HD cameras cover every metre of the car park. Footage is archived for 30 days.',
-      },
-      anpr: {
-        title: 'Automatic barriers and ANPR',
-        text: 'Plate recognition opens the barrier within seconds — no paperwork and no queue.',
-      },
+      fenced: { title: 'Fenced area', text: 'Only customers and staff have access.' },
+      lit: { title: 'Lit area', text: 'Floodlights on poles light up the parking.' },
+      cctv: { title: '24/7 video surveillance', text: 'Cameras on poles watch the parking around the clock.' },
       staff: {
-        title: 'Staff on site',
-        text: 'Security and an attendant on every shift, including nights, holidays and weekends.',
+        title: 'Physical security',
+        text: 'Staff are on site. We have clear entry and exit rules and a log of movements.',
       },
-      lighting: {
-        title: 'Lighting and fencing',
-        text: 'LED lighting across the whole area and a 2.4 m fence with motion sensors.',
+      keys: {
+        title: 'Keys',
+        text: 'Your car stays locked and you can keep the keys. If you leave them with us, we lock them away and store them securely.',
       },
-      insurance: {
-        title: 'Vehicle insurance',
-        text: 'Liability insurance is included, and you can add comprehensive cover up to 50,000 KM.',
-      },
-      help: {
-        title: 'Help on site',
-        text: 'Jump-starts and tyre inflation — free of charge, whenever you need them.',
+      check: {
+        title: 'Check at pickup',
+        text: 'If you like, we do a short visual check of the car together when you collect it.',
       },
     },
-    camera: {
-      title: 'Live video surveillance',
-      sectionAria: 'Live video surveillance',
-      tabsAria: 'Cameras',
-      connecting: 'Connecting to camera…',
-      offline: 'This camera is currently unavailable',
-      retry: 'Try again',
-      note: 'This view is a demonstration. Cameras connect through a NextFrame interface and footage is archived for 30 days.',
-      imageAlt: (label: string) => `Camera: ${label}`,
-      cameras: {
-        entrance: { label: 'Entrance and barrier', zone: 'Main entrance' },
-        'covered-a': { label: 'Sector A', zone: 'Covered parking' },
-        'open-b': { label: 'Sector B', zone: 'Open-air parking' },
-        shuttle: { label: 'Shuttle stop', zone: 'Departure point' },
-      },
-    },
-    occupancy: {
-      title: 'Parking occupancy',
-      live: 'Live',
-      free: 'free',
-      status: { full: 'Almost full', filling: 'Filling up', plenty: 'Plenty of space' },
-      sectors: { covered: 'Covered sector A', open: 'Open-air sector B' },
-    },
-    barrier: {
-      title: 'Automatic barrier',
-      closed: { title: 'Barrier closed', text: 'Waiting for a vehicle' },
-      scanning: { title: 'Reading plate…', text: 'ANPR camera active' },
-      open: { title: 'Barrier open', text: 'Booking found' },
+    find: {
+      title: 'How to recognise us',
+      text: 'Look for the blue sign that says ULAZ (entrance). The entrance is to the right of the sign.',
+      address: 'Dr Atifa Purivatre 38, Sarajevo',
+      cta: 'Get directions',
     },
   },
 
   shuttle: {
-    eyebrow: 'Free shuttle',
-    title: 'Five minutes to the terminal. Every fifteen.',
-    description:
-      'The ride with your luggage is free and included in every booking. See the route and the time of the next departure.',
-    panelTitle: 'Free shuttle',
-    subtitle: (distance: string, minutes: number) => `${distance} to the terminal · ${minutes} minute ride`,
-    frequency: 'Every 15 min · every 30 min at night',
-    mapAria: (minutes: number) => `Route map: the shuttle runs from the car park to the terminal in ${minutes} minutes`,
-    parkingLabel: 'Sky Parking',
-    terminalLabel: 'Terminal · SJJ',
-    minutesChip: (minutes: number) => `${minutes} min`,
-    fromParking: 'Departures from the car park',
-    fromTerminal: 'Departures from the terminal',
-    next: 'Next',
-    landed: 'Just landed? Call us and the shuttle will be waiting outside the exit.',
-    call: 'Call',
-    countdown: {
-      now: 'now',
-      minutes: (n: number) => `in ${n} min`,
-      hours: (hours: number, minutes: string) => `in ${hours} h ${minutes} min`,
+    title: 'Free transfer to the terminal',
+    lead: 'We drive you to the terminal entrance in about a minute. Both ways, included in the parking price.',
+    howTitle: 'How it works',
+    steps: [
+      { title: 'You park', text: 'You arrive and park, or hand over the key, whichever is easier for you.' },
+      { title: 'We help with luggage', text: 'Suitcases, strollers, child seats: we help with everything.' },
+      { title: 'We drive you to the terminal', text: 'The ride to the terminal entrance takes about a minute.' },
+      { title: 'Message us when you land', text: 'As soon as you have your luggage, send a message or call us.' },
+      { title: 'We take you back to your car', text: 'Our driver comes to get you and drives you back to your car.' },
+    ],
+    closing:
+      'Everything is included in the parking price. No taxis, no calling a friend at 4 a.m. and no circling roundabouts.',
+    delay: {
+      title: 'If your flight is late',
+      text: 'We monitor flights and are flexible with the pickup time. We do not charge extra for minor delays.',
     },
-    facts: {
-      free: {
-        title: 'Completely free',
-        text: 'The ride and your luggage are included in the parking price — no extra charge.',
-      },
-      frequent: {
-        title: 'Frequent and reliable',
-        text: 'Every 15 minutes during the day and every 30 minutes at night, every day of the year.',
-      },
-      onCall: {
-        title: 'Waiting after your flight',
-        text: 'Call us after landing and the shuttle meets you outside the terminal exit.',
-      },
-    },
-  },
-
-  reviews: {
-    eyebrow: 'Reviews',
-    title: 'Travellers trust us with their vehicles.',
-    description:
-      'Thousands of travellers from all over Bosnia and Herzegovina and the diaspora leave their car with us — here is what they say.',
-    googleCount: (count: string) => `${count} Google reviews`,
-    verified: 'Verified traveller',
-    ratingLabel: (rating: number) => `Rated ${rating} out of 5`,
-    flightTo: (destination: string) => `flight to ${destination}`,
-    disclaimer: 'Ratings and reviews are illustrative and will be replaced with real ones before launch.',
-    stats: {
-      travellers: 'travellers seen off',
-      rating: 'average rating',
-      minutes: 'to the terminal',
-      recommend: 'would recommend us',
-    },
-    items: {
-      t1: {
-        city: 'Sarajevo',
-        date: 'September 2026',
-        trip: 'Istanbul',
-        quote:
-          'It was our first time leaving the car for ten days and we never once thought about it. The shuttle arrived in three minutes and the car was waiting for us, clean and in the same spot.',
-      },
-      t2: {
-        city: 'Zenica',
-        date: 'August 2026',
-        trip: 'Frankfurt',
-        quote:
-          'Booking took under a minute. The barrier recognised me by my plate, no paperwork at all. This is how it should work everywhere.',
-      },
-      t3: {
-        city: 'Tuzla',
-        date: 'January 2026',
-        trip: 'Vienna',
-        quote:
-          'The covered sector is a lifesaver in winter. After a week in Vienna the car was free of snow and ice, and paying on pick-up went without any surprises.',
-      },
-      t4: {
-        city: 'Mostar',
-        date: 'July 2026',
-        trip: 'Dubrovnik',
-        quote:
-          'Great service and friendly staff. In the morning rush the shuttle took a couple of minutes, but it loaded us with our suitcases and we got there on time.',
-      },
-      t5: {
-        city: 'Travnik',
-        date: 'June 2026',
-        trip: 'Munich',
-        quote:
-          'We travel twice a year and this has become our regular choice. We call as soon as we land and the shuttle is already waiting outside the terminal.',
-      },
-      t6: {
-        city: 'Bihać',
-        date: 'October 2026',
-        trip: 'Zurich',
-        quote:
-          'I drive a van, so finding a safe spot was hard. Here the price is fair, VAT is included and there are no hidden costs. Recommended.',
-      },
+    checklist: {
+      title: 'Before you go',
+      items: [
+        'Locks and windows: check once more, peace of mind in 30 seconds.',
+        'Valuables: move bags, cables and phone holders out of sight.',
+        'A photo of the car: one snapshot with your phone saves nerves.',
+        'Tyres and fluids (for longer stays): make sure you can drive straight away when you return.',
+        'Timing: arrive 15-20 minutes early, the rest goes fast because the driver is there.',
+      ],
     },
   },
 
   contact: {
-    eyebrow: 'Contact',
-    title: 'We are here — 24/7, every day.',
-    description:
-      'A question about your booking, a delayed flight or picking up your vehicle? Reach us on the channel that suits you best.',
+    title: 'Call us. We are open non-stop.',
+    lead: 'You can park at any time of day or night, including holidays.',
     channels: {
-      whatsapp: { label: 'WhatsApp', hint: 'We reply within minutes' },
+      phone: { label: 'Phone', hint: 'Every day, 24 hours' },
+      whatsapp: { label: 'WhatsApp', hint: 'Message or call' },
       viber: { label: 'Viber', hint: 'Message or call' },
-      phone: { label: 'Phone', hint: 'Non-stop, 24/7' },
-      email: { label: 'E-mail', hint: 'Reply within an hour' },
+      email: { label: 'E-mail', hint: 'For enquiries and bookings' },
     },
-    channelAria: (label: string, value: string) => `${label}: ${value}`,
-    whatsappDates: (from: string, to: string) => `Hello! I am interested in airport parking from ${from} to ${to}.`,
-    whatsappGeneric: 'Hello! I am interested in airport parking.',
-    hours: {
-      title: 'Opening hours',
-      openNow: 'Open now',
-      parking: { label: 'Parking and shuttle', value: 'Non-stop, 24/7' },
-      reception: { label: 'Reception', value: 'Non-stop, 24/7' },
-      admin: { label: 'Administration', value: 'Mon–Fri, 08–18h' },
-    },
+    whatsappGeneric: 'Hello, I would like to book parking.',
+    addressTitle: 'Address',
+    hoursTitle: 'Opening hours',
+    hours: 'Non-stop, every day, including holidays',
     map: {
-      aria: 'Location map',
-      terminalTitle: 'Sarajevo airport terminal',
-      distance: (distance: string) => `${distance} from the car park`,
-      shuttleLine: (minutes: number) => `Shuttle ${minutes} min, free`,
+      title: 'Location',
+      show: 'Show map',
+      note: 'The map only loads when you ask for it.',
+      embedTitle: 'Map of the Sky Parking & Fly location',
       google: 'Google Maps',
       apple: 'Apple Maps',
     },
   },
 
+  reservation: {
+    title: 'Reservation',
+    lead: 'Pick your dates, see the estimated price and send your request. You get a confirmation by message or e-mail.',
+    stayTitle: 'Dates',
+    guestTitle: 'Your details',
+    fields: {
+      name: { label: 'Full name', placeholder: 'Amar Hodžić' },
+      phone: { label: 'Phone', placeholder: '061 123 456' },
+      plate: { label: 'Licence plate', placeholder: 'A12-K-345' },
+      flight: { label: 'Flight number', placeholder: 'FR 1234' },
+      note: { label: 'Note', placeholder: 'E.g. a van, a child seat, arriving at 4 a.m.' },
+    },
+    errors: {
+      name: { required: 'Enter your name.', invalid: 'The name must contain letters.' },
+      phone: { invalid: 'The phone number is not valid (e.g. 061 123 456).' },
+      plate: { invalid: 'The plate is not valid (e.g. A12-K-345).' },
+      flight: { invalid: 'The flight number is not valid (e.g. FR 1234).' },
+    },
+    summary: {
+      title: 'Your request',
+      stay: 'Stay',
+      rate: 'Price per day',
+      total: 'Estimated total',
+    },
+    send: {
+      title: 'Send your request',
+      hint: 'The message is sent from your own device, and we confirm the dates.',
+      whatsapp: 'Send on WhatsApp',
+      viber: 'Viber',
+      email: 'E-mail',
+      call: 'Call',
+      viberCopied: 'The text is copied. Paste it into the Viber chat.',
+      fixErrors: 'Check the highlighted fields.',
+      previewTitle: 'Message text',
+    },
+    message: {
+      subject: 'Parking reservation',
+      greeting: 'Hello, I would like to book parking.',
+      arrival: (when: string) => `Arrival: ${when}`,
+      departure: (when: string) => `Departure: ${when}`,
+      stay: (days: string, total: string) => `Stay: ${days}, about ${total}`,
+      name: (value: string) => `Name: ${value}`,
+      phone: (value: string) => `Phone: ${value}`,
+      plate: (value: string) => `Vehicle: ${value}`,
+      flight: (value: string) => `Flight: ${value}`,
+      note: (value: string) => `Note: ${value}`,
+    },
+  },
+
   footer: {
-    ctaTitle: 'Book your space in under a minute.',
-    ctaText: 'No deposit and no registration. You pay only when you collect your vehicle.',
-    about: (minutes: number) =>
-      `Secure parking and a free shuttle to Sarajevo airport terminal — ${minutes} minutes from the gate to check-in.`,
-    country: 'Bosnia and Herzegovina',
-    navAria: 'Footer navigation',
+    ctaTitle: 'Leave your car with us',
+    ctaText: 'Book online or call us, 24 hours a day.',
+    contact: 'Contact',
     pages: 'Pages',
-    services: 'Services',
     legal: 'Legal',
     language: 'Language',
-    rights: (year: number, company: string) => `© ${year} ${company}. All rights reserved.`,
-    priceNote: 'All prices are in KM and include VAT.',
+    navAria: 'Footer navigation',
+    hours: 'Open 24/7, including holidays',
+    rights: (year: number) => `© ${year} Sky Parking and Fly. All rights reserved.`,
     toTop: 'Back to top',
   },
 
   legal: {
     updated: (date: string) => `Updated ${date}`,
-    backHome: 'Back to home',
     docs: {
       terms: {
         title: 'Terms of use',
-        updated: '1 October 2026',
+        updated: 'October 13, 2026',
         sections: [
           {
-            heading: '1. Subject of the service',
-            body: '{{legalName}} provides vehicle storage in a fenced, video-monitored car park and a free shuttle to and from the airport terminal, in line with the booked time slot.',
+            heading: 'Service',
+            body: 'Sky Parking and Fly offers vehicle parking on a fenced, lit and video-monitored lot near Sarajevo airport, with a free transfer to the terminal and back.',
           },
           {
-            heading: '2. Booking and price',
-            body: 'A booking is confirmed the moment you receive a reference code. All prices are in convertible marks (KM) and include VAT. Charges are calculated for every started 24-hour period, counted from the time the vehicle is dropped off.',
+            heading: 'Reservation',
+            body: 'You can send a reservation through this site (WhatsApp, Viber or e-mail) or by phone. You receive a confirmation of the dates by message or e-mail.',
           },
           {
-            heading: '3. Payment',
-            body: 'Payment is made when the vehicle is collected, in cash or by card. We do not charge any deposit for online bookings.',
+            heading: 'Price',
+            body: 'The price is per day: 8 KM for a stay of 1 to 10 days, 7 KM for 11 to 20 days and 6 KM for 21 days or more. The amount shown on the site is an estimate, and we confirm the dates and price when you reserve.',
           },
           {
-            heading: '4. Cancellation and changes',
-            body: 'You can cancel or change a booking free of charge up to 24 hours before the planned arrival, by phone, e-mail or message. If the vehicle is collected later than booked, the additional days are charged according to the current price list.',
+            heading: 'Payment',
+            body: 'Payment is made in cash on arrival or departure. For another payment method, contact us in advance.',
           },
           {
-            heading: '5. Liability',
-            body: "The vehicle is covered by the operator's liability insurance. Please do not leave documents, cash or valuables in the vehicle. The operator is not liable for damage caused by force majeure or for pre-existing damage. When collecting, please inspect the vehicle and report any damage before leaving the car park.",
+            heading: 'Keys and flight delays',
+            body: 'You can keep your keys or leave them with us for safekeeping. We monitor flights and are flexible with the pickup time, and we do not charge extra for minor delays.',
+          },
+          {
+            heading: 'Valuables',
+            body: 'Please do not leave valuables, bags or cables in sight in the vehicle.',
           },
         ],
       },
       privacy: {
         title: 'Privacy policy',
-        updated: '1 October 2026',
+        updated: 'October 13, 2026',
         sections: [
           {
-            heading: 'Who processes your data',
-            body: 'The data controller is {{legalName}}, {{street}}, {{city}}. For any questions you can contact us at {{email}}.',
+            heading: 'Who we are',
+            body: 'Sky Parking and Fly, Dr Atifa Purivatre 38, Sarajevo. For any question about data, write to info@parkingandfly.ba.',
           },
           {
-            heading: 'What data we collect',
-            body: 'For a booking we process your name, e-mail address, phone number, licence plate and vehicle details, and your flight number if you provide it. Video surveillance and the plate-recognition system record vehicles at the entrance and exit.',
+            heading: 'What happens to the form data',
+            body: 'The reservation form on this site does not send data to our server. What you enter is used only to compose the message that you yourself send through WhatsApp, Viber or e-mail. Those services are run by third parties under their own rules.',
           },
           {
-            heading: 'Purpose and retention',
-            body: 'We use the data only to carry out your booking, to communicate with you and to protect property. Booking data is kept in line with statutory periods, and video footage for 30 days.',
+            heading: 'Data we receive',
+            body: 'When you send us a request, we receive the details you put in the message, usually your name, dates, phone number and licence plate. We use them only to confirm your dates and to communicate with you.',
+          },
+          {
+            heading: 'Video surveillance',
+            body: 'The parking is under video surveillance to protect vehicles and property.',
           },
           {
             heading: 'Your rights',
-            body: 'Under the Law on the Protection of Personal Data in Bosnia and Herzegovina you have the right to access, correct and delete your data. Send us your request by e-mail and we will reply within the statutory period.',
+            body: 'To access, correct or delete the data we hold about you, contact us at info@parkingandfly.ba.',
           },
         ],
       },
       cookies: {
         title: 'Cookie policy',
-        updated: '1 October 2026',
+        updated: 'October 13, 2026',
         sections: [
           {
             heading: 'What we use',
-            body: "This website does not use third-party marketing or analytics cookies. We only store your chosen theme (light or dark) and, if you make a booking, a record of the booking in your browser's local storage.",
+            body: 'This site uses no tracking or advertising cookies. Your browser stores only your chosen theme (light or dark).',
           },
           {
-            heading: 'How to delete it',
-            body: "You can delete local data at any time in your browser settings. Deleting it restores the website's default settings.",
+            heading: 'Map',
+            body: 'The map on the Contact page loads only after you ask for it. It then loads OpenStreetMap, which applies its own rules.',
+          },
+          {
+            heading: 'How to delete data',
+            body: 'You can delete local data at any time in your browser settings.',
           },
         ],
       },
@@ -612,109 +579,7 @@ export const en: Messages = {
   notFound: {
     code: '404',
     title: 'Page not found',
-    text: 'The page you are looking for does not exist or has moved. Check the address or return to the home page.',
+    text: 'The page you are looking for does not exist or has moved.',
     home: 'Back to home',
-    pricing: 'See prices',
-  },
-
-  booking: {
-    title: 'Parking booking',
-    thanks: 'Thank you!',
-    done: 'Done',
-    stepEyebrow: (step: number, days: string) => `Step ${step} of 3 · ${days}`,
-    stepsAria: 'Booking steps',
-    stepLabels: { details: 'Details', vehicle: 'Vehicle', confirm: 'Confirm' },
-    stepTitles: { one: 'When and what are you parking?', two: 'Vehicle and contact', three: 'Review and confirm' },
-    total: 'Total',
-    next: 'Continue',
-    back: 'Back',
-    confirmButton: 'Confirm booking',
-    confirmedHeading: 'Booking confirmed',
-    vehicleStep: {
-      vehicleLegend: 'Your vehicle',
-      plate: 'Licence plate',
-      platePlaceholder: 'A12-K-345',
-      make: 'Make and model',
-      makePlaceholder: 'Volkswagen Golf 7',
-      color: 'Colour',
-      colorPlaceholder: 'Grey',
-      passengers: 'Passengers',
-      flight: 'Flight number',
-      flightPlaceholder: 'JU 123',
-      flightHint: 'We track flight delays and adjust the shuttle.',
-      contactLegend: 'Contact details',
-      fullName: 'Full name',
-      fullNamePlaceholder: 'John Smith',
-      email: 'E-mail',
-      emailPlaceholder: 'name@example.com',
-      phone: 'Phone',
-      phonePlaceholder: '+387 61 000 000',
-    },
-    confirmStep: {
-      totalToPay: 'Total to pay',
-      vatIncluded: 'VAT included',
-      ofWhichVat: (vat: string) => `of which VAT ${vat}`,
-      paymentBefore: 'You pay ',
-      paymentStrong: 'when you collect your vehicle',
-      paymentAfter: ' — in cash or by card. We do not charge a deposit.',
-      termsSummary: 'Summary of terms',
-      show: 'Show',
-      hide: 'Hide',
-      terms: [
-        'Free cancellation or changes up to 24 hours before arrival.',
-        'Every started 24-hour period is charged as a full day.',
-        "The vehicle is covered by the operator's liability insurance.",
-        'Please do not leave documents or valuables in the vehicle.',
-      ],
-      consent:
-        'I have read the terms of use and the privacy policy and I agree to my data being processed for the purpose of the booking.',
-      consentError: 'Please confirm that you have read the terms.',
-    },
-    summary: {
-      dropOff: 'Drop-off',
-      pickUp: 'Pick-up',
-      at: (time: string) => `at ${time}`,
-      duration: 'Duration',
-      parking: 'Parking',
-      vehicle: 'Vehicle',
-      passengers: 'Passengers',
-      flight: (flight: string) => `Flight ${flight}`,
-      contact: 'Contact',
-      parkingPrice: 'Parking price',
-    },
-    success: {
-      heldBefore: 'Your space is reserved. The barrier will recognise plate ',
-      heldAfter: ' on arrival.',
-      referenceCode: 'Reference code',
-      codeAria: (code: string) => `Code: ${code}`,
-      copyCode: 'Copy code',
-      codeCopied: 'Code copied',
-      arrival: 'Arrival',
-      returning: 'Return',
-      duration: 'Duration',
-      payOnPickup: 'Pay on pick-up',
-      addToCalendar: 'Add to calendar',
-      share: 'Share',
-      changesBefore: 'Changes or cancellation: at least 24h before arrival on ',
-      changesOr: ' or ',
-      changesAfter: '.',
-      whatsappGreeting: (reference: string) => `Hello, I am writing about booking ${reference}.`,
-      shareText: (reference: string, company: string, dropOff: string, pickUp: string, plate: string) =>
-        `Booking ${reference} — ${company}\nDrop-off: ${dropOff}\nPick-up: ${pickUp}\nVehicle: ${plate}`,
-    },
-    errors: {
-      network: 'Could not reach the server. Check your internet connection and try again.',
-      timeout: 'The connection is too slow. Check your internet connection and try again.',
-      server: 'The server cannot process the booking right now. Please try again.',
-      aborted: 'Submission was cancelled.',
-      unknown: 'Something went wrong. Please try again.',
-    },
-    ics: {
-      dropOff: 'Parking — vehicle drop-off',
-      pickUp: 'Parking — vehicle pick-up',
-      description: (reference: string, plate: string, phone: string) =>
-        `Booking ${reference} · vehicle ${plate} · ${phone}`,
-      calendarName: 'Bookings',
-    },
   },
 };
