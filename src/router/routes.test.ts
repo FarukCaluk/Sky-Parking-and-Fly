@@ -85,6 +85,15 @@ describe('slugs', () => {
   });
 
   it('are URL-safe', () => {
-    for (const id of ROUTE_IDS) for (const lang of LANGS) expect(SLUGS[id][lang]).toMatch(/^[a-z-]*$/);
+    for (const id of ROUTE_IDS) for (const lang of LANGS) expect(SLUGS[id][lang]).toMatch(/^[a-z0-9-]*$/);
+  });
+
+  it('keep the news at the addresses of the original site', () => {
+    expect(pathFor('bs', 'news')).toBe('/novosti');
+    expect(pathFor('bs', 'article-transfer')).toBe('/transfer-do-aerodroma-korak-po-korak');
+    expect(pathFor('en', 'article-transfer')).toBe('/en/airport-transfer-step-by-step');
+    expect(switchLangPath('/transfer-do-aerodroma-korak-po-korak', 'de')).toBe(
+      '/de/transfer-zum-flughafen-schritt-fuer-schritt',
+    );
   });
 });

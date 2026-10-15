@@ -42,7 +42,8 @@ describe('dictionaries', () => {
 
   it('translate: English and German differ from Bosnian for visible titles', () => {
     for (const lang of ['en', 'de'] as const) {
-      expect(MESSAGES[lang].hero.title).not.toBe(MESSAGES.bs.hero.title);
+      // The name is the same everywhere; the distance line is what gets translated
+      expect(MESSAGES[lang].hero.distance).not.toBe(MESSAGES.bs.hero.distance);
       expect(MESSAGES[lang].nav.pages.pricing).not.toBe(MESSAGES.bs.nav.pages.pricing);
       expect(MESSAGES[lang].faq.items[0]?.q).not.toBe(MESSAGES.bs.faq.items[0]?.q);
     }
@@ -81,7 +82,13 @@ describe('helpers', () => {
     expect(fieldMessage(MESSAGES.bs, 'name', 'required')).toBe('Unesite ime i prezime.');
     expect(fieldMessage(MESSAGES.en, 'name', 'required')).toBe('Enter your name.');
     expect(fieldMessage(MESSAGES.de, 'name', 'required')).toBe('Geben Sie Ihren Namen ein.');
-    expect(fieldMessage(MESSAGES.en, 'phone', 'required')).toBeUndefined();
+    // A phone number is needed to send the form, but not to compose a message
+    expect(fieldMessage(MESSAGES.en, 'phone', 'required')).toBe(
+      'Enter your phone number so we can confirm your dates.',
+    );
+    // The e-mail is optional, so it only has an "invalid" message
+    expect(fieldMessage(MESSAGES.en, 'email', 'required')).toBeUndefined();
+    expect(fieldMessage(MESSAGES.bs, 'email', 'invalid')).toBe('E-mail adresa nije ispravna.');
   });
 
   it('resolve stay messages, including the one that needs a number', () => {

@@ -89,6 +89,45 @@ export function billableDays(dropOffDate: string, dropOffTime: string, pickUpDat
   return Math.max(1, dayDiff + (to > from ? 1 : 0));
 }
 
+/** Same day of the month `amount` months away, clamped to the last day of that month (31 Jan + 1 = 28 Feb). */
+export function shiftMonth(isoDate: string, amount: number): string {
+  const parts = parseISODate(isoDate);
+  if (!parts) return isoDate;
+  const target = new Date(parts.year, parts.month + amount, 1);
+  const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+  return partsToISO({ year: target.getFullYear(), month: target.getMonth(), day: Math.min(parts.day, lastDay) });
+}
+
+/** Monday = 0 ... Sunday = 6, the order calendars are drawn in here. */
+export function mondayIndex(isoDate: string): number {
+  const parts = parseISODate(isoDate);
+  if (!parts) return 0;
+  return (new Date(parts.year, parts.month, parts.day).getDay() + 6) % 7;
+}
+
+/** Weeks (Monday first) of ISO dates for a month; `null` pads the leading and trailing cells. */
+export function buildMonthMatrix(year: number, month: number): (string | null)[][] {
+  const leading = (new Date(year, month, 1).getDay() + 6) % 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells: (string | null)[] = Array.from({ length: leading }, () => null);
+  for (let day = 1; day <= daysInMonth; day += 1) cells.push(partsToISO({ year, month, day }));
+  while (cells.length % 7 !== 0) cells.push(null);
+  const weeks: (string | null)[][] = [];
+  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
+  return weeks;
+}
+
+/** `16.10.2026`: day.month.year in every language. */
+export function formatDMY(isoDate: string): string {
+  const parts = parseISODate(isoDate);
+  return parts ? `${pad(parts.day)}.${pad(parts.month + 1)}.${parts.year}` : '';
+}
+
+/** `10:00`: 24-hour clock with leading zeros. */
+export function formatHM(hours: number, minutes: number): string {
+  return `${pad(hours)}:${pad(minutes)}`;
+}
+
 export function formatDateShort(isoDate: string, locale: DateLocale): string {
   const parts = parseISODate(isoDate);
   if (!parts) return '-';

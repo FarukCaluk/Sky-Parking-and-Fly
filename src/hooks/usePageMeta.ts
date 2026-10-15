@@ -1,8 +1,17 @@
 import { useEffect } from 'react';
-import { MESSAGES } from '@/i18n/messages';
-import { LANGS, pathFor, type Lang, type RouteId } from '@/router/routes';
+import { MESSAGES, type Messages } from '@/i18n/messages';
+import { isArticleRoute, LANGS, newsIdOf, pathFor, type Lang, type RouteId } from '@/router/routes';
 
 type PageKey = RouteId | 'notFound';
+
+/** Title and description of a page. An article takes them from its own text: the title and the excerpt. */
+function pageMeta(t: Messages, page: PageKey): { title: string; description: string } {
+  if (page !== 'notFound' && isArticleRoute(page)) {
+    const article = t.news.items[newsIdOf(page)];
+    return { title: `${article.title} | ${t.meta.siteName}`, description: article.excerpt };
+  }
+  return t.meta.pages[page];
+}
 
 function upsert(selector: string, create: () => HTMLElement, apply: (el: HTMLElement) => void): void {
   let el = document.head.querySelector<HTMLElement>(selector);
@@ -45,7 +54,7 @@ function setLink(rel: string, href: string, hreflang?: string): void {
 export function usePageMeta(page: PageKey, lang: Lang): void {
   useEffect(() => {
     const t = MESSAGES[lang];
-    const { title, description } = t.meta.pages[page];
+    const { title, description } = pageMeta(t, page);
     const origin = window.location.origin;
 
     document.title = title;

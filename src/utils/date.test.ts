@@ -3,10 +3,15 @@ import { MESSAGES } from '@/i18n/messages';
 import {
   addDays,
   billableDays,
+  buildMonthMatrix,
   calendarDaysBetween,
   formatDateLong,
   formatDateShort,
+  formatDMY,
+  formatHM,
+  mondayIndex,
   parseISODate,
+  shiftMonth,
   toDate,
 } from './date';
 
@@ -71,5 +76,32 @@ describe('toDate', () => {
     expect(d?.getHours()).toBe(13);
     expect(d?.getMinutes()).toBe(30);
     expect(toDate('2026-10-20', '25:00')).toBeNull();
+  });
+});
+
+describe('calendar helpers', () => {
+  it('lays out October 2026 Monday-first (1 Oct is a Thursday)', () => {
+    const weeks = buildMonthMatrix(2026, 9);
+    expect(weeks[0]).toEqual([null, null, null, '2026-10-01', '2026-10-02', '2026-10-03', '2026-10-04']);
+    expect(weeks.every((week) => week.length === 7)).toBe(true);
+    expect(weeks.flat().filter(Boolean)).toHaveLength(31);
+  });
+
+  it('shifts by months and clamps to the end of a shorter month', () => {
+    expect(shiftMonth('2026-01-31', 1)).toBe('2026-02-28');
+    expect(shiftMonth('2026-10-15', -1)).toBe('2026-09-15');
+    expect(shiftMonth('2026-12-10', 1)).toBe('2027-01-10');
+  });
+
+  it('numbers weekdays from Monday', () => {
+    expect(mondayIndex('2026-10-12')).toBe(0); // Monday
+    expect(mondayIndex('2026-10-18')).toBe(6); // Sunday
+  });
+
+  it('formats day.month.year and a 24h clock', () => {
+    expect(formatDMY('2026-10-05')).toBe('05.10.2026');
+    expect(formatDMY('nope')).toBe('');
+    expect(formatHM(7, 5)).toBe('07:05');
+    expect(formatHM(23, 45)).toBe('23:45');
   });
 });

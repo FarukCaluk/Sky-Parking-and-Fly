@@ -1,9 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_BOOKING_ENDPOINT?: string;
-  readonly VITE_NEXTFRAME_URL?: string;
-  readonly VITE_NEXTFRAME_INTERVAL_MS?: string;
+  /** Where reservations from the form are delivered (see `RESERVATION_INBOX`). */
+  readonly VITE_RESERVATION_EMAIL?: string;
 }
 
 interface ImportMeta {

@@ -3,6 +3,97 @@ import type { Messages } from './bs';
 /** German plural: 1 Tag / 2+ Tage. */
 const plural = (count: number, one: string, many: string): string => (Math.abs(count) === 1 ? one : many);
 
+/** The four latest posts of parkingandfly.ba/novosti, translated. */
+const newsItems: Messages['news']['items'] = {
+  checklist: {
+    title: 'Checkliste vor der Reise: 5 Kleinigkeiten, die einen großen Unterschied machen',
+    excerpt:
+      'Ein paar kurze Dinge, bevor Sie in den Transfer steigen: Schlösser und Fenster, Wertsachen, ein Foto vom Zustand, Reifen und Zeitplanung.',
+    alt: 'Ein Mann im Anzug notiert den Zustand eines Autos neben dem Außenspiegel',
+    blocks: [
+      { type: 'heading', text: 'Checkliste vor der Reise: Auto abstellen ohne Sorgen' },
+      { type: 'p', text: 'Ein paar kurze Dinge, bevor Sie in den Transfer steigen:' },
+      {
+        type: 'checks',
+        items: [
+          '**Schlösser und Fenster:** noch einmal prüfen, 30 Sekunden für die Gewissheit.',
+          '**Wertsachen:** aus dem Blickfeld nehmen (Taschen, Kabel, Halterungen).',
+          '**Foto vom Zustand:** ein Bild mit dem Handy schont die Nerven.',
+          '**Reifen und Flüssigkeiten** (bei längeren Aufenthalten): prüfen, damit Sie bei der Rückkehr sofort losfahren können.',
+          '**Zeitplanung:** 15-20 Minuten früher kommen, der Rest geht schnell, der Fahrer ist da.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Wir fahren Sie bis zum Eingang und übernehmen die Logistik; Sie steigen ohne Hektik ins Flugzeug.',
+      },
+    ],
+  },
+  security: {
+    title: 'Sicherheit an erster Stelle: Was wir genau tun, damit Ihr Auto sicher steht',
+    excerpt: 'Der Parkplatz ist eingezäunt, beleuchtet und videoüberwacht. Zutritt haben nur Kunden und Personal.',
+    alt: 'Ein blaues Schild Privatparkplatz und ein Mast mit Überwachungskamera und Flutlicht',
+    blocks: [
+      { type: 'heading', text: 'Fahrzeugsicherheit: Überwachung rund um die Uhr und eingezäuntes Gelände' },
+      {
+        type: 'p',
+        text: 'Der Parkplatz ist eingezäunt, beleuchtet und videoüberwacht. Zutritt haben nur Kunden und Personal. Es gelten klare Regeln für Ein- und Ausfahrt, und die Bewegungen werden protokolliert.',
+      },
+      {
+        type: 'p',
+        text: 'Wir stellen Fahrzeuge nicht „irgendwo daneben“ ab und improvisieren nicht. Wenn Sie möchten, machen wir bei der Übernahme Ihres Autos gemeinsam eine kurze Sichtkontrolle, damit Sie ruhig losfahren und noch ruhiger zurückkehren.',
+      },
+      {
+        type: 'p',
+        text: 'Im Winter räumen wir die Zufahrten, im Sommer behalten wir den Andrang im Blick; das Ziel ist, dass alles schnell geht, aber nie auf Kosten der Sicherheit. Der Transfer fährt auch bei viel Betrieb und im Morgengrauen.',
+      },
+    ],
+  },
+  transfer: {
+    title: 'Transfer zum Flughafen, Schritt für Schritt',
+    excerpt:
+      'Sie kommen an und parken (oder geben den Schlüssel ab), wir helfen mit dem Gepäck, und der Transfer bis zum Terminaleingang dauert etwa eine Minute.',
+    alt: 'Ein Reisender im Anzug mit Tasche vor einem Flugzeug',
+    blocks: [
+      { type: 'heading', text: 'Kostenloser Transfer zum Flughafen: So läuft er ab' },
+      {
+        type: 'steps',
+        items: [
+          'Sie kommen auf dem Parkplatz an und parken (oder geben den Schlüssel ab, ganz wie es Ihnen lieber ist).',
+          'Wir helfen beim Gepäck: Koffer, Kinderwagen, Kindersitze.',
+          'Der Transfer bis zum Terminaleingang dauert etwa eine Minute.',
+          'Nach Ihrer Rückkehr, sobald Sie Ihr Gepäck haben, schreiben oder rufen Sie uns an.',
+          'Unser Fahrer holt Sie ab und bringt Sie zurück zu Ihrem Auto.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Alles ist im Parkpreis enthalten. Kein Taxi, keine Freunde, die um 4 Uhr morgens geweckt werden, und kein Herumirren in Kreisverkehren.',
+      },
+    ],
+  },
+  longStay: {
+    title: 'Langzeitparken ohne Sorgen: 11-20 und 21+ Tage',
+    excerpt:
+      'Bei längeren Aufenthalten (Geschäftsreise, Familienbesuch, verlängerter Urlaub) sinkt der Preis auf 7 KM pro Tag (11-20 Tage) und 6 KM pro Tag (ab 21 Tagen).',
+    alt: 'Autos auf einem Kiesparkplatz',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Bei längeren Aufenthalten (Geschäftsreise, Familienbesuch, verlängerter Urlaub) sinkt der Preis auf **7 KM/Tag** (11-20 Tage) und **6 KM/Tag** (ab 21 Tagen).',
+      },
+      {
+        type: 'p',
+        text: 'Der Parkplatz ist eingezäunt und beleuchtet, mit Videoüberwachung und Personal vor Ort. Ein- und Ausfahrten werden protokolliert: alles ordentlich und nachvollziehbar.',
+      },
+      {
+        type: 'p',
+        text: 'Sie brauchen eine **Rechnung auf die Firma** oder eine besondere Bestätigung? Wir stellen sie sofort aus. Wenn sich Ihre Rückreise verschiebt, **verlängern wir die Reservierung**. Ihr Auto bleibt dort, wo Sie es abgestellt haben, und der **Transfer** wartet auf Sie, wenn Sie ankommen.',
+      },
+    ],
+  },
+};
+
 export const de: Messages = {
   meta: {
     siteName: 'Sky Parking & Fly',
@@ -31,6 +122,11 @@ export const de: Messages = {
       reviews: {
         title: 'Bewertungen | Sky Parking & Fly',
         description: 'Was Reisende sagen, die ihr Auto auf unserem Parkplatz am Flughafen Sarajevo abgestellt haben.',
+      },
+      news: {
+        title: 'Neuigkeiten | Sky Parking & Fly',
+        description:
+          'Tipps und Neuigkeiten zum Parken am Flughafen Sarajevo: Checkliste vor der Reise, Fahrzeugsicherheit, Transfer und längere Aufenthalte.',
       },
       faq: {
         title: 'Häufige Fragen | Sky Parking & Fly',
@@ -88,6 +184,7 @@ export const de: Messages = {
       facilities: 'Gelände',
       shuttle: 'Shuttle',
       reviews: 'Bewertungen',
+      news: 'Neuigkeiten',
       faq: 'FAQ',
       contact: 'Kontakt',
       reservation: 'Reservierung',
@@ -143,8 +240,10 @@ export const de: Messages = {
   },
 
   hero: {
-    title: 'Parken 800 Meter vom Flughafen',
-    lead: 'Eingezäunter, beleuchteter Parkplatz mit Videoüberwachung rund um die Uhr und kostenlosem Transfer zum Terminal und zurück.',
+    title: 'Sky Parking and Fly Sarajevo',
+    distance: '800 Meter vom Flughafen',
+    lead: 'Eingezäunter, beleuchteter Parkplatz mit Videoüberwachung rund um die Uhr und kostenlosem Transfer zum Terminal und zurück in nur 2 Minuten.',
+    message: 'Schreiben Sie uns auf',
   },
 
   stayBar: {
@@ -164,6 +263,18 @@ export const de: Messages = {
     pickUpBeforeDropOff: 'Die Abreise muss nach der Ankunft liegen.',
     rangeTooLong: (maxDays: number) =>
       `Für Aufenthalte über ${maxDays} Tage rufen Sie uns an, wir vereinbaren einen Sonderpreis.`,
+  },
+
+  picker: {
+    chooseDate: 'Datum wählen',
+    chooseTime: 'Uhrzeit wählen',
+    previousMonth: 'Vorheriger Monat',
+    nextMonth: 'Nächster Monat',
+    today: 'Heute',
+    hours: 'Stunde',
+    minutes: 'Minuten',
+    done: 'Fertig',
+    close: 'Schließen',
   },
 
   journey: {
@@ -259,47 +370,25 @@ export const de: Messages = {
 
   reviews: {
     title: 'Was Reisende sagen',
-    lead: 'Erfahrungen von Reisenden, die ihr Auto bei uns abgestellt haben.',
+    lead: 'Echte Bewertungen von Reisenden, die ihr Auto bei uns abgestellt haben.',
     google: 'Bewertung 5,0 auf Google Maps',
-    googleLink: 'Alle Bewertungen auf Google Maps',
-    items: {
-      nedim: {
-        title: 'Beste Erfahrung bisher',
-        quote:
-          'Wenn man von einer Reise zurückkommt und am Flughafenausgang jemand auf einen wartet, ist das unbezahlbar. Großes Lob an das Team von Sky Parking and Fly.',
-        name: 'Nedim K.',
-      },
-      lejla: {
-        title: 'Eine große Erleichterung für Reisende',
-        quote:
-          'Man muss nicht ans Taxifahren oder Warten denken. Man stellt das Auto ab und um alles Weitere kümmern sich die anderen.',
-        name: 'Lejla B.',
-      },
-      jasmin: {
-        title: 'Ich komme wieder!',
-        quote:
-          'Das ist schon das dritte Mal, dass ich Sky Parking and Fly nutze, und jedes Mal bin ich sehr zufrieden. Absolut empfehlenswert!',
-        name: 'Jasmin H.',
-      },
-      ajla: {
-        title: 'Zuverlässig und schnell',
-        quote:
-          'Kurze Wartezeit, klare Kommunikation und freundliches Personal. Ich kann mir keine bessere Lösung für einen Flug von Sarajevo vorstellen.',
-        name: 'Ajla S.',
-      },
-      haris: {
-        title: 'Einfache Buchung',
-        quote:
-          'Die Reservierung dauerte 1 Minute, alles war klar und deutlich. Die Bestätigung per E-Mail erhielt ich sofort.',
-        name: 'Haris V.',
-      },
-      mirela: {
-        title: 'Ideal für Familien mit Kindern',
-        quote:
-          'Wir waren mit einem kleinen Kind unterwegs und der Transfer zum Flughafen war schnell und bequem. Die Leute sind wirklich zuvorkommend.',
-        name: 'Mirela D.',
-      },
-    },
+    googleLink: 'Alle Bewertungen auf Google Maps ansehen',
+    source: 'Google-Bewertung',
+    starsAria: (stars: number) => `Bewertung ${stars} von 5`,
+    marqueeAria: 'Bewertungen von Reisenden',
+    pause: 'Bewegung anhalten',
+    play: 'Bewegung fortsetzen',
+  },
+
+  news: {
+    title: 'Neuigkeiten',
+    lead: 'Kurze Tipps zu Parken, Transfer und Sicherheit Ihres Fahrzeugs.',
+    latest: 'Aktuelle Neuigkeiten',
+    all: 'Alle Neuigkeiten',
+    more: 'Weitere Neuigkeiten',
+    readMore: 'Weiterlesen',
+    back: 'Alle Neuigkeiten',
+    items: newsItems,
   },
 
   faq: {
@@ -449,21 +538,40 @@ export const de: Messages = {
 
   reservation: {
     title: 'Reservierung',
-    lead: 'Wählen Sie Ihre Daten, sehen Sie den ungefähren Preis und senden Sie Ihre Anfrage. Die Bestätigung erhalten Sie per Nachricht oder E-Mail.',
+    lead: 'Wählen Sie Ihre Daten, füllen Sie Ihre Angaben aus und senden Sie Ihre Reservierung. Die Bestätigung erhalten Sie per Nachricht oder E-Mail.',
     stayTitle: 'Zeitraum',
     guestTitle: 'Ihre Angaben',
     fields: {
       name: { label: 'Vor- und Nachname', placeholder: 'Amar Hodžić' },
       phone: { label: 'Telefon', placeholder: '061 123 456' },
-      plate: { label: 'Kennzeichen', placeholder: 'A12-K-345' },
+      email: { label: 'E-Mail', placeholder: 'name@beispiel.de' },
+      make: { label: 'Automarke', placeholder: 'Z. B. VW Golf 7' },
       flight: { label: 'Flugnummer', placeholder: 'FR 1234' },
       note: { label: 'Hinweis', placeholder: 'Z. B. Transporter, Kindersitz, Ankunft um 4 Uhr morgens' },
     },
     errors: {
       name: { required: 'Geben Sie Ihren Namen ein.', invalid: 'Der Name muss Buchstaben enthalten.' },
-      phone: { invalid: 'Die Telefonnummer ist nicht gültig (z. B. 061 123 456).' },
-      plate: { invalid: 'Das Kennzeichen ist nicht gültig (z. B. A12-K-345).' },
+      phone: {
+        required: 'Geben Sie Ihre Telefonnummer an, damit wir den Termin bestätigen können.',
+        invalid: 'Die Telefonnummer ist nicht gültig (z. B. 061 123 456).',
+      },
+      email: { invalid: 'Die E-Mail-Adresse ist nicht gültig.' },
       flight: { invalid: 'Die Flugnummer ist nicht gültig (z. B. FR 1234).' },
+    },
+    submit: {
+      label: 'Reservierung senden',
+      sending: 'Wird gesendet…',
+      note: 'Ihre Reservierung wird per E-Mail an unser Team gesendet, die Bestätigung erhalten Sie per Nachricht oder E-Mail.',
+    },
+    sent: {
+      title: 'Reservierung gesendet',
+      text: 'Wir haben Ihre Anfrage erhalten. Die Bestätigung des Termins erhalten Sie per Nachricht oder E-Mail.',
+      another: 'Neue Reservierung',
+      home: 'Zur Startseite',
+    },
+    failed: {
+      title: 'Senden fehlgeschlagen',
+      text: 'Prüfen Sie Ihre Verbindung und versuchen Sie es erneut. Wenn es weiter nicht klappt, senden Sie Ihre Anfrage über WhatsApp oder rufen Sie uns an.',
     },
     summary: {
       title: 'Ihre Anfrage',
@@ -490,10 +598,21 @@ export const de: Messages = {
       stay: (days: string, total: string) => `Aufenthalt: ${days}, ca. ${total}`,
       name: (value: string) => `Name: ${value}`,
       phone: (value: string) => `Telefon: ${value}`,
-      plate: (value: string) => `Fahrzeug: ${value}`,
+      email: (value: string) => `E-Mail: ${value}`,
+      make: (value: string) => `Fahrzeug: ${value}`,
       flight: (value: string) => `Flug: ${value}`,
       note: (value: string) => `Hinweis: ${value}`,
     },
+  },
+
+  viber: {
+    title: 'Hat sich Viber nicht geöffnet?',
+    text: (number: string) =>
+      `Viber ist auf diesem Gerät möglicherweise nicht installiert. Fügen Sie die Nummer ${number} in Viber hinzu oder schreiben Sie uns auf WhatsApp.`,
+    copy: 'Nummer kopieren',
+    copied: 'Nummer kopiert',
+    download: 'Viber laden',
+    close: 'Schließen',
   },
 
   footer: {
@@ -514,7 +633,7 @@ export const de: Messages = {
     docs: {
       terms: {
         title: 'Nutzungsbedingungen',
-        updated: '13. Oktober 2026',
+        updated: '15. Oktober 2026',
         sections: [
           {
             heading: 'Leistung',
@@ -522,7 +641,7 @@ export const de: Messages = {
           },
           {
             heading: 'Reservierung',
-            body: 'Sie können Ihre Reservierung über diese Website (WhatsApp, Viber oder E-Mail) oder telefonisch senden. Die Bestätigung des Termins erhalten Sie per Nachricht oder E-Mail.',
+            body: 'Sie können Ihre Reservierung über das Formular auf dieser Website, per WhatsApp, Viber oder E-Mail oder telefonisch senden. Die Bestätigung des Termins erhalten Sie per Nachricht oder E-Mail.',
           },
           {
             heading: 'Preis',
@@ -544,19 +663,19 @@ export const de: Messages = {
       },
       privacy: {
         title: 'Datenschutz',
-        updated: '13. Oktober 2026',
+        updated: '15. Oktober 2026',
         sections: [
           {
             heading: 'Wer wir sind',
             body: 'Sky Parking and Fly, Dr Atifa Purivatre 38, Sarajevo. Bei Fragen zu Daten schreiben Sie uns an info@parkingandfly.ba.',
           },
           {
-            heading: 'Was mit den Formulardaten geschieht',
-            body: 'Das Reservierungsformular auf dieser Website sendet keine Daten an unseren Server. Ihre Eingaben dienen nur dazu, die Nachricht zusammenzustellen, die Sie selbst über WhatsApp, Viber oder E-Mail senden. Diese Dienste werden von Dritten nach eigenen Regeln betrieben.',
+            heading: 'Das Reservierungsformular',
+            body: 'Wenn Sie eine Reservierung über das Formular senden, werden Ihre Angaben (Name, Telefon, E-Mail, Termin, Automarke, Flugnummer und Hinweis) per E-Mail an uns übermittelt. Die Übermittlung übernimmt FormSubmit (formsubmit.co), ein Dienst mit eigenen Regeln. Wir verwenden die Angaben nur, um den Termin zu bestätigen und mit Ihnen zu kommunizieren.',
           },
           {
-            heading: 'Daten, die wir erhalten',
-            body: 'Wenn Sie uns eine Anfrage senden, erhalten wir die Angaben aus Ihrer Nachricht, meist Name, Termin, Telefonnummer und Kennzeichen. Wir verwenden sie ausschließlich, um den Termin zu bestätigen und mit Ihnen zu kommunizieren.',
+            heading: 'WhatsApp, Viber und E-Mail',
+            body: 'Wenn Sie uns über WhatsApp, Viber oder E-Mail schreiben, senden Sie die Nachricht selbst, und diese Dienste wenden eigene Regeln an. Wir erhalten, was Sie in die Nachricht schreiben, und verwenden es nur, um den Termin zu bestätigen und mit Ihnen zu kommunizieren.',
           },
           {
             heading: 'Videoüberwachung',

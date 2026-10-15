@@ -16,7 +16,7 @@ const fmt = {
   days: (n: number) => `${n} d`,
   km: (n: number) => `${n} KM`,
 };
-const guest: GuestDetails = { name: ' Amar Hodžić ', phone: '', plate: '', flight: '', note: '' };
+const guest: GuestDetails = { name: ' Amar Hodžić ', phone: '', email: '', make: '', flight: '', note: '' };
 
 describe('buildReservationText', () => {
   it('lists the dates and the estimate, and skips empty optional fields', () => {
@@ -31,16 +31,18 @@ describe('buildReservationText', () => {
     ]);
   });
 
-  it('normalises phone, plate and flight number and keeps the note', () => {
+  it('normalises phone and flight number and keeps e-mail, vehicle and note', () => {
     const text = buildReservationText(MESSAGES.bs.reservation.message, fmt, stay, quote, {
       name: 'Amar',
       phone: '062 963 901',
-      plate: ' a12-k-345 ',
+      email: 'amar@example.ba',
+      make: ' VW Golf 7 ',
       flight: 'fr  1234',
       note: 'Kombi',
     });
     expect(text).toContain('Telefon: +38762963901');
-    expect(text).toContain('Vozilo: A12-K-345');
+    expect(text).toContain('E-mail: amar@example.ba');
+    expect(text).toContain('Vozilo: VW Golf 7');
     expect(text).toContain('Let: FR 1234');
     expect(text.endsWith('Napomena: Kombi')).toBe(true);
   });

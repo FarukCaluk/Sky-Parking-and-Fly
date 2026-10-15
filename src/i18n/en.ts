@@ -3,6 +3,97 @@ import type { Messages } from './bs';
 /** English plural: 1 day / 2+ days. */
 const plural = (count: number, one: string, many: string): string => (Math.abs(count) === 1 ? one : many);
 
+/** The four latest posts of parkingandfly.ba/novosti, translated. */
+const newsItems: Messages['news']['items'] = {
+  checklist: {
+    title: 'Pre-trip checklist: 5 small things that make a big difference',
+    excerpt:
+      'A few quick things before you hop on the transfer: locks and windows, valuables, a photo of the car, tyres and timing.',
+    alt: 'A man in a suit noting down the condition of a car next to its wing mirror',
+    blocks: [
+      { type: 'heading', text: 'Pre-trip checklist: leave your car without a worry' },
+      { type: 'p', text: 'A few quick things before you hop on the transfer:' },
+      {
+        type: 'checks',
+        items: [
+          '**Locks and windows:** check once more, 30 seconds for peace of mind.',
+          '**Valuables:** move them out of sight (bags, cables, phone holders).',
+          '**A photo of the car:** one picture with your phone saves a lot of nerves.',
+          '**Tyres and fluids** (for longer stays): make sure you can drive straight away when you return.',
+          '**Timing:** arrive 15-20 minutes early, the rest goes quickly, the driver is there.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'We take you to the entrance and handle the logistics; you get on your plane without rushing.',
+      },
+    ],
+  },
+  security: {
+    title: 'Safety first: what exactly we do so you can relax about your car',
+    excerpt: 'The lot is fenced, lit and under video surveillance. Only customers and staff have access.',
+    alt: 'A blue Private parking sign and a pole with a video surveillance camera and a floodlight',
+    blocks: [
+      { type: 'heading', text: 'Vehicle security: 24/7 surveillance and a fenced area' },
+      {
+        type: 'p',
+        text: 'The lot is fenced, lit and under video surveillance. Only customers and staff have access. We have clear entry and exit rules and a log of movements.',
+      },
+      {
+        type: 'p',
+        text: 'We do not leave cars “somewhere nearby” and we do not improvise. If you like, we do a short visual check together when we take over your car, so you set off with peace of mind and come back with even more.',
+      },
+      {
+        type: 'p',
+        text: 'In winter we clear the access roads, in summer we keep an eye on the crowds; the goal is for everything to go fast, but never at the expense of safety. The transfer runs when it is busy and at dawn.',
+      },
+    ],
+  },
+  transfer: {
+    title: 'Airport transfer, step by step',
+    excerpt:
+      'You arrive and park (or hand over the key), we help with the luggage, and the transfer to the terminal entrance takes about a minute.',
+    alt: 'A traveller in a suit with a bag in front of a plane',
+    blocks: [
+      { type: 'heading', text: 'Free airport transfer: what it looks like' },
+      {
+        type: 'steps',
+        items: [
+          'You arrive at the lot and park (or hand over the key, whichever suits you).',
+          'We help with luggage: suitcases, strollers, child seats.',
+          'The transfer to the terminal entrance takes about one minute.',
+          'When you are back, as soon as you have your luggage, send a message or call.',
+          'Our driver comes to pick you up and takes you back to your car.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Everything is included in the parking price. No taxis, no waking up friends at 4 a.m. and no circling roundabouts.',
+      },
+    ],
+  },
+  longStay: {
+    title: 'Long-term parking without worries: 11-20 and 21+ days',
+    excerpt:
+      'For longer stays (business, visiting family, an extended holiday) the price drops to 7 KM per day (11-20 days) and 6 KM per day (21+).',
+    alt: 'Cars parked on a gravel lot',
+    blocks: [
+      {
+        type: 'p',
+        text: 'For longer stays (business, visiting family, an extended holiday) the price drops to **7 KM/day** (11-20 days) and **6 KM/day** (21+).',
+      },
+      {
+        type: 'p',
+        text: 'The lot is fenced and lit, with video surveillance and staff on site. Entries and exits are logged: everything orderly and verifiable.',
+      },
+      {
+        type: 'p',
+        text: 'Need an **invoice for your company** or a special confirmation? We issue it right away. If your return date changes, we **extend the reservation**. Your car stays where you left it, and the **transfer** is waiting when you arrive.',
+      },
+    ],
+  },
+};
+
 export const en: Messages = {
   meta: {
     siteName: 'Sky Parking & Fly',
@@ -31,6 +122,11 @@ export const en: Messages = {
       reviews: {
         title: 'Traveller reviews | Sky Parking & Fly',
         description: 'What travellers say about leaving their car at our parking near Sarajevo airport.',
+      },
+      news: {
+        title: 'News | Sky Parking & Fly',
+        description:
+          'Tips and news about parking at Sarajevo airport: a pre-trip checklist, vehicle safety, the transfer and longer stays.',
       },
       faq: {
         title: 'Frequently asked questions | Sky Parking & Fly',
@@ -88,6 +184,7 @@ export const en: Messages = {
       facilities: 'Facility',
       shuttle: 'Shuttle',
       reviews: 'Reviews',
+      news: 'News',
       faq: 'FAQ',
       contact: 'Contact',
       reservation: 'Reservation',
@@ -143,8 +240,10 @@ export const en: Messages = {
   },
 
   hero: {
-    title: 'Parking 800 metres from the airport',
-    lead: 'Fenced, lit parking under 24/7 video surveillance, with a free transfer to the terminal and back.',
+    title: 'Sky Parking and Fly Sarajevo',
+    distance: '800 metres from the airport',
+    lead: 'Fenced, lit parking under 24/7 video surveillance, with a free transfer to the terminal and back in just 2 minutes.',
+    message: 'Message us on',
   },
 
   stayBar: {
@@ -164,6 +263,18 @@ export const en: Messages = {
     pickUpBeforeDropOff: 'Departure must be after arrival.',
     rangeTooLong: (maxDays: number) =>
       `For stays longer than ${maxDays} days, call us and we will agree a special price.`,
+  },
+
+  picker: {
+    chooseDate: 'Choose a date',
+    chooseTime: 'Choose a time',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    today: 'Today',
+    hours: 'Hour',
+    minutes: 'Minutes',
+    done: 'Done',
+    close: 'Close',
   },
 
   journey: {
@@ -255,47 +366,25 @@ export const en: Messages = {
 
   reviews: {
     title: 'What travellers say',
-    lead: 'Experiences from travellers who left their car with us.',
+    lead: 'Real reviews from travellers who left their car with us.',
     google: '5.0 rating on Google Maps',
-    googleLink: 'All reviews on Google Maps',
-    items: {
-      nedim: {
-        title: 'Best experience so far',
-        quote:
-          'When you come back from a trip and someone is waiting for you at the airport exit, that is priceless. Full praise to the Sky Parking and Fly team.',
-        name: 'Nedim K.',
-      },
-      lejla: {
-        title: 'A great relief for travellers',
-        quote:
-          'You do not have to think about taxis or waiting. You leave the car and they take care of everything else.',
-        name: 'Lejla B.',
-      },
-      jasmin: {
-        title: 'I am coming back!',
-        quote:
-          'This is already my third time using Sky Parking and Fly and I am very satisfied every time. Highly recommended!',
-        name: 'Jasmin H.',
-      },
-      ajla: {
-        title: 'Reliable and fast',
-        quote:
-          'Short wait, clear communication and friendly staff. I cannot imagine a better solution when flying from Sarajevo.',
-        name: 'Ajla S.',
-      },
-      haris: {
-        title: 'Easy booking',
-        quote:
-          'The reservation took 1 minute, everything was clear and precise. I got the confirmation by e-mail right away.',
-        name: 'Haris V.',
-      },
-      mirela: {
-        title: 'Great for families with children',
-        quote:
-          'We were travelling with a small child and the transfer to the airport was quick and comfortable. The people are really accommodating.',
-        name: 'Mirela D.',
-      },
-    },
+    googleLink: 'See all reviews on Google Maps',
+    source: 'Google review',
+    starsAria: (stars: number) => `Rated ${stars} out of 5`,
+    marqueeAria: 'Traveller reviews',
+    pause: 'Pause scrolling',
+    play: 'Resume scrolling',
+  },
+
+  news: {
+    title: 'News',
+    lead: 'Short tips on parking, the transfer and the safety of your vehicle.',
+    latest: 'Latest news',
+    all: 'All news',
+    more: 'More news',
+    readMore: 'Read more',
+    back: 'All news',
+    items: newsItems,
   },
 
   faq: {
@@ -436,21 +525,40 @@ export const en: Messages = {
 
   reservation: {
     title: 'Reservation',
-    lead: 'Pick your dates, see the estimated price and send your request. You get a confirmation by message or e-mail.',
+    lead: 'Pick your dates, fill in your details and send your reservation. You get a confirmation by message or e-mail.',
     stayTitle: 'Dates',
     guestTitle: 'Your details',
     fields: {
       name: { label: 'Full name', placeholder: 'Amar Hodžić' },
       phone: { label: 'Phone', placeholder: '061 123 456' },
-      plate: { label: 'Licence plate', placeholder: 'A12-K-345' },
+      email: { label: 'E-mail', placeholder: 'name@example.com' },
+      make: { label: 'Car make', placeholder: 'E.g. VW Golf 7' },
       flight: { label: 'Flight number', placeholder: 'FR 1234' },
       note: { label: 'Note', placeholder: 'E.g. a van, a child seat, arriving at 4 a.m.' },
     },
     errors: {
       name: { required: 'Enter your name.', invalid: 'The name must contain letters.' },
-      phone: { invalid: 'The phone number is not valid (e.g. 061 123 456).' },
-      plate: { invalid: 'The plate is not valid (e.g. A12-K-345).' },
+      phone: {
+        required: 'Enter your phone number so we can confirm your dates.',
+        invalid: 'The phone number is not valid (e.g. 061 123 456).',
+      },
+      email: { invalid: 'The e-mail address is not valid.' },
       flight: { invalid: 'The flight number is not valid (e.g. FR 1234).' },
+    },
+    submit: {
+      label: 'Send reservation',
+      sending: 'Sending…',
+      note: 'Your reservation is e-mailed to our team, and you get a confirmation by message or e-mail.',
+    },
+    sent: {
+      title: 'Reservation sent',
+      text: 'We received your request. You get a confirmation of the dates by message or e-mail.',
+      another: 'New reservation',
+      home: 'Back to home',
+    },
+    failed: {
+      title: 'Sending failed',
+      text: 'Check your connection and try again. If it keeps failing, send your request on WhatsApp or call us.',
     },
     summary: {
       title: 'Your request',
@@ -477,10 +585,21 @@ export const en: Messages = {
       stay: (days: string, total: string) => `Stay: ${days}, about ${total}`,
       name: (value: string) => `Name: ${value}`,
       phone: (value: string) => `Phone: ${value}`,
-      plate: (value: string) => `Vehicle: ${value}`,
+      email: (value: string) => `E-mail: ${value}`,
+      make: (value: string) => `Vehicle: ${value}`,
       flight: (value: string) => `Flight: ${value}`,
       note: (value: string) => `Note: ${value}`,
     },
+  },
+
+  viber: {
+    title: 'Did Viber not open?',
+    text: (number: string) =>
+      `Viber may not be installed on this device. Add the number ${number} in Viber or message us on WhatsApp.`,
+    copy: 'Copy number',
+    copied: 'Number copied',
+    download: 'Get Viber',
+    close: 'Close',
   },
 
   footer: {
@@ -501,7 +620,7 @@ export const en: Messages = {
     docs: {
       terms: {
         title: 'Terms of use',
-        updated: 'October 13, 2026',
+        updated: 'October 15, 2026',
         sections: [
           {
             heading: 'Service',
@@ -509,7 +628,7 @@ export const en: Messages = {
           },
           {
             heading: 'Reservation',
-            body: 'You can send a reservation through this site (WhatsApp, Viber or e-mail) or by phone. You receive a confirmation of the dates by message or e-mail.',
+            body: 'You can send a reservation with the form on this site, through WhatsApp, Viber or e-mail, or by phone. You receive a confirmation of the dates by message or e-mail.',
           },
           {
             heading: 'Price',
@@ -531,19 +650,19 @@ export const en: Messages = {
       },
       privacy: {
         title: 'Privacy policy',
-        updated: 'October 13, 2026',
+        updated: 'October 15, 2026',
         sections: [
           {
             heading: 'Who we are',
             body: 'Sky Parking and Fly, Dr Atifa Purivatre 38, Sarajevo. For any question about data, write to info@parkingandfly.ba.',
           },
           {
-            heading: 'What happens to the form data',
-            body: 'The reservation form on this site does not send data to our server. What you enter is used only to compose the message that you yourself send through WhatsApp, Viber or e-mail. Those services are run by third parties under their own rules.',
+            heading: 'The reservation form',
+            body: 'When you send a reservation with the form, the details you enter (name, phone, e-mail, dates, car make, flight number and note) are e-mailed to us. The transfer is handled by FormSubmit (formsubmit.co), a service that applies its own rules. We use the details only to confirm your dates and to communicate with you.',
           },
           {
-            heading: 'Data we receive',
-            body: 'When you send us a request, we receive the details you put in the message, usually your name, dates, phone number and licence plate. We use them only to confirm your dates and to communicate with you.',
+            heading: 'WhatsApp, Viber and e-mail',
+            body: 'If you write to us on WhatsApp, Viber or by e-mail, you send the message yourself and those services apply their own rules. We receive what you put in the message and use it only to confirm your dates and to communicate with you.',
           },
           {
             heading: 'Video surveillance',

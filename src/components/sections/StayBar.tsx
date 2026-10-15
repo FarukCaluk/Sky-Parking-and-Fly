@@ -26,7 +26,7 @@ export function StayBar({ className }: { className?: string }) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (errorCode) {
-      formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+      formRef.current?.querySelector<HTMLElement>('[data-invalid="true"]')?.focus();
       return;
     }
     navigate(pathFor(lang, 'reservation'));

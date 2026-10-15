@@ -5,6 +5,8 @@
  * Facts (prices, distances, opening hours, FAQ) come from parkingandfly.ba.
  */
 
+import type { NewsId } from '@/data/news';
+
 /** Bosnian plural: 1 dan / 2-4 dana / 5+ dana (21 dan, 22 dana, 11 dana). */
 function pluralBs(count: number, one: string, few: string, many: string): string {
   const abs = Math.abs(count);
@@ -22,6 +24,112 @@ export interface FaqItem {
   list?: readonly { label: string; value: string }[];
   after?: string;
 }
+
+/** One block of a news article. `**bold**` marks inline emphasis. */
+export type NewsBlock =
+  | { type: 'heading'; text: string }
+  | { type: 'p'; text: string }
+  | { type: 'checks'; items: readonly string[] }
+  | { type: 'steps'; items: readonly string[] };
+
+export interface NewsArticleText {
+  title: string;
+  /** One or two sentences: shown on the card and used as the meta description */
+  excerpt: string;
+  /** What the photograph shows, for screen readers */
+  alt: string;
+  blocks: readonly NewsBlock[];
+}
+
+/**
+ * The four latest posts of parkingandfly.ba/novosti. Wording follows the originals (including their friendly "ti"
+ * voice); only punctuation was brought in line with the rest of the site (no long dashes) and the lists were tidied.
+ */
+const newsItems: Record<NewsId, NewsArticleText> = {
+  checklist: {
+    title: 'Check-lista prije puta: 5 sitnica koje čine veliku razliku',
+    excerpt: 'Kratke stvari prije nego pređeš u transfer: brave i prozori, vrijednosti, fotka stanja, gume i tajming.',
+    alt: 'Čovjek u odijelu bilježi stanje vozila pored retrovizora',
+    blocks: [
+      { type: 'heading', text: 'Check-lista prije puta: ostavi auto bez brige' },
+      { type: 'p', text: 'Kratke stvari prije nego pređeš u transfer:' },
+      {
+        type: 'checks',
+        items: [
+          '**Brave i prozori:** provjeri još jednom, mir u glavi za 30 sekundi.',
+          '**Vrijednosti:** skloni s vidljivog mjesta (torbice, kablovi, držači).',
+          '**Fotka stanja:** jedna slika telefonom čuva živce.',
+          '**Gume i tečnosti** (za duže boravke): da se po povratku odmah možeš voziti.',
+          '**Tajming:** dođi 15-20 min ranije, ostatak ide brzo, vozač je tu.',
+        ],
+      },
+      { type: 'p', text: 'Mi odvozimo do ulaza i preuzimamo logistiku; ti ulaziš u avion bez žurbe.' },
+    ],
+  },
+  security: {
+    title: 'Sigurnost na prvom mjestu: šta tačno radimo da ti auto bude miran',
+    excerpt: 'Parking je ograđen, osvijetljen i pod video-nadzorom. Pristup imaju samo klijenti i osoblje.',
+    alt: 'Plava oznaka Privatni parking i stub s video nadzornom kamerom i reflektorom',
+    blocks: [
+      { type: 'heading', text: 'Sigurnost vozila: nadzor 24/7 i ograđen prostor' },
+      {
+        type: 'p',
+        text: 'Parking je ograđen, osvijetljen i pod video-nadzorom. Pristup imaju samo klijenti i osoblje. Imamo jasna pravila ulaza/izlaza i evidenciju kretanja.',
+      },
+      {
+        type: 'p',
+        text: 'Ne držimo vozila “negdje pored” niti radimo improvizacije. Ako želiš, pri preuzimanju auta uradimo kratak vizuelni pregled zajedno: da kreneš mirno i vratiš se još mirnije.',
+      },
+      {
+        type: 'p',
+        text: 'Zimi čistimo pristupe, ljeti pratimo gužve; cilj je da sve ide brzo, ali nikad nauštrb sigurnosti. Transfer radi i kad je gužva i kad je zora.',
+      },
+    ],
+  },
+  transfer: {
+    title: 'Transfer do aerodroma, korak po korak',
+    excerpt:
+      'Stigneš na parking i parkiraš (ili predaš ključ), mi pomažemo s prtljagom, a transfer do ulaza u terminal traje oko jedan minut.',
+    alt: 'Putnik u odijelu s torbom ispred aviona',
+    blocks: [
+      { type: 'heading', text: 'Besplatan transfer do aerodroma: kako izgleda' },
+      {
+        type: 'steps',
+        items: [
+          'Stigneš na parking i parkiraš (ili predaš ključ, kako ti je lakše).',
+          'Pomažemo s prtljagom: koferi, kolica, dječije sjedalice.',
+          'Transfer do ulaza u terminal traje oko jedan minut.',
+          'Po povratku, čim preuzmeš prtljag, pošalji poruku ili nazovi.',
+          'Naš vozač dolazi po tebe i vraća te do auta.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Sve je uključeno u cijenu parkinga. Bez taksija, bez cimanja prijatelja u 4 ujutro i bez lutanja po kružnim tokovima.',
+      },
+    ],
+  },
+  longStay: {
+    title: 'Dugo parkiranje bez brige: 11-20 i 21+ dana',
+    excerpt:
+      'Za duže boravke (poslovno, posjeta porodici, produženi odmor) cijena pada na 7 KM/dan (11-20 dana) i 6 KM/dan (21+).',
+    alt: 'Automobili parkirani na šljunčanom parkingu',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Za duže boravke (poslovno, posjeta porodici, produženi odmor) cijena pada na **7 KM/dan** (11-20 dana) i **6 KM/dan** (21+).',
+      },
+      {
+        type: 'p',
+        text: 'Parking je ograđen i osvijetljen, uz video-nadzor i prisustvo ekipe. Ulazi/izlazi su u evidenciji: sve uredno i provjerljivo.',
+      },
+      {
+        type: 'p',
+        text: 'Treba ti **račun na firmu** ili posebna potvrda? Izdajemo odmah. Ako se povratak pomjeri, **produžimo rezervaciju**. Auto ostaje gdje si ga ostavio, a **transfer** te čeka kad stigneš.',
+      },
+    ],
+  },
+};
 
 export const bs = {
   meta: {
@@ -51,6 +159,11 @@ export const bs = {
       reviews: {
         title: 'Recenzije putnika | Sky Parking & Fly',
         description: 'Šta kažu putnici koji su ostavili auto na našem parkingu kod aerodroma Sarajevo.',
+      },
+      news: {
+        title: 'Novosti | Sky Parking & Fly',
+        description:
+          'Savjeti i novosti o parkiranju kod aerodroma Sarajevo: check-lista prije puta, sigurnost vozila, transfer i duži boravci.',
       },
       faq: {
         title: 'Česta pitanja | Sky Parking & Fly',
@@ -108,6 +221,7 @@ export const bs = {
       facilities: 'Objekat',
       shuttle: 'Shuttle',
       reviews: 'Recenzije',
+      news: 'Novosti',
       faq: 'Pitanja',
       contact: 'Kontakt',
       reservation: 'Rezervacija',
@@ -163,8 +277,10 @@ export const bs = {
   },
 
   hero: {
-    title: 'Parking 800 metara od aerodroma',
-    lead: 'Ograđen i osvijetljen parking pod video nadzorom 24/7, uz besplatan transfer do terminala i nazad.',
+    title: 'Sky Parking and Fly Sarajevo',
+    distance: '800 m od aerodroma',
+    lead: 'Ograđen i osvijetljen parking pod video nadzorom 24/7, uz besplatan transfer do terminala i nazad za samo 2 minute.',
+    message: 'Pošaljite poruku na',
   },
 
   stayBar: {
@@ -184,6 +300,18 @@ export const bs = {
     pickUpBeforeDropOff: 'Odlazak mora biti nakon dolaska.',
     rangeTooLong: (maxDays: number) =>
       `Za boravak duži od ${maxDays} ${pluralBs(maxDays, 'dan', 'dana', 'dana')} nazovite nas, dogovorit ćemo posebnu cijenu.`,
+  },
+
+  picker: {
+    chooseDate: 'Odaberite datum',
+    chooseTime: 'Odaberite vrijeme',
+    previousMonth: 'Prethodni mjesec',
+    nextMonth: 'Sljedeći mjesec',
+    today: 'Danas',
+    hours: 'Sat',
+    minutes: 'Minute',
+    done: 'U redu',
+    close: 'Zatvori',
   },
 
   journey: {
@@ -275,45 +403,25 @@ export const bs = {
 
   reviews: {
     title: 'Šta kažu putnici',
-    lead: 'Iskustva putnika koji su ostavili auto kod nas.',
+    lead: 'Prave recenzije putnika koji su ostavili auto kod nas.',
     google: 'Ocjena 5,0 na Google Maps',
-    googleLink: 'Sve recenzije na Google Maps',
-    items: {
-      nedim: {
-        title: 'Najbolje iskustvo do sada',
-        quote:
-          'Kada se vratite sa puta i imate nekoga ko vas čeka na izlazu iz aerodroma, to je neprocjenjivo. Sve pohvale za ekipu Sky Parking and Fly.',
-        name: 'Nedim K.',
-      },
-      lejla: {
-        title: 'Veliko olakšanje za putnike',
-        quote: 'Ne moraš misliti o taxi vožnji ni zadržavanju. Ostaviš auto i sve ostalo riješe oni.',
-        name: 'Lejla B.',
-      },
-      jasmin: {
-        title: 'Vraćam se opet!',
-        quote:
-          'Ovo mi je već treći put da koristim Sky Parking and Fly i svaki put sam prezadovoljan. Topla preporuka!',
-        name: 'Jasmin H.',
-      },
-      ajla: {
-        title: 'Pouzdani i brzi',
-        quote:
-          'Kratko čekanje, jasna komunikacija i ljubazno osoblje. Ne mogu da zamislim bolje rješenje kad letim iz Sarajeva.',
-        name: 'Ajla S.',
-      },
-      haris: {
-        title: 'Jednostavna rezervacija',
-        quote: 'Rezervacija je trajala 1 minutu, sve jasno i precizno. Potvrdu sam odmah dobio na e-mail.',
-        name: 'Haris V.',
-      },
-      mirela: {
-        title: 'Super za porodice s djecom',
-        quote:
-          'Putovali smo s malim djetetom i transfer do aerodroma je bio brz i udoban. Ljudi su stvarno susretljivi.',
-        name: 'Mirela D.',
-      },
-    },
+    googleLink: 'Pogledaj sve recenzije na Google Maps',
+    source: 'Google recenzija',
+    starsAria: (stars: number) => `Ocjena ${stars} od 5`,
+    marqueeAria: 'Recenzije putnika',
+    pause: 'Pauziraj kretanje',
+    play: 'Nastavi kretanje',
+  },
+
+  news: {
+    title: 'Novosti',
+    lead: 'Kratki savjeti o parkiranju, transferu i sigurnosti vašeg vozila.',
+    latest: 'Posljednje novosti',
+    all: 'Sve novosti',
+    more: 'Još novosti',
+    readMore: 'Pročitaj više',
+    back: 'Sve novosti',
+    items: newsItems,
   },
 
   faq: {
@@ -454,21 +562,40 @@ export const bs = {
 
   reservation: {
     title: 'Rezervacija',
-    lead: 'Odaberite datume, pogledajte okvirnu cijenu i pošaljite upit. Potvrdu dobijate porukom ili e-mailom.',
+    lead: 'Odaberite datume, popunite podatke i pošaljite rezervaciju. Potvrdu termina dobijate porukom ili e-mailom.',
     stayTitle: 'Termin',
     guestTitle: 'Vaši podaci',
     fields: {
       name: { label: 'Ime i prezime', placeholder: 'Amar Hodžić' },
       phone: { label: 'Telefon', placeholder: '061 123 456' },
-      plate: { label: 'Registarske tablice', placeholder: 'A12-K-345' },
+      email: { label: 'E-mail', placeholder: 'ime@primjer.ba' },
+      make: { label: 'Marka vozila', placeholder: 'Npr. VW Golf 7' },
       flight: { label: 'Broj leta', placeholder: 'FR 1234' },
       note: { label: 'Napomena', placeholder: 'Npr. kombi, dječija sjedalica, dolazak u 4 ujutro' },
     },
     errors: {
       name: { required: 'Unesite ime i prezime.', invalid: 'Ime mora sadržavati slova.' },
-      phone: { invalid: 'Broj telefona nije ispravan (npr. 061 123 456).' },
-      plate: { invalid: 'Tablice nisu ispravne (npr. A12-K-345).' },
+      phone: {
+        required: 'Unesite broj telefona da vam možemo potvrditi termin.',
+        invalid: 'Broj telefona nije ispravan (npr. 061 123 456).',
+      },
+      email: { invalid: 'E-mail adresa nije ispravna.' },
       flight: { invalid: 'Broj leta nije ispravan (npr. FR 1234).' },
+    },
+    submit: {
+      label: 'Pošalji rezervaciju',
+      sending: 'Šaljem…',
+      note: 'Rezervacija stiže e-mailom našem timu, a potvrdu termina dobijate porukom ili e-mailom.',
+    },
+    sent: {
+      title: 'Rezervacija je poslana',
+      text: 'Primili smo vaš upit. Potvrdu termina dobijate porukom ili e-mailom.',
+      another: 'Nova rezervacija',
+      home: 'Na početnu',
+    },
+    failed: {
+      title: 'Slanje nije uspjelo',
+      text: 'Provjerite internet i pokušajte ponovo. Ako se ponovi, pošaljite upit putem WhatsAppa ili nas nazovite.',
     },
     summary: {
       title: 'Vaš upit',
@@ -495,10 +622,21 @@ export const bs = {
       stay: (days: string, total: string) => `Boravak: ${days}, okvirno ${total}`,
       name: (value: string) => `Ime: ${value}`,
       phone: (value: string) => `Telefon: ${value}`,
-      plate: (value: string) => `Vozilo: ${value}`,
+      email: (value: string) => `E-mail: ${value}`,
+      make: (value: string) => `Vozilo: ${value}`,
       flight: (value: string) => `Let: ${value}`,
       note: (value: string) => `Napomena: ${value}`,
     },
+  },
+
+  viber: {
+    title: 'Viber se nije otvorio?',
+    text: (number: string) =>
+      `Viber možda nije instaliran na ovom uređaju. Dodajte broj ${number} u Viber ili nam pišite na WhatsApp.`,
+    copy: 'Kopiraj broj',
+    copied: 'Broj je kopiran',
+    download: 'Preuzmi Viber',
+    close: 'Zatvori',
   },
 
   footer: {
@@ -519,7 +657,7 @@ export const bs = {
     docs: {
       terms: {
         title: 'Uslovi korištenja',
-        updated: '13. oktobar 2026.',
+        updated: '15. oktobar 2026.',
         sections: [
           {
             heading: 'Usluga',
@@ -527,7 +665,7 @@ export const bs = {
           },
           {
             heading: 'Rezervacija',
-            body: 'Rezervaciju možete poslati putem ove stranice (WhatsApp, Viber ili e-mail) ili telefonom. Potvrdu termina dobijate porukom ili e-mailom.',
+            body: 'Rezervaciju možete poslati putem obrasca na ovoj stranici, preko WhatsAppa, Vibera ili e-maila, ili telefonom. Potvrdu termina dobijate porukom ili e-mailom.',
           },
           {
             heading: 'Cijena',
@@ -549,19 +687,19 @@ export const bs = {
       },
       privacy: {
         title: 'Politika privatnosti',
-        updated: '13. oktobar 2026.',
+        updated: '15. oktobar 2026.',
         sections: [
           {
             heading: 'Ko smo mi',
             body: 'Sky Parking and Fly, Dr Atifa Purivatre 38, Sarajevo. Za sva pitanja o podacima pišite nam na info@parkingandfly.ba.',
           },
           {
-            heading: 'Šta se dešava s podacima iz obrasca',
-            body: 'Obrazac za rezervaciju na ovoj stranici ne šalje podatke na naš server. Ono što unesete koristi se samo za sastavljanje poruke koju sami šaljete putem WhatsAppa, Vibera ili e-maila. Te usluge pružaju treće strane prema vlastitim pravilima.',
+            heading: 'Obrazac za rezervaciju',
+            body: 'Kad pošaljete rezervaciju putem obrasca, podaci koje unesete (ime, telefon, e-mail, termin, marka vozila, broj leta i napomena) stižu nam e-mailom. Za prijenos koristimo uslugu FormSubmit (formsubmit.co), koja primjenjuje vlastita pravila. Podatke koristimo samo za potvrdu termina i komunikaciju s vama.',
           },
           {
-            heading: 'Podaci koje primamo',
-            body: 'Kad nam pošaljete upit, primamo podatke koje ste naveli u poruci, najčešće ime, termin, broj telefona i registarske tablice. Koristimo ih isključivo za potvrdu termina i komunikaciju s vama.',
+            heading: 'WhatsApp, Viber i e-mail',
+            body: 'Ako nam pišete putem WhatsAppa, Vibera ili e-maila, poruku šaljete sami, a te usluge rade prema vlastitim pravilima. Primamo ono što napišete u poruci i koristimo to samo za potvrdu termina i komunikaciju s vama.',
           },
           {
             heading: 'Video nadzor',

@@ -2,11 +2,11 @@ import { Plus } from 'lucide-react';
 import { useId, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { useI18n } from '@/i18n/context';
-import type { RouteId } from '@/router/routes';
+import type { StaticRouteId } from '@/router/routes';
 import { cn } from '@/utils/cn';
 
 /** Where each answer points on, by question order. Purely navigational, the answers themselves are verbatim. */
-const FOLLOW_UP: readonly (RouteId | null)[] = [
+const FOLLOW_UP: readonly (StaticRouteId | null)[] = [
   'facilities',
   'reservation',
   'pricing',

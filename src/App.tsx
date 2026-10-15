@@ -3,6 +3,7 @@ import { Suspense, useEffect } from 'react';
 import { Footer, prefetchChrome } from '@/components/lazy';
 import { Navbar } from '@/components/layout/Navbar';
 import { RouteAnnouncer } from '@/components/layout/RouteAnnouncer';
+import { ViberFallback } from '@/components/layout/ViberFallback';
 import { Container } from '@/components/ui/Layout';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { StayProvider } from '@/context/StayProvider';
@@ -57,6 +58,7 @@ function Shell() {
         <Footer />
       </Suspense>
       <RouteAnnouncer />
+      <ViberFallback />
       {/* Film grain: one fixed layer, never part of the scrolling content */}
       <div
         aria-hidden="true"

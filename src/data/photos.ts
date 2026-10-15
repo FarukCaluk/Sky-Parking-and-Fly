@@ -1,5 +1,8 @@
-/** The four photographs of the lot, pre-rendered as `public/photos/<prefix>-<width>.{avif,webp}`. */
-export type PhotoId = 'jet' | 'entrance' | 'sign' | 'pole';
+/**
+ * The photographs of the lot and of the news posts, pre-rendered as `public/photos/<prefix>-<width>.{avif,webp}`.
+ * The `news*` ones are the square pictures published with the posts on parkingandfly.ba.
+ */
+export type PhotoId = 'jet' | 'entrance' | 'sign' | 'pole' | 'newsChecklist' | 'newsTransfer' | 'newsLongStay';
 
 interface PhotoSet {
   prefix: string;
@@ -16,6 +19,7 @@ export interface PhotoDef {
 }
 
 const WIDTHS = [480, 800, 1200, 1600, 2000] as const;
+const NEWS_WIDTHS = [480, 800, 1200] as const;
 
 export const PHOTOS: Record<PhotoId, PhotoDef> = {
   jet: {
@@ -27,6 +31,9 @@ export const PHOTOS: Record<PhotoId, PhotoDef> = {
   entrance: { width: 2000, height: 1334, main: { prefix: 'entrance', widths: WIDTHS } },
   sign: { width: 2000, height: 1334, main: { prefix: 'sign', widths: WIDTHS } },
   pole: { width: 2000, height: 1334, main: { prefix: 'pole', widths: WIDTHS } },
+  newsChecklist: { width: 1200, height: 1200, main: { prefix: 'news-checklist', widths: NEWS_WIDTHS } },
+  newsTransfer: { width: 1200, height: 1200, main: { prefix: 'news-transfer', widths: NEWS_WIDTHS } },
+  newsLongStay: { width: 1200, height: 1200, main: { prefix: 'news-long-stay', widths: NEWS_WIDTHS } },
 };
 
 export const photoSrcSet = (set: PhotoSet, format: 'avif' | 'webp'): string =>

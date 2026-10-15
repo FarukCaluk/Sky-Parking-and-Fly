@@ -11,7 +11,7 @@ export interface ReservationFormat {
 
 /**
  * Plain-text reservation request. It goes out through the visitor's own WhatsApp, Viber or mail app,
- * so nothing is stored by the site and the sender stays in control of what is sent.
+ * so the sender stays in control of what is sent.
  */
 export function buildReservationText(
   m: Messages['reservation']['message'],
@@ -32,8 +32,10 @@ export function buildReservationText(
   if (name) lines.push(m.name(name));
   const phone = guest.phone.trim();
   if (phone) lines.push(m.phone(toInternationalPhone(phone)));
-  const plate = normalizeCode(guest.plate);
-  if (plate) lines.push(m.plate(plate));
+  const email = guest.email.trim();
+  if (email) lines.push(m.email(email));
+  const make = guest.make.trim();
+  if (make) lines.push(m.make(make));
   const flight = normalizeCode(guest.flight);
   if (flight) lines.push(m.flight(flight));
   const note = guest.note.trim();

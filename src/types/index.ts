@@ -38,7 +38,9 @@ export interface Quote {
 export interface GuestDetails {
   name: string;
   phone: string;
-  plate: string;
+  email: string;
+  /** Make and model of the car, e.g. "VW Golf 7" */
+  make: string;
   flight: string;
   note: string;
 }

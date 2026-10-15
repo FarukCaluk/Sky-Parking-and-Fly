@@ -1,12 +1,9 @@
+import { DateField } from '@/components/ui/DateField';
+import { TimeField } from '@/components/ui/TimeField';
 import { useStay } from '@/context/stayContext';
 import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 import { addDays, calendarDaysBetween } from '@/utils/date';
-
-const inputClass =
-  'native-input h-11 min-w-0 rounded-[6px] border border-line-strong bg-canvas px-3 text-[1.0625rem] font-medium outline-none ' +
-  'transition-[border-color,box-shadow] duration-200 hover:border-ink-faint focus:border-accent-text focus:ring-4 focus:ring-accent/25 ' +
-  'aria-[invalid=true]:border-danger';
 
 /**
  * The two date-and-time groups (arrival, departure) of the shared stay. Returned as siblings so the
@@ -30,8 +27,8 @@ export function StayFields({
     update({ dropOffDate: date, ...(Number.isFinite(length) && date ? { pickUpDate: addDays(date, length) } : {}) });
   };
 
-  const dropOffInvalid = stayErrors.dropOff ? true : undefined;
-  const pickUpInvalid = stayErrors.pickUp || stayErrors.range ? true : undefined;
+  const dropOffInvalid = Boolean(stayErrors.dropOff);
+  const pickUpInvalid = Boolean(stayErrors.pickUp || stayErrors.range);
 
   return (
     <>
@@ -40,25 +37,18 @@ export function StayFields({
           {t.stayBar.arrival}
         </p>
         <div className="grid grid-cols-[1fr_6.75rem] gap-2">
-          <input
-            type="date"
+          <DateField
             value={stay.dropOffDate}
             min={today}
-            onChange={(e) => changeArrival(e.target.value)}
-            aria-label={`${t.stayBar.arrival}: ${t.stayBar.date}`}
-            aria-invalid={dropOffInvalid}
-            required
-            className={inputClass}
+            onChange={changeArrival}
+            label={`${t.stayBar.arrival}: ${t.stayBar.date}`}
+            invalid={dropOffInvalid}
           />
-          <input
-            type="time"
-            step={1800}
+          <TimeField
             value={stay.dropOffTime}
-            onChange={(e) => update({ dropOffTime: e.target.value })}
-            aria-label={`${t.stayBar.arrival}: ${t.stayBar.time}`}
-            aria-invalid={dropOffInvalid}
-            required
-            className={inputClass}
+            onChange={(time) => update({ dropOffTime: time })}
+            label={`${t.stayBar.arrival}: ${t.stayBar.time}`}
+            invalid={dropOffInvalid}
           />
         </div>
       </div>
@@ -68,25 +58,19 @@ export function StayFields({
           {t.stayBar.departure}
         </p>
         <div className="grid grid-cols-[1fr_6.75rem] gap-2">
-          <input
-            type="date"
+          <DateField
             value={stay.pickUpDate}
             min={stay.dropOffDate || today}
-            onChange={(e) => update({ pickUpDate: e.target.value })}
-            aria-label={`${t.stayBar.departure}: ${t.stayBar.date}`}
-            aria-invalid={pickUpInvalid}
-            required
-            className={inputClass}
+            rangeFrom={stay.dropOffDate}
+            onChange={(date) => update({ pickUpDate: date })}
+            label={`${t.stayBar.departure}: ${t.stayBar.date}`}
+            invalid={pickUpInvalid}
           />
-          <input
-            type="time"
-            step={1800}
+          <TimeField
             value={stay.pickUpTime}
-            onChange={(e) => update({ pickUpTime: e.target.value })}
-            aria-label={`${t.stayBar.departure}: ${t.stayBar.time}`}
-            aria-invalid={pickUpInvalid}
-            required
-            className={inputClass}
+            onChange={(time) => update({ pickUpTime: time })}
+            label={`${t.stayBar.departure}: ${t.stayBar.time}`}
+            invalid={pickUpInvalid}
           />
         </div>
       </div>
