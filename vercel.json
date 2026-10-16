@@ -5,6 +5,12 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/cjenovnik", "destination": "/cijene", "permanent": true },
+    { "source": "/rezervacije", "destination": "/rezervacija", "permanent": true },
+    { "source": "/o-nama", "destination": "/objekat", "permanent": true },
+    { "source": "/lokacija", "destination": "/kontakt", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

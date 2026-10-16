@@ -34,7 +34,7 @@ export function pageHead(origin: string, page: PageKey, lang: Lang): PageHead {
   const t = MESSAGES[lang];
   const { title, description } = pageMeta(t, page);
   const base = { lang, title, description, ogLocale: t.meta.ogLocale, siteName: t.meta.siteName };
-  if (page === 'notFound') return { ...base, noindex: true, alternates: [] };
+  if (page === 'notFound' || page === 'confirmed') return { ...base, noindex: true, alternates: [] };
 
   return {
     ...base,

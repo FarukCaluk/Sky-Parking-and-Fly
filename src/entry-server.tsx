@@ -33,6 +33,7 @@ const CHUNK_OF: Record<Exclude<PageKey, 'home' | ArticleRouteId>, string> = {
   faq: 'Faq',
   contact: 'Contact',
   reservation: 'Reservation',
+  confirmed: 'Confirmed',
   terms: 'Legal',
   privacy: 'Legal',
   cookies: 'Legal',

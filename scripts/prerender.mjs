@@ -54,6 +54,15 @@ function chunkUrls(key, seen = new Set()) {
   return [...seen].map((k) => `/${manifest[k].file}`);
 }
 
+// Google Tag Manager (ads and statistics), only when the build is given its container (GTM_ID): the live domain has it,
+// test addresses do not, so that a test reservation is not counted as a real one. Fetched with the rest of the code.
+const gtmId = process.env.GTM_ID?.trim();
+if (gtmId && !/^GTM-[A-Z0-9]+$/.test(gtmId))
+  throw new Error(`prerender: GTM_ID "${gtmId}" is not a container id (GTM-XXXXXXX)`);
+const gtm = gtmId
+  ? `var w=window;w.dataLayer=w.dataLayer||[];w.dataLayer.push({"gtm.start":Date.now(),event:"gtm.js"});var g=document.createElement("script");g.async=true;g.src="https://www.googletagmanager.com/gtm.js?id=${gtmId}";document.head.appendChild(g);`
+  : '';
+
 /**
  * The code a page needs, listed so that it is fetched all at once (instead of one chunk after the other as each one
  * reveals what it imports): the main script's own imports, the page's chunk and the footer.
@@ -66,7 +75,7 @@ function loaderFor(page) {
   ]);
   urls.delete(entry);
   const list = JSON.stringify([...urls]);
-  return `<script>(function(){var d,m=${list},s=${JSON.stringify(entry)};function go(){if(d)return;d=1;m.forEach(function(h){var l=document.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;document.head.appendChild(l)});import(s)}try{new PerformanceObserver(function(l,o){if(l.getEntriesByName("first-contentful-paint").length){o.disconnect();setTimeout(go)}}).observe({type:"paint",buffered:true})}catch(e){}addEventListener("load",function(){setTimeout(go,3e3)})})()</script>`;
+  return `<script>(function(){var d,m=${list},s=${JSON.stringify(entry)};function go(){if(d)return;d=1;m.forEach(function(h){var l=document.createElement("link");l.rel="modulepreload";l.crossOrigin="";l.href=h;document.head.appendChild(l)});import(s);${gtm}}try{new PerformanceObserver(function(l,o){if(l.getEntriesByName("first-contentful-paint").length){o.disconnect();setTimeout(go)}}).observe({type:"paint",buffered:true})}catch(e){}addEventListener("load",function(){setTimeout(go,3e3)})})()</script>`;
 }
 
 let count = 0;

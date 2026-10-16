@@ -24,6 +24,7 @@ const LOADERS: Record<Exclude<PageKey, 'home'>, Loader> = {
   faq: () => import('./Faq'),
   contact: () => import('./Contact'),
   reservation: () => import('./Reservation'),
+  confirmed: () => import('./Confirmed'),
   terms: () => import('./Legal').then((m) => ({ default: m.Terms })),
   privacy: () => import('./Legal').then((m) => ({ default: m.Privacy })),
   cookies: () => import('./Legal').then((m) => ({ default: m.Cookies })),

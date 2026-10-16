@@ -180,6 +180,10 @@ export const bs = {
         description:
           'Odaberite datume, pogledajte okvirnu cijenu i pošaljite rezervaciju putem WhatsAppa, Vibera ili e-maila.',
       },
+      confirmed: {
+        title: 'Uspješna rezervacija | Sky Parking & Fly',
+        description: 'Vaša rezervacija je primljena. Ovdje su kod rezervacije i svi detalji.',
+      },
       terms: {
         title: 'Uslovi korištenja | Sky Parking & Fly',
         description: 'Uslovi korištenja usluge parkinga i transfera.',
@@ -225,6 +229,7 @@ export const bs = {
       faq: 'Pitanja',
       contact: 'Kontakt',
       reservation: 'Rezervacija',
+      confirmed: 'Uspješna rezervacija',
       terms: 'Uslovi korištenja',
       privacy: 'Politika privatnosti',
       cookies: 'Politika kolačića',
@@ -653,6 +658,9 @@ export const bs = {
   },
 
   confirmation: {
+    pageTitle: 'Hvala vam!',
+    pageLead:
+      'Hvala što ste rezervisali. Ako vam potvrda ne stigne ili imate pitanja, nazovite nas ili pošaljite poruku.',
     title: 'Uspješna rezervacija',
     subject: (code: string) => `Uspješna rezervacija ${code} | Sky Parking & Fly Sarajevo`,
     period: (from: string, to: string) => `od ${from} do ${to}`,

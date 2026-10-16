@@ -22,6 +22,7 @@ export const STATIC_ROUTE_IDS = [
   'faq',
   'contact',
   'reservation',
+  'confirmed',
   'terms',
   'privacy',
   'cookies',
@@ -54,6 +55,8 @@ const STATIC_SLUGS: Record<StaticRouteId, Record<Lang, string>> = {
   faq: { bs: 'cesta-pitanja', en: 'faq', de: 'haeufige-fragen' },
   contact: { bs: 'kontakt', en: 'contact', de: 'kontakt' },
   reservation: { bs: 'rezervacija', en: 'reservation', de: 'reservierung' },
+  // One slug in every language: the address of the thank-you page is what the ad conversion counts, so it must not change
+  confirmed: { bs: 'uspjesna-rezervacija', en: 'uspjesna-rezervacija', de: 'uspjesna-rezervacija' },
   terms: { bs: 'uslovi-koristenja', en: 'terms', de: 'nutzungsbedingungen' },
   privacy: { bs: 'politika-privatnosti', en: 'privacy', de: 'datenschutz' },
   cookies: { bs: 'kolacici', en: 'cookies', de: 'cookies' },

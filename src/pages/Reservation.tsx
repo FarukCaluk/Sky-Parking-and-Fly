@@ -16,7 +16,10 @@ import { useFormat } from '@/i18n/useFormat';
 import { submitReservation, type ReservationResult } from '@/services/reservationGateway';
 import type { GuestDetails, GuestField } from '@/types';
 import { cn } from '@/utils/cn';
+import { pathFor } from '@/router/routes';
+import { track } from '@/utils/analytics';
 import { buildConfirmation, type Confirmation } from '@/utils/confirmation';
+import { saveConfirmation } from '@/utils/confirmationStore';
 import { buildReservationText } from '@/utils/reservation';
 import { hasErrors, validateGuest } from '@/utils/validation';
 import { PageShell } from './PageShell';
@@ -104,12 +107,21 @@ export default function Reservation() {
     setStatus('sending');
     try {
       const result = await submitReservation({ stay, quote, guest, lang });
-      setSent({
-        result,
-        email: guest.email.trim(),
-        confirmation: buildConfirmation({ code: result.code, stay, quote, guest, lang }),
-      });
+      const email = guest.email.trim();
+      const confirmation = buildConfirmation({ code: result.code, stay, quote, guest, lang });
+      setSent({ result, email, confirmation });
       setStatus('sent');
+      track('reservation_success', {
+        reservation_code: result.code,
+        value: quote.total,
+        currency: 'BAM',
+        days: quote.days,
+      });
+      // The thank-you page has an address of its own, which the ads count as a conversion. Where the browser will not
+      // keep the confirmation for it (a private window), it stays here on the form.
+      if (saveConfirmation({ confirmation, mailedTo: result.customerMail ? email : null })) {
+        window.location.assign(pathFor(lang, 'confirmed'));
+      }
     } catch {
       setStatus('failed');
     } finally {

@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, type ReactNode } from 'react';
 import { usePageMeta } from '@/hooks/usePageMeta';
 import { useI18n } from '@/i18n/context';
 import { lastNavigationType, savedScroll, shouldKeepScroll } from '@/router/navigation';
+import { track } from '@/utils/analytics';
 import type { RouteId } from '@/router/routes';
 
 /**
@@ -22,6 +23,7 @@ export function PageShell({ page, children }: { page: RouteId | 'notFound'; chil
   useEffect(() => {
     if (lastNavigationType() === 'initial') return;
     document.getElementById('sadrzaj')?.focus({ preventScroll: true });
+    track('virtual_page_view', { page_path: window.location.pathname });
   }, []);
 
   return <>{children}</>;

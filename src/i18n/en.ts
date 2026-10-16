@@ -143,6 +143,10 @@ export const en: Messages = {
         description:
           'Pick your dates, see the estimated price and send your reservation via WhatsApp, Viber or e-mail.',
       },
+      confirmed: {
+        title: 'Reservation confirmed | Sky Parking & Fly',
+        description: 'Your reservation has been received. Your reservation code and all details are here.',
+      },
       terms: {
         title: 'Terms of use | Sky Parking & Fly',
         description: 'Terms for the parking and transfer service.',
@@ -188,6 +192,7 @@ export const en: Messages = {
       faq: 'FAQ',
       contact: 'Contact',
       reservation: 'Reservation',
+      confirmed: 'Reservation confirmed',
       terms: 'Terms of use',
       privacy: 'Privacy policy',
       cookies: 'Cookie policy',
@@ -616,6 +621,9 @@ export const en: Messages = {
   },
 
   confirmation: {
+    pageTitle: 'Thank you!',
+    pageLead:
+      'Thank you for booking. If the confirmation does not reach you or you have questions, call us or send a message.',
     title: 'Reservation successful',
     subject: (code: string) => `Reservation successful ${code} | Sky Parking & Fly Sarajevo`,
     period: (from: string, to: string) => `from ${from} to ${to}`,

@@ -21,7 +21,7 @@ function seoFiles(): Plugin {
       const site = resolveSiteUrl();
       const loc = (lang: (typeof LANGS)[number], route: (typeof ROUTE_IDS)[number]) => `${site}${pathFor(lang, route)}`;
 
-      const entries = ROUTE_IDS.flatMap((route) =>
+      const entries = ROUTE_IDS.filter((route) => route !== 'confirmed').flatMap((route) =>
         LANGS.map((lang) => {
           const alternates = [
             ...LANGS.map((code) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${loc(code, route)}"/>`),

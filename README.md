@@ -126,6 +126,14 @@ per address, and checks the reservation again before sending anything.
 owner to confirm once: after the first reservation it sends an activation mail, and nothing is delivered until its
 link is clicked (check the spam folder).
 
+**Ads and statistics.** `GTM_ID` (build time, optional) is the Google Tag Manager container (`GTM-XXXXXXX`) that carries the
+Google Ads conversion and the analytics tags. Set it only on the live domain, so that tests on other addresses are not
+counted. It is loaded after the first paint. After a reservation is sent the guest is taken to
+`/uspjesna-rezervacija` (the same address in every language, `noindex`), which shows the confirmation of that visit and
+is what a "page path contains /uspjesna-rezervacija" trigger in the container counts. The form also pushes a
+`reservation_success` event (code, value, currency) and every page change a `virtual_page_view` event to
+`dataLayer`, for tags that want them.
+
 `SITE_URL` (build time, optional) is the public origin written into `sitemap.xml`, canonical URLs and social cards. It
 defaults to the Vercel production URL; set it when you attach a custom domain.
 
