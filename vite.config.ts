@@ -1,17 +1,11 @@
-import { fileURLToPath, URL } from 'node:url';
+import type { IncomingMessage, ServerResponse } from 'node:http';
+import { fileURLToPath, pathToFileURL, URL } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import type { Plugin } from 'vite';
+import { loadEnv, type Plugin } from 'vite';
 import { defineConfig } from 'vitest/config';
+import { resolveSiteUrl } from './scripts/siteUrl.ts';
 import { LANGS, pathFor, ROUTE_IDS } from './src/router/routes.ts';
-
-/** Public origin used for the sitemap. Set `SITE_URL` for a custom domain; Vercel's production URL is used otherwise. */
-function resolveSiteUrl(): string {
-  const explicit = process.env.SITE_URL?.trim();
-  if (explicit) return explicit.replace(/\/$/, '');
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  return vercel ? `https://${vercel}` : 'https://sky-parking-and-fly.vercel.app';
-}
 
 /**
  * Emits `sitemap.xml` (every page in every language, with hreflang alternates) and `robots.txt` from the route table,
@@ -48,23 +42,89 @@ function seoFiles(): Plugin {
   };
 }
 
-export default defineConfig({
-  plugins: [react(), tailwindcss(), seoFiles()],
+/**
+ * Serves api/reservation.ts (the mail function) while developing and in `vite preview`, the way Vercel serves it in
+ * production. Its settings (SMTP_*, RESERVATION_EMAIL, MAIL_DRY_RUN) are read from .env.local into process.env.
+ */
+function mailApi(): Plugin {
+  type Handler = { fetch: (request: Request) => Promise<Response> };
+
+  const serve =
+    (load: () => Promise<Handler>) =>
+    async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
+      try {
+        const chunks: Buffer[] = [];
+        for await (const chunk of req) chunks.push(chunk as Buffer);
+        const headers = new Headers();
+        for (const [name, value] of Object.entries(req.headers)) {
+          if (typeof value === 'string') headers.set(name, value);
+        }
+        const hasBody = req.method !== 'GET' && req.method !== 'HEAD';
+        const request = new Request(`http://${req.headers.host ?? 'localhost'}/api/reservation`, {
+          method: req.method,
+          headers,
+          body: hasBody ? Buffer.concat(chunks) : undefined,
+        });
+        const response = await (await load()).fetch(request);
+        res.statusCode = response.status;
+        response.headers.forEach((value, name) => res.setHeader(name, value));
+        res.end(Buffer.from(await response.arrayBuffer()));
+      } catch (error) {
+        console.error('[api/reservation]', error);
+        res.statusCode = 500;
+        res.end();
+      }
+    };
+
+  return {
+    name: 'spf-mail-api',
+    config(_config, { mode }) {
+      for (const [key, value] of Object.entries(loadEnv(mode, process.cwd(), ''))) process.env[key] ??= value;
+    },
+    configureServer(server) {
+      server.middlewares.use(
+        '/api/reservation',
+        serve(async () => (await server.ssrLoadModule('/api/reservation.ts')).default as Handler),
+      );
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(
+        '/api/reservation',
+        serve(async () => ((await import(pathToFileURL('api/reservation.ts').href)) as { default: Handler }).default),
+      );
+    },
+  };
+}
+
+/**
+ * Three ways in: `vite` (development), `vite build` (the browser bundle in dist/) and `vite build --ssr` (the same
+ * pages, which `scripts/prerender.mjs` draws into the HTML files of dist/; see `npm run build`).
+ */
+export default defineConfig(({ command, isSsrBuild, isPreview }) => ({
+  // `vite preview` serves the prerendered pages (/cijene is cijene.html), as the host does; in development every address is the app
+  appType: isPreview ? 'mpa' : 'spa',
+  plugins: [react(), tailwindcss(), ...(isSsrBuild ? [] : [seoFiles()]), mailApi()],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  define: {
+    __SITE_URL__: JSON.stringify(command === 'build' ? resolveSiteUrl() : ''),
+  },
   build: {
     target: 'es2022',
+    // The two small font files go into the stylesheet itself (the other assets keep Vite's default limit)
+    assetsInlineLimit: (file) => (file.endsWith('.woff2') ? true : undefined),
+    // Lists the file behind every chunk; scripts/prerender.mjs uses it to have the browser fetch a page's code early
+    manifest: !isSsrBuild,
     cssCodeSplit: true,
     chunkSizeWarningLimit: 220,
     rollupOptions: {
       output: {
         // Keep React in a long-lived vendor chunk; everything else (incl. Framer Motion's lazily loaded
         // feature bundle and every page) is split by the bundler along dynamic-import boundaries.
-        manualChunks(id: string) {
-          if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react';
-          return undefined;
-        },
+        manualChunks: isSsrBuild
+          ? undefined
+          : (id: string) => (/node_modules\/(react|react-dom|scheduler)\//.test(id) ? 'react' : undefined),
       },
     },
   },
@@ -72,4 +132,4 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.ts'],
   },
-});
+}));

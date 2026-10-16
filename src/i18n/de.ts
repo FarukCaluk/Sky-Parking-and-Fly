@@ -1,4 +1,4 @@
-import type { Messages } from './bs';
+import type { Messages } from './bs.ts';
 
 /** German plural: 1 Tag / 2+ Tage. */
 const plural = (count: number, one: string, many: string): string => (Math.abs(count) === 1 ? one : many);
@@ -75,12 +75,12 @@ const newsItems: Messages['news']['items'] = {
   longStay: {
     title: 'Langzeitparken ohne Sorgen: 11-20 und 21+ Tage',
     excerpt:
-      'Bei längeren Aufenthalten (Geschäftsreise, Familienbesuch, verlängerter Urlaub) sinkt der Preis auf 7 KM pro Tag (11-20 Tage) und 6 KM pro Tag (ab 21 Tagen).',
+      'Bei längeren Aufenthalten sinkt der Preis auf 7 KM pro Tag (11-20 Tage) und 6 KM pro Tag (21-30 Tage), und jeder Tag nach dem 30. kostet 5 KM.',
     alt: 'Autos auf einem Kiesparkplatz',
     blocks: [
       {
         type: 'p',
-        text: 'Bei längeren Aufenthalten (Geschäftsreise, Familienbesuch, verlängerter Urlaub) sinkt der Preis auf **7 KM/Tag** (11-20 Tage) und **6 KM/Tag** (ab 21 Tagen).',
+        text: 'Bei längeren Aufenthalten (Geschäftsreise, Familienbesuch, verlängerter Urlaub) sinkt der Preis auf **7 KM/Tag** (11-20 Tage) und **6 KM/Tag** (21-30 Tage), und jeder Tag nach dem 30. kostet **5 KM**.',
       },
       {
         type: 'p',
@@ -107,7 +107,7 @@ export const de: Messages = {
       pricing: {
         title: 'Parkpreise | Sky Parking & Fly',
         description:
-          'Parken am Flughafen Sarajevo: 8 KM pro Tag (1-10 Tage), 7 KM (11-20 Tage), 6 KM (ab 21 Tagen). Transfer und Überwachung inklusive. Berechnen Sie Ihren Aufenthalt.',
+          'Parken am Flughafen Sarajevo: 9 KM pro Tag (2-4 Tage), 8 KM (5-10), 7 KM (11-20), 6 KM (21-30), danach 5 KM je weiterem Tag. Transfer und Überwachung inklusive.',
       },
       facilities: {
         title: 'Gelände und Sicherheit | Sky Parking & Fly',
@@ -254,6 +254,7 @@ export const de: Messages = {
     time: 'Uhrzeit',
     estimate: 'Ungefährer Preis',
     line: (days: string, rate: string) => `${days} × ${rate} pro Tag`,
+    lineExtra: (days: string, first: string, extra: string) => `${days}: ${first} + ${extra}`,
   },
 
   stayErrors: {
@@ -261,6 +262,8 @@ export const de: Messages = {
     dropOffPast: 'Die Ankunftszeit liegt bereits in der Vergangenheit.',
     pickUpMissing: 'Wählen Sie Datum und Uhrzeit der Abreise.',
     pickUpBeforeDropOff: 'Die Abreise muss nach der Ankunft liegen.',
+    rangeTooShort: (minDays: number) =>
+      `Die Mindestparkdauer beträgt ${minDays} ${plural(minDays, 'Tag', 'Tage')}. Für einen kürzeren Aufenthalt kontaktieren Sie uns bitte.`,
     rangeTooLong: (maxDays: number) =>
       `Für Aufenthalte über ${maxDays} Tage rufen Sie uns an, wir vereinbaren einen Sonderpreis.`,
   },
@@ -319,19 +322,39 @@ export const de: Messages = {
     saving: (amount: string) => `Sie sparen ${amount}`,
     approx: 'Ungefährer Preis',
     tiers: {
-      short: {
-        label: '1-10 Tage',
-        hint: 'Die ideale Lösung für kurze Aufenthalte und schnelle Reisen.',
-      },
-      mid: {
-        label: '11-20 Tage',
-        hint: 'Die beliebteste Wahl für Reisende mit längerem Aufenthalt, eine hervorragende Balance zwischen Preis und Komfort.',
-      },
-      long: {
-        label: '21+ Tage',
-        hint: 'Das günstigste Paket für längere Aufenthalte, maximale Sicherheit zum besten Preis.',
-      },
+      from2: { label: '2-4 Tage', hint: 'Für kürzere Reisen, Wochenendtrips und Geschäftsflüge.' },
+      from5: { label: '5-10 Tage', hint: 'Günstig parken für Urlaub und Reisen.' },
+      from11: { label: '11-20 Tage', hint: 'Ein niedrigerer Tagespreis für längere Aufenthalte.' },
+      from21: { label: '21-30 Tage', hint: 'Die günstigsten Preise für längere Reisen.' },
     },
+    extra: {
+      label: 'Ab dem 31. Tag',
+      unit: 'KM für jeden weiteren Tag',
+      hint: (base: string, rate: string) =>
+        `Zum Grundpreis von ${base} für 30 Tage kommen ${rate} für jeden weiteren Tag hinzu.`,
+    },
+    minStay: (days: string) => `Die Mindestparkdauer beträgt ${days}.`,
+    howTitle: 'Wie wird die Anzahl der Tage berechnet?',
+    how: [
+      'Die Berechnung beginnt mit der genauen Ankunftszeit auf dem Parkplatz.',
+      'Jeder angefangene 24-Stunden-Zeitraum zählt als ein Tag.',
+      'Der Tagespreis richtet sich nach der Gesamtzahl der berechneten Tage.',
+      'Die genaue Anzahl der Tage und den Gesamtbetrag sehen Sie, bevor Sie die Reservierung senden.',
+    ],
+    checkTitle: 'Preis für Ihre Daten prüfen',
+    checkLead:
+      'Wählen Sie Datum und Uhrzeit von Ankunft und Rückkehr, um sofort die Anzahl der Parktage und den Gesamtpreis zu sehen.',
+    result: { days: 'Berechnete Tage', rate: 'Preis pro Tag', extra: 'Weitere Tage', total: 'Gesamt' },
+    sameNextStep: 'Der Preis bleibt im nächsten Schritt der Reservierung derselbe, wenn Sie Ihre Angaben nicht ändern.',
+    details: {
+      link: 'Detaillierte Preisliste und Beispiele',
+      title: 'Berechnungsbeispiele',
+      note: 'Die Beispiele gelten für genau die angegebene Anzahl berechneter Tage.',
+    },
+    supportTitle: 'Unterstützung bei Ankunft und Rückkehr',
+    supportText:
+      'Unser Team steht Ihnen bei der Ankunft, bei einer Flugänderung und bei der Organisation des Rücktransfers zur Verfügung.',
+    supportIncluded: 'Der Transfer zwischen Parkplatz und Flughafen ist im Preis enthalten.',
     includedTitle: 'Im Preis enthalten',
     included: [
       'Kostenloser Transfer zum Flughafen',
@@ -413,12 +436,14 @@ export const de: Messages = {
         q: 'Wie viel kostet das Parken pro Tag und pro Woche?',
         a: 'Der Parkplatzpreis hängt von der Aufenthaltsdauer ab:',
         list: [
-          { label: '1-10 Tage', value: '8 KM pro Tag' },
+          { label: '2-4 Tage', value: '9 KM pro Tag' },
+          { label: '5-10 Tage', value: '8 KM pro Tag' },
           { label: '11-20 Tage', value: '7 KM pro Tag' },
-          { label: '21+ Tage', value: '6 KM pro Tag' },
+          { label: '21-30 Tage', value: '6 KM pro Tag' },
+          { label: 'Ab dem 31. Tag', value: '5 KM für jeden weiteren Tag' },
         ],
         after:
-          'Für längere Aufenthalte gewährt SKY Parking and Fly zusätzliche Rabatte und besondere Vorteile für Stammkunden.',
+          'Die Mindestparkdauer beträgt 2 Tage. Für längere Aufenthalte gewährt SKY Parking and Fly zusätzliche Rabatte und besondere Vorteile für Stammkunden.',
       },
       {
         q: 'Wo genau befindet sich Sky Parking and Fly im Verhältnis zum Flughafen?',
@@ -538,7 +563,7 @@ export const de: Messages = {
 
   reservation: {
     title: 'Reservierung',
-    lead: 'Wählen Sie Ihre Daten, füllen Sie Ihre Angaben aus und senden Sie Ihre Reservierung. Die Bestätigung erhalten Sie per Nachricht oder E-Mail.',
+    lead: 'Wählen Sie Ihre Daten, füllen Sie Ihre Angaben aus und senden Sie Ihre Reservierung. Die Bestätigung mit Ihrem Reservierungscode erhalten Sie sofort per E-Mail.',
     stayTitle: 'Zeitraum',
     guestTitle: 'Ihre Angaben',
     fields: {
@@ -555,19 +580,16 @@ export const de: Messages = {
         required: 'Geben Sie Ihre Telefonnummer an, damit wir den Termin bestätigen können.',
         invalid: 'Die Telefonnummer ist nicht gültig (z. B. 061 123 456).',
       },
-      email: { invalid: 'Die E-Mail-Adresse ist nicht gültig.' },
+      email: {
+        required: 'Geben Sie die E-Mail-Adresse ein, an die wir die Bestätigung senden sollen.',
+        invalid: 'Die E-Mail-Adresse ist nicht gültig.',
+      },
       flight: { invalid: 'Die Flugnummer ist nicht gültig (z. B. FR 1234).' },
     },
     submit: {
       label: 'Reservierung senden',
       sending: 'Wird gesendet…',
-      note: 'Ihre Reservierung wird per E-Mail an unser Team gesendet, die Bestätigung erhalten Sie per Nachricht oder E-Mail.',
-    },
-    sent: {
-      title: 'Reservierung gesendet',
-      text: 'Wir haben Ihre Anfrage erhalten. Die Bestätigung des Termins erhalten Sie per Nachricht oder E-Mail.',
-      another: 'Neue Reservierung',
-      home: 'Zur Startseite',
+      note: 'Gleich nach dem Absenden erhalten Sie eine E-Mail mit der Bestätigung, Ihrem Reservierungscode, den Terminen, dem Preis und den Regeln.',
     },
     failed: {
       title: 'Senden fehlgeschlagen',
@@ -577,6 +599,7 @@ export const de: Messages = {
       title: 'Ihre Anfrage',
       stay: 'Aufenthalt',
       rate: 'Preis pro Tag',
+      extra: 'Tage nach dem 30.',
       total: 'Ungefähre Summe',
     },
     send: {
@@ -605,6 +628,56 @@ export const de: Messages = {
     },
   },
 
+  confirmation: {
+    title: 'Reservierung erfolgreich',
+    subject: (code: string) => `Reservierung erfolgreich ${code} | Sky Parking & Fly Sarajevo`,
+    period: (from: string, to: string) => `von ${from} bis ${to}`,
+    codeLabel: 'Reservierungscode',
+    keepCode: 'Bewahren Sie diesen Code auf und nennen Sie ihn, wenn Sie uns kontaktieren.',
+    greeting: (name: string) => `Guten Tag ${name},`,
+    intro:
+      'Vielen Dank für Ihre Reservierung bei Sky Parking and Fly Sarajevo. Ihre Reservierung ist eingegangen, hier sind alle Angaben.',
+    detailsTitle: 'Details der Reservierung',
+    labels: {
+      arrival: 'Ankunft',
+      departure: 'Abreise',
+      days: 'Berechnete Tage',
+      vehicle: 'Fahrzeug',
+      name: 'Vor- und Nachname',
+      phone: 'Telefon',
+      email: 'E-Mail',
+      flight: 'Flugnummer',
+      note: 'Hinweis',
+    },
+    priceTitle: 'Preis',
+    priceTotal: 'Gesamtpreis',
+    pricePayment: 'Bezahlung in bar bei Ankunft oder Abreise.',
+    rulesTitle: 'Gut zu wissen',
+    rules: [
+      'Die Berechnung beginnt mit der genauen Ankunftszeit auf dem Parkplatz. Jeder angefangene 24-Stunden-Zeitraum zählt als ein Tag.',
+      'Flugverspätung: Wir verfolgen die Flüge und sind bei der Abholzeit flexibel, für geringfügige Verspätungen berechnen wir nichts extra.',
+      'Wenn sich Ihre Rückreise verschiebt, melden Sie sich so früh wie möglich, wir verlängern die Reservierung. Unser Team ist auch bei einer Flugänderung für Sie da.',
+      'Sobald Sie zurück sind und Ihr Gepäck haben, schreiben oder rufen Sie uns an. Unser Fahrer holt Sie ab und bringt Sie zurück zu Ihrem Auto.',
+      'Der Transfer zum Terminal und zurück ist kostenlos und im Parkpreis enthalten. Wir helfen bei Koffern, Kinderwagen und Kindersitzen.',
+      'Sie können die Schlüssel behalten oder zur Aufbewahrung bei uns lassen, ganz wie es Ihnen lieber ist.',
+      'Die Bezahlung erfolgt in bar bei Ankunft oder Abreise. Wenn Sie anders bezahlen möchten, kontaktieren Sie uns bitte im Voraus.',
+      'Bitte lassen Sie keine Wertsachen, Taschen oder Kabel sichtbar im Fahrzeug liegen.',
+    ],
+    rulePrice: (rate: string) =>
+      `Der Tagespreis richtet sich nach der Gesamtzahl der berechneten Tage, und jeder Tag nach dem 30. Tag kostet ${rate}.`,
+    contactTitle: 'Fragen oder Planänderung?',
+    contactText: 'Schreiben oder rufen Sie uns an. Wir sind rund um die Uhr da, auch an Feiertagen.',
+    contactLabels: { phone: 'Telefon, WhatsApp und Viber', email: 'E-Mail', address: 'Adresse' },
+    mailSent: (email: string) =>
+      `Wir haben eine Bestätigung mit diesen Angaben an ${email} gesendet. Falls Sie sie nicht sehen, prüfen Sie den Spam-Ordner.`,
+    mailNotSent:
+      'Die Bestätigungs-E-Mail konnte gerade nicht gesendet werden. Bewahren Sie Ihren Reservierungscode auf, wir melden uns per Nachricht oder E-Mail bei Ihnen.',
+    copyCode: 'Code kopieren',
+    copied: 'Code kopiert',
+    print: 'Bestätigung drucken',
+    another: 'Neue Reservierung',
+    home: 'Zur Startseite',
+  },
   viber: {
     title: 'Hat sich Viber nicht geöffnet?',
     text: (number: string) =>
@@ -633,7 +706,7 @@ export const de: Messages = {
     docs: {
       terms: {
         title: 'Nutzungsbedingungen',
-        updated: '15. Oktober 2026',
+        updated: '16. Oktober 2026',
         sections: [
           {
             heading: 'Leistung',
@@ -645,7 +718,7 @@ export const de: Messages = {
           },
           {
             heading: 'Preis',
-            body: 'Der Preis gilt pro Tag: 8 KM bei einem Aufenthalt von 1 bis 10 Tagen, 7 KM von 11 bis 20 Tagen und 6 KM ab 21 Tagen. Der auf der Website angezeigte Betrag ist ungefähr, Termin und Preis bestätigen wir bei der Reservierung.',
+            body: 'Der Preis gilt pro Tag: 9 KM bei einem Aufenthalt von 2 bis 4 Tagen, 8 KM von 5 bis 10 Tagen, 7 KM von 11 bis 20 Tagen und 6 KM von 21 bis 30 Tagen, und jeder Tag nach dem 30. Tag kostet 5 KM. Die Mindestparkdauer beträgt 2 Tage, und jeder angefangene 24-Stunden-Zeitraum zählt als ein Tag. Der auf der Website angezeigte Betrag ist ungefähr, Termin und Preis bestätigen wir bei der Reservierung.',
           },
           {
             heading: 'Bezahlung',

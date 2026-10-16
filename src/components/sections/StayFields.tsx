@@ -36,7 +36,7 @@ export function StayFields({
         <p id={`${idPrefix}-arrival`} className="label mb-2 text-[0.9375rem] text-ink-faint">
           {t.stayBar.arrival}
         </p>
-        <div className="grid grid-cols-[1fr_6.75rem] gap-2">
+        <div className="grid grid-cols-[1fr_6.25rem] gap-2 sm:grid-cols-[1fr_6.75rem]">
           <DateField
             value={stay.dropOffDate}
             min={today}
@@ -57,7 +57,7 @@ export function StayFields({
         <p id={`${idPrefix}-departure`} className="label mb-2 text-[0.9375rem] text-ink-faint">
           {t.stayBar.departure}
         </p>
-        <div className="grid grid-cols-[1fr_6.75rem] gap-2">
+        <div className="grid grid-cols-[1fr_6.25rem] gap-2 sm:grid-cols-[1fr_6.75rem]">
           <DateField
             value={stay.pickUpDate}
             min={stay.dropOffDate || today}

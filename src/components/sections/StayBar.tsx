@@ -1,6 +1,5 @@
 import { useRef, type FormEvent } from 'react';
 import { Button } from '@/components/ui/Button';
-import { MAX_STAY_DAYS } from '@/data/pricing';
 import { useStay } from '@/context/stayContext';
 import { useAnimatedNumber } from '@/hooks/useAnimatedNumber';
 import { stayMessage } from '@/i18n/helpers';
@@ -57,9 +56,7 @@ export function StayBar({ className }: { className?: string }) {
             {fmt.km(total, { withCurrency: false })}
             <span className="text-[1.375rem] text-ink-muted">KM</span>
           </span>
-          <span className="tabular mt-1.5 text-[0.8125rem] text-ink-muted">
-            {t.stayBar.line(t.units.days(quote.days), fmt.km(quote.ratePerDay))}
-          </span>
+          <span className="tabular mt-1.5 text-[0.8125rem] text-ink-muted">{fmt.quoteLine(quote)}</span>
         </div>
 
         <div className="flex items-center border-t border-line p-4 sm:p-5 md:border-l xl:border-t-0">
@@ -71,7 +68,7 @@ export function StayBar({ className }: { className?: string }) {
 
       {errorCode && (
         <p role="alert" className="border-t border-line px-5 py-3 text-sm text-danger">
-          {stayMessage(t, errorCode, MAX_STAY_DAYS)}
+          {stayMessage(t, errorCode)}
         </p>
       )}
     </form>

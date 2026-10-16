@@ -1,20 +1,22 @@
-import { CircleAlert, CircleCheck, Mail, MessageCircle, MessagesSquare, Phone } from 'lucide-react';
+import { CircleAlert, Mail, MessageCircle, MessagesSquare, Phone } from 'lucide-react';
 import { useEffect, useId, useMemo, useRef, useState, type ChangeEvent, type FormEvent, type MouseEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout';
 import { Field } from '@/components/ui/Field';
 import { PageHeader } from '@/components/layout/PageHeader';
+import { ConfirmationPanel } from '@/components/sections/ConfirmationPanel';
 import { StayFields } from '@/components/sections/StayFields';
-import { MAX_STAY_DAYS } from '@/data/pricing';
+import { EXTRA_DAY_RATE } from '@/data/pricing';
 import { mailLink, telLink, viberLink, whatsappLink } from '@/data/site';
 import { useStay } from '@/context/stayContext';
 import { fieldMessage, stayMessage } from '@/i18n/helpers';
 import { useI18n } from '@/i18n/context';
 import { useFormat } from '@/i18n/useFormat';
-import { submitReservation } from '@/services/reservationGateway';
+import { submitReservation, type ReservationResult } from '@/services/reservationGateway';
 import type { GuestDetails, GuestField } from '@/types';
 import { cn } from '@/utils/cn';
+import { buildConfirmation, type Confirmation } from '@/utils/confirmation';
 import { buildReservationText } from '@/utils/reservation';
 import { hasErrors, validateGuest } from '@/utils/validation';
 import { PageShell } from './PageShell';
@@ -46,8 +48,11 @@ export default function Reservation() {
   const [status, setStatus] = useState<Status>('idle');
   const [copied, setCopied] = useState(false);
   const [trap, setTrap] = useState('');
+  const [sent, setSent] = useState<{ result: ReservationResult; confirmation: Confirmation; email: string } | null>(
+    null,
+  );
 
-  const guestErrors = validateGuest(guest, { requirePhone: attempt === 'submit' });
+  const guestErrors = validateGuest(guest, { requirePhone: attempt === 'submit', requireEmail: attempt === 'submit' });
   const stayError = stayErrors.dropOff ?? stayErrors.pickUp ?? stayErrors.range;
   const messageInvalid = hasErrors(validateGuest(guest)) || stayError !== undefined;
 
@@ -86,19 +91,24 @@ export default function Reservation() {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (busy.current) return;
-    if (hasErrors(validateGuest(guest, { requirePhone: true })) || stayError !== undefined) {
+    if (hasErrors(validateGuest(guest, { requirePhone: true, requireEmail: true })) || stayError !== undefined) {
       reveal('submit');
       return;
     }
-    // A person never sees this field; a bot that fills every input does
+    // A person never sees this field; a bot that fills every input is shown a confirmation and nothing is sent
     if (trap) {
-      setStatus('sent');
+      setStatus('idle');
       return;
     }
     busy.current = true;
     setStatus('sending');
     try {
-      await submitReservation({ stay, quote, guest, lang });
+      const result = await submitReservation({ stay, quote, guest, lang });
+      setSent({
+        result,
+        email: guest.email.trim(),
+        confirmation: buildConfirmation({ code: result.code, stay, quote, guest, lang }),
+      });
       setStatus('sent');
     } catch {
       setStatus('failed');
@@ -112,6 +122,7 @@ export default function Reservation() {
     setTouched({});
     setAttempt('none');
     setStatus('idle');
+    setSent(null);
   };
 
   /** Stops a side-panel action when the form has problems; returns `true` when it is fine to go on. */
@@ -135,23 +146,13 @@ export default function Reservation() {
       <PageHeader title={t.reservation.title} lead={t.reservation.lead} />
 
       <Container className="grid gap-12 pb-24 sm:pb-32 lg:grid-cols-12 lg:gap-16">
-        {status === 'sent' ? (
-          <div
+        {status === 'sent' && sent ? (
+          <ConfirmationPanel
             ref={sentRef}
-            tabIndex={-1}
-            role="status"
-            className="content-start self-start rounded-[10px] border border-line bg-surface p-8 outline-none sm:p-10 lg:col-span-7"
-          >
-            <CircleCheck className="size-12 text-accent-text" strokeWidth={1.5} aria-hidden="true" />
-            <h2 className="display text-sub mt-5">{t.reservation.sent.title}</h2>
-            <p className="mt-3 max-w-[46ch] text-lg text-ink-muted">{t.reservation.sent.text}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={startOver}>
-                {t.reservation.sent.another}
-              </Button>
-              <Button to="home">{t.reservation.sent.home}</Button>
-            </div>
-          </div>
+            confirmation={sent.confirmation}
+            mailedTo={sent.result.customerMail ? sent.email : null}
+            onAnother={startOver}
+          />
         ) : (
           <form
             ref={formRef}
@@ -171,7 +172,7 @@ export default function Reservation() {
               </div>
               {stayError && (
                 <p role="alert" className="mt-3 text-sm text-danger">
-                  {stayMessage(t, stayError, MAX_STAY_DAYS)}
+                  {stayMessage(t, stayError)}
                 </p>
               )}
             </fieldset>
@@ -212,7 +213,7 @@ export default function Reservation() {
                     />
                   )}
                 </Field>
-                <Field label={t.reservation.fields.email.label} optional error={errorFor('email')}>
+                <Field label={t.reservation.fields.email.label} error={errorFor('email')}>
                   {(p) => (
                     <input
                       {...p}
@@ -225,6 +226,7 @@ export default function Reservation() {
                       onChange={set('email')}
                       onBlur={touch('email')}
                       placeholder={t.reservation.fields.email.placeholder}
+                      required
                       className={cn(p.className, 'h-12')}
                     />
                   )}
@@ -316,102 +318,113 @@ export default function Reservation() {
           </form>
         )}
 
-        <aside aria-label={t.reservation.summary.title} className="lg:col-span-5">
-          <div className="grid gap-6 lg:sticky lg:top-28">
-            <div className="rounded-[10px] border border-line bg-surface p-6 shadow-panel sm:p-8">
-              <h2 className="label text-[1.0625rem] text-ink-faint">{t.reservation.summary.title}</h2>
-              <dl className="mt-5 grid gap-4">
-                <div>
-                  <dt className="text-sm text-ink-faint">{t.stayBar.arrival}</dt>
-                  <dd className="mt-0.5 text-lg">{fmt.when(stay.dropOffDate, stay.dropOffTime)}</dd>
+        {/* After sending, the confirmation says it all; the summary and the message buttons would only repeat it */}
+        {status !== 'sent' && (
+          <aside aria-label={t.reservation.summary.title} className="lg:col-span-5">
+            <div className="grid gap-6 lg:sticky lg:top-28">
+              <div className="rounded-[10px] border border-line bg-surface p-6 shadow-panel sm:p-8">
+                <h2 className="label text-[1.0625rem] text-ink-faint">{t.reservation.summary.title}</h2>
+                <dl className="mt-5 grid gap-4">
+                  <div>
+                    <dt className="text-sm text-ink-faint">{t.stayBar.arrival}</dt>
+                    <dd className="mt-0.5 text-lg">{fmt.when(stay.dropOffDate, stay.dropOffTime)}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-ink-faint">{t.stayBar.departure}</dt>
+                    <dd className="mt-0.5 text-lg">{fmt.when(stay.pickUpDate, stay.pickUpTime)}</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4 border-t border-line pt-4">
+                    <dt className="text-ink-muted">{t.reservation.summary.stay}</dt>
+                    <dd className="tabular">{t.units.days(quote.days)}</dd>
+                  </div>
+                  <div className="flex items-baseline justify-between gap-4">
+                    <dt className="text-ink-muted">{t.reservation.summary.rate}</dt>
+                    <dd className="tabular">{fmt.km(quote.ratePerDay)}</dd>
+                  </div>
+                  {quote.extraDays > 0 && (
+                    <div className="flex items-baseline justify-between gap-4">
+                      <dt className="text-ink-muted">{t.reservation.summary.extra}</dt>
+                      <dd className="tabular">
+                        {quote.extraDays} × {fmt.km(EXTRA_DAY_RATE)}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+                <div className="mt-5 flex items-end justify-between gap-4 border-t border-line pt-5">
+                  <p className="label text-[1rem] text-ink-faint">{t.reservation.summary.total}</p>
+                  <p className="display tabular flex items-baseline gap-2 text-[3.5rem] leading-none">
+                    {fmt.km(quote.total, { withCurrency: false })}
+                    <span className="text-[1.5rem] text-ink-muted">KM</span>
+                  </p>
                 </div>
-                <div>
-                  <dt className="text-sm text-ink-faint">{t.stayBar.departure}</dt>
-                  <dd className="mt-0.5 text-lg">{fmt.when(stay.pickUpDate, stay.pickUpTime)}</dd>
+                <p className="mt-4 text-sm text-ink-faint">{t.price.payment}</p>
+              </div>
+
+              <div>
+                <h2 className="display text-sub">{t.reservation.send.title}</h2>
+                <p className="mt-2 text-ink-muted">{t.reservation.send.hint}</p>
+
+                <div className="mt-5 grid gap-3">
+                  <Button
+                    size="lg"
+                    fullWidth
+                    variant="secondary"
+                    href={whatsappLink(text)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={guard}
+                    leftIcon={<MessageCircle className="size-5" aria-hidden="true" />}
+                  >
+                    {t.reservation.send.whatsapp}
+                  </Button>
+                  <div className="grid grid-cols-3 gap-3">
+                    <Button
+                      variant="secondary"
+                      href={viberLink()}
+                      onClick={copyForViber}
+                      leftIcon={<MessagesSquare className="size-[1.1rem]" aria-hidden="true" />}
+                      className="px-3"
+                    >
+                      {t.reservation.send.viber}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      href={mailLink(t.reservation.message.subject, text)}
+                      onClick={guard}
+                      leftIcon={<Mail className="size-[1.1rem]" aria-hidden="true" />}
+                      className="px-3"
+                    >
+                      {t.reservation.send.email}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      href={telLink}
+                      leftIcon={<Phone className="size-[1.1rem]" aria-hidden="true" />}
+                      className="px-3"
+                    >
+                      {t.reservation.send.call}
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex items-baseline justify-between gap-4 border-t border-line pt-4">
-                  <dt className="text-ink-muted">{t.reservation.summary.stay}</dt>
-                  <dd className="tabular">{t.units.days(quote.days)}</dd>
-                </div>
-                <div className="flex items-baseline justify-between gap-4">
-                  <dt className="text-ink-muted">{t.reservation.summary.rate}</dt>
-                  <dd className="tabular">{fmt.km(quote.ratePerDay)}</dd>
-                </div>
-              </dl>
-              <div className="mt-5 flex items-end justify-between gap-4 border-t border-line pt-5">
-                <p className="label text-[1rem] text-ink-faint">{t.reservation.summary.total}</p>
-                <p className="display tabular flex items-baseline gap-2 text-[3.5rem] leading-none">
-                  {fmt.km(quote.total, { withCurrency: false })}
-                  <span className="text-[1.5rem] text-ink-muted">KM</span>
+
+                <p id={statusId} role="status" className="mt-3 min-h-6 text-sm">
+                  {attempt === 'message' && messageInvalid ? (
+                    <span className="text-danger">{t.reservation.send.fixErrors}</span>
+                  ) : copied ? (
+                    <span className="text-accent-text">{t.reservation.send.viberCopied}</span>
+                  ) : null}
                 </p>
               </div>
-              <p className="mt-4 text-sm text-ink-faint">{t.price.payment}</p>
-            </div>
 
-            <div>
-              <h2 className="display text-sub">{t.reservation.send.title}</h2>
-              <p className="mt-2 text-ink-muted">{t.reservation.send.hint}</p>
-
-              <div className="mt-5 grid gap-3">
-                <Button
-                  size="lg"
-                  fullWidth
-                  variant="secondary"
-                  href={whatsappLink(text)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={guard}
-                  leftIcon={<MessageCircle className="size-5" aria-hidden="true" />}
-                >
-                  {t.reservation.send.whatsapp}
-                </Button>
-                <div className="grid grid-cols-3 gap-3">
-                  <Button
-                    variant="secondary"
-                    href={viberLink()}
-                    onClick={copyForViber}
-                    leftIcon={<MessagesSquare className="size-[1.1rem]" aria-hidden="true" />}
-                    className="px-3"
-                  >
-                    {t.reservation.send.viber}
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    href={mailLink(t.reservation.message.subject, text)}
-                    onClick={guard}
-                    leftIcon={<Mail className="size-[1.1rem]" aria-hidden="true" />}
-                    className="px-3"
-                  >
-                    {t.reservation.send.email}
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    href={telLink}
-                    leftIcon={<Phone className="size-[1.1rem]" aria-hidden="true" />}
-                    className="px-3"
-                  >
-                    {t.reservation.send.call}
-                  </Button>
-                </div>
+              <div>
+                <h3 className="label text-[1rem] text-ink-faint">{t.reservation.send.previewTitle}</h3>
+                <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-[6px] bg-surface-2 p-4 font-sans text-sm text-ink-muted">
+                  {text}
+                </pre>
               </div>
-
-              <p id={statusId} role="status" className="mt-3 min-h-6 text-sm">
-                {attempt === 'message' && messageInvalid ? (
-                  <span className="text-danger">{t.reservation.send.fixErrors}</span>
-                ) : copied ? (
-                  <span className="text-accent-text">{t.reservation.send.viberCopied}</span>
-                ) : null}
-              </p>
             </div>
-
-            <div>
-              <h3 className="label text-[1rem] text-ink-faint">{t.reservation.send.previewTitle}</h3>
-              <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-[6px] bg-surface-2 p-4 font-sans text-sm text-ink-muted">
-                {text}
-              </pre>
-            </div>
-          </div>
-        </aside>
+          </aside>
+        )}
       </Container>
     </PageShell>
   );

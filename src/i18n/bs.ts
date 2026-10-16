@@ -5,7 +5,7 @@
  * Facts (prices, distances, opening hours, FAQ) come from parkingandfly.ba.
  */
 
-import type { NewsId } from '@/data/news';
+import type { NewsId } from '../data/news.ts';
 
 /** Bosnian plural: 1 dan / 2-4 dana / 5+ dana (21 dan, 22 dana, 11 dana). */
 function pluralBs(count: number, one: string, few: string, many: string): string {
@@ -112,12 +112,12 @@ const newsItems: Record<NewsId, NewsArticleText> = {
   longStay: {
     title: 'Dugo parkiranje bez brige: 11-20 i 21+ dana',
     excerpt:
-      'Za duže boravke (poslovno, posjeta porodici, produženi odmor) cijena pada na 7 KM/dan (11-20 dana) i 6 KM/dan (21+).',
+      'Za duže boravke cijena pada na 7 KM/dan (11-20 dana) i 6 KM/dan (21-30 dana), a svaki dan nakon 30. košta 5 KM.',
     alt: 'Automobili parkirani na šljunčanom parkingu',
     blocks: [
       {
         type: 'p',
-        text: 'Za duže boravke (poslovno, posjeta porodici, produženi odmor) cijena pada na **7 KM/dan** (11-20 dana) i **6 KM/dan** (21+).',
+        text: 'Za duže boravke (poslovno, posjeta porodici, produženi odmor) cijena pada na **7 KM/dan** (11-20 dana) i **6 KM/dan** (21-30 dana), a svaki dan nakon 30. košta **5 KM**.',
       },
       {
         type: 'p',
@@ -144,7 +144,7 @@ export const bs = {
       pricing: {
         title: 'Cijene parkinga | Sky Parking & Fly',
         description:
-          'Parking kod aerodroma Sarajevo: 8 KM po danu (1-10 dana), 7 KM (11-20 dana), 6 KM (21+ dana). Transfer i nadzor su uključeni. Izračunajte svoj boravak.',
+          'Parking kod aerodroma Sarajevo: 9 KM po danu (2-4 dana), 8 KM (5-10), 7 KM (11-20), 6 KM (21-30), nakon 30. dana 5 KM po danu. Transfer i nadzor uključeni.',
       },
       facilities: {
         title: 'Objekat i sigurnost | Sky Parking & Fly',
@@ -291,6 +291,7 @@ export const bs = {
     time: 'Vrijeme',
     estimate: 'Okvirna cijena',
     line: (days: string, rate: string) => `${days} × ${rate} po danu`,
+    lineExtra: (days: string, first: string, extra: string) => `${days}: ${first} + ${extra}`,
   },
 
   stayErrors: {
@@ -298,6 +299,8 @@ export const bs = {
     dropOffPast: 'Vrijeme dolaska je već prošlo.',
     pickUpMissing: 'Odaberite datum i vrijeme odlaska.',
     pickUpBeforeDropOff: 'Odlazak mora biti nakon dolaska.',
+    rangeTooShort: (minDays: number) =>
+      `Minimalno trajanje parkiranja je ${minDays} ${pluralBs(minDays, 'dan', 'dana', 'dana')}. Za kraći boravak nas kontaktirajte.`,
     rangeTooLong: (maxDays: number) =>
       `Za boravak duži od ${maxDays} ${pluralBs(maxDays, 'dan', 'dana', 'dana')} nazovite nas, dogovorit ćemo posebnu cijenu.`,
   },
@@ -356,19 +359,39 @@ export const bs = {
     saving: (amount: string) => `Ušteda ${amount}`,
     approx: 'Okvirna cijena',
     tiers: {
-      short: {
-        label: '1-10 dana',
-        hint: 'Idealno rješenje za kraće boravke i brza putovanja.',
-      },
-      mid: {
-        label: '11-20 dana',
-        hint: 'Najpopularniji izbor putnika koji ostaju duže, odličan balans cijene i praktičnosti.',
-      },
-      long: {
-        label: '21+ dana',
-        hint: 'Najpovoljniji paket za dugotrajnije boravke, maksimalna sigurnost po najboljoj cijeni.',
-      },
+      from2: { label: '2-4 dana', hint: 'Za kraća putovanja, vikend odmore i poslovne letove.' },
+      from5: { label: '5-10 dana', hint: 'Povoljno parkiranje za odmore i putovanja.' },
+      from11: { label: '11-20 dana', hint: 'Niža dnevna cijena za duži boravak.' },
+      from21: { label: '21-30 dana', hint: 'Najpovoljnije cijene za duža putovanja.' },
     },
+    extra: {
+      label: 'Nakon 30. dana',
+      unit: 'KM za svaki dodatni dan',
+      hint: (base: string, rate: string) =>
+        `Na osnovnu cijenu od ${base} za 30 dana dodaje se ${rate} za svaki naredni dan.`,
+    },
+    minStay: (days: string) => `Minimalno trajanje parkiranja je ${days}.`,
+    howTitle: 'Kako se računa broj dana?',
+    how: [
+      'Obračun počinje tačnim vremenom dolaska na parking.',
+      'Svaki započeti period od 24 sata računa se kao jedan dan.',
+      'Dnevna cijena određuje se prema ukupnom broju obračunatih dana.',
+      'Tačan broj dana i ukupan iznos vidite prije slanja rezervacije.',
+    ],
+    checkTitle: 'Provjeri cijenu za svoje datume',
+    checkLead:
+      'Odaberite datum i vrijeme dolaska i povratka kako biste odmah vidjeli broj dana parkiranja i ukupnu cijenu.',
+    result: { days: 'Obračunati dani', rate: 'Cijena po danu', extra: 'Dodatni dani', total: 'Ukupno' },
+    sameNextStep: 'Cijena je ista u sljedećem koraku rezervacije ako ne promijenite podatke.',
+    details: {
+      link: 'Detaljan cjenovnik i primjeri',
+      title: 'Primjeri obračuna',
+      note: 'Primjeri se odnose na tačno navedeni broj obračunatih dana.',
+    },
+    supportTitle: 'Podrška pri dolasku i povratku',
+    supportText:
+      'Naš tim vam stoji na raspolaganju prilikom dolaska, promjene leta i organizacije povratnog transfera.',
+    supportIncluded: 'Transfer između parkinga i aerodroma uključen je u cijenu.',
     includedTitle: 'U cijeni parkinga',
     included: [
       'Besplatan transfer do aerodroma',
@@ -446,12 +469,14 @@ export const bs = {
         q: 'Koliko košta parking po danu i po sedmici?',
         a: 'Cijena parkinga zavisi od dužine boravka:',
         list: [
-          { label: '1-10 dana', value: '8 KM po danu' },
+          { label: '2-4 dana', value: '9 KM po danu' },
+          { label: '5-10 dana', value: '8 KM po danu' },
           { label: '11-20 dana', value: '7 KM po danu' },
-          { label: '21+ dana', value: '6 KM po danu' },
+          { label: '21-30 dana', value: '6 KM po danu' },
+          { label: 'Nakon 30. dana', value: '5 KM za svaki dodatni dan' },
         ],
         after:
-          'Za duži period boravka, SKY Parking and Fly odobrava dodatne popuste i posebne pogodnosti za redovne klijente.',
+          'Minimalno trajanje parkiranja je 2 dana. Za duži period boravka, SKY Parking and Fly odobrava dodatne popuste i posebne pogodnosti za redovne klijente.',
       },
       {
         q: 'Gdje se tačno nalazi Sky Parking and Fly u odnosu na aerodrom?',
@@ -562,7 +587,7 @@ export const bs = {
 
   reservation: {
     title: 'Rezervacija',
-    lead: 'Odaberite datume, popunite podatke i pošaljite rezervaciju. Potvrdu termina dobijate porukom ili e-mailom.',
+    lead: 'Odaberite datume, popunite podatke i pošaljite rezervaciju. Odmah dobijate potvrdu s kodom rezervacije na e-mail.',
     stayTitle: 'Termin',
     guestTitle: 'Vaši podaci',
     fields: {
@@ -579,19 +604,16 @@ export const bs = {
         required: 'Unesite broj telefona da vam možemo potvrditi termin.',
         invalid: 'Broj telefona nije ispravan (npr. 061 123 456).',
       },
-      email: { invalid: 'E-mail adresa nije ispravna.' },
+      email: {
+        required: 'Unesite e-mail na koji da pošaljemo potvrdu rezervacije.',
+        invalid: 'E-mail adresa nije ispravna.',
+      },
       flight: { invalid: 'Broj leta nije ispravan (npr. FR 1234).' },
     },
     submit: {
       label: 'Pošalji rezervaciju',
       sending: 'Šaljem…',
-      note: 'Rezervacija stiže e-mailom našem timu, a potvrdu termina dobijate porukom ili e-mailom.',
-    },
-    sent: {
-      title: 'Rezervacija je poslana',
-      text: 'Primili smo vaš upit. Potvrdu termina dobijate porukom ili e-mailom.',
-      another: 'Nova rezervacija',
-      home: 'Na početnu',
+      note: 'Odmah nakon slanja dobijate e-mail s potvrdom, kodom rezervacije, datumima, cijenom i pravilima.',
     },
     failed: {
       title: 'Slanje nije uspjelo',
@@ -601,6 +623,7 @@ export const bs = {
       title: 'Vaš upit',
       stay: 'Boravak',
       rate: 'Cijena po danu',
+      extra: 'Dodatni dani nakon 30.',
       total: 'Okvirno ukupno',
     },
     send: {
@@ -629,6 +652,55 @@ export const bs = {
     },
   },
 
+  confirmation: {
+    title: 'Uspješna rezervacija',
+    subject: (code: string) => `Uspješna rezervacija ${code} | Sky Parking & Fly Sarajevo`,
+    period: (from: string, to: string) => `od ${from} do ${to}`,
+    codeLabel: 'Kod rezervacije',
+    keepCode: 'Sačuvajte ovaj kod i navedite ga kad nas kontaktirate.',
+    greeting: (name: string) => `Pozdrav, ${name}!`,
+    intro:
+      'Hvala što ste rezervisali parking kod Sky Parking and Fly Sarajevo. Vaša rezervacija je uspješno primljena, a ovo su svi podaci.',
+    detailsTitle: 'Detalji rezervacije',
+    labels: {
+      arrival: 'Dolazak',
+      departure: 'Odlazak',
+      days: 'Obračunati dani',
+      vehicle: 'Vozilo',
+      name: 'Ime i prezime',
+      phone: 'Telefon',
+      email: 'E-mail',
+      flight: 'Broj leta',
+      note: 'Napomena',
+    },
+    priceTitle: 'Cijena',
+    priceTotal: 'Ukupna cijena',
+    pricePayment: 'Plaćanje gotovinom pri dolasku ili odlasku.',
+    rulesTitle: 'Važno znati',
+    rules: [
+      'Obračun počinje tačnim vremenom dolaska na parking. Svaki započeti period od 24 sata računa se kao jedan dan.',
+      'Kašnjenje leta: pratimo letove i fleksibilni smo s vremenom preuzimanja, a za manja kašnjenja ne naplaćujemo dodatne troškove.',
+      'Ako se povratak pomjeri, javite nam se čim saznate i produžit ćemo rezervaciju. Naš tim vam je na raspolaganju i kad se promijeni let.',
+      'Po povratku, čim preuzmete prtljag, pošaljite poruku ili nas nazovite. Naš vozač dolazi po vas i vraća vas do auta.',
+      'Transfer do terminala i nazad je besplatan i uključen u cijenu parkinga. Pomažemo s koferima, kolicima i dječijim sjedalicama.',
+      'Ključeve možete zadržati ili ostaviti kod nas na čuvanje, kako vam je lakše.',
+      'Plaćanje je gotovinom pri dolasku ili odlasku. Ako želite platiti drugačije, javite nam se unaprijed.',
+      'Molimo vas da vrijedne stvari, torbice i kablove ne ostavljate na vidljivom mjestu u vozilu.',
+    ],
+    rulePrice: (rate: string) =>
+      `Dnevna cijena određuje se prema ukupnom broju obračunatih dana, a svaki dan nakon 30. dana košta ${rate}.`,
+    contactTitle: 'Pitanja ili promjena plana?',
+    contactText: 'Javite nam se porukom ili pozivom. Radimo non-stop, uključujući praznike.',
+    contactLabels: { phone: 'Telefon, WhatsApp i Viber', email: 'E-mail', address: 'Adresa' },
+    mailSent: (email: string) => `Potvrdu s ovim podacima poslali smo na ${email}. Ako je ne vidite, provjerite spam.`,
+    mailNotSent:
+      'E-mail potvrda trenutno nije mogla biti poslana. Sačuvajte kod rezervacije, a mi ćemo vam se javiti porukom ili e-mailom.',
+    copyCode: 'Kopiraj kod',
+    copied: 'Kod je kopiran',
+    print: 'Odštampaj potvrdu',
+    another: 'Nova rezervacija',
+    home: 'Na početnu',
+  },
   viber: {
     title: 'Viber se nije otvorio?',
     text: (number: string) =>
@@ -657,7 +729,7 @@ export const bs = {
     docs: {
       terms: {
         title: 'Uslovi korištenja',
-        updated: '15. oktobar 2026.',
+        updated: '16. oktobar 2026.',
         sections: [
           {
             heading: 'Usluga',
@@ -669,7 +741,7 @@ export const bs = {
           },
           {
             heading: 'Cijena',
-            body: 'Cijena se računa po danu: 8 KM za boravak od 1 do 10 dana, 7 KM od 11 do 20 dana i 6 KM za 21 dan i duže. Iznos prikazan na stranici je okviran, a termin i cijenu potvrđujemo pri rezervaciji.',
+            body: 'Cijena se računa po danu: 9 KM za boravak od 2 do 4 dana, 8 KM od 5 do 10 dana, 7 KM od 11 do 20 dana i 6 KM od 21 do 30 dana, a svaki dan nakon 30. dana košta 5 KM. Minimalno trajanje parkiranja je 2 dana, a svaki započeti period od 24 sata računa se kao jedan dan. Iznos prikazan na stranici je okviran, a termin i cijenu potvrđujemo pri rezervaciji.',
           },
           {
             heading: 'Plaćanje',

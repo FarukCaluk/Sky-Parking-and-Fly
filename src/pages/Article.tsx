@@ -1,7 +1,7 @@
 import { m } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
-import { useEffect } from 'react';
 import { ArticleBody } from '@/components/sections/ArticleBody';
+import { JsonLd } from '@/components/ui/JsonLd';
 import { Container } from '@/components/ui/Layout';
 import { Photo } from '@/components/ui/Photo';
 import { NEWS, type NewsId } from '@/data/news';
@@ -9,46 +9,38 @@ import { PHOTOS } from '@/data/photos';
 import { useI18n } from '@/i18n/context';
 import { Link } from '@/router/Link';
 import { useRoute } from '@/router/navigation';
-import { articleRouteOf, isArticleRoute, newsIdOf, pathFor, type ArticleRouteId } from '@/router/routes';
+import { SITE_ORIGIN } from '@/data/site';
+import { articleRouteOf, isArticleRoute, newsIdOf, pathFor, type ArticleRouteId, type Lang } from '@/router/routes';
 import { formatDMY } from '@/utils/date';
 import { PageShell } from './PageShell';
 
 type NewsEntry = (typeof NEWS)[number];
 const ENTRIES = Object.fromEntries(NEWS.map((entry) => [entry.id, entry])) as Record<NewsId, NewsEntry>;
 
-/** `BlogPosting` structured data for the article. Removed again when the page unmounts. */
-function useArticleSchema(entry: NewsEntry, headline: string, description: string) {
-  const { lang } = useI18n();
-  useEffect(() => {
-    const origin = window.location.origin;
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.dataset.article = 'true';
-    script.textContent = JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline,
-      description,
-      datePublished: entry.date,
-      inLanguage: lang,
-      image: `${origin}/photos/${PHOTOS[entry.photo].main.prefix}-1200.webp`,
-      mainEntityOfPage: `${origin}${pathFor(lang, articleRouteOf(entry.id))}`,
-      author: { '@type': 'Organization', name: 'Sky Parking & Fly' },
-      publisher: { '@type': 'Organization', name: 'Sky Parking & Fly' },
-    });
-    document.head.appendChild(script);
-    return () => script.remove();
-  }, [entry, headline, description, lang]);
+/** `BlogPosting` structured data for the article. */
+function articleSchema(entry: NewsEntry, lang: Lang, headline: string, description: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline,
+    description,
+    datePublished: entry.date,
+    inLanguage: lang,
+    image: `${SITE_ORIGIN}/photos/${PHOTOS[entry.photo].main.prefix}-1200.webp`,
+    mainEntityOfPage: `${SITE_ORIGIN}${pathFor(lang, articleRouteOf(entry.id))}`,
+    author: { '@type': 'Organization', name: 'Sky Parking & Fly' },
+    publisher: { '@type': 'Organization', name: 'Sky Parking & Fly' },
+  };
 }
 
 function ArticleView({ route }: { route: ArticleRouteId }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const entry = ENTRIES[newsIdOf(route)];
   const text = t.news.items[entry.id];
-  useArticleSchema(entry, text.title, text.excerpt);
 
   return (
     <PageShell page={route}>
+      <JsonLd data={articleSchema(entry, lang, text.title, text.excerpt)} />
       <article>
         <header>
           <Container className="pb-10 pt-32 sm:pt-40 lg:pb-14">

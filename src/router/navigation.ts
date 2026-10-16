@@ -90,12 +90,20 @@ function subscribe(onChange: () => void): () => void {
   };
 }
 
+/** The page being prerendered. There is no `window` at build time, so the prerenderer says which address it renders. */
+let prerenderedPath = '/';
+export function setPrerenderedPath(pathname: string): void {
+  prerenderedPath = pathname;
+}
+
+/**
+ * While React attaches to prerendered HTML, React's "server value" is the address in the bar: the HTML of that
+ * address is exactly what the build rendered for it.
+ */
+const serverPathname = (): string => (typeof window === 'undefined' ? prerenderedPath : window.location.pathname);
+
 export function usePathname(): string {
-  return useSyncExternalStore(
-    subscribe,
-    () => window.location.pathname,
-    () => '/',
-  );
+  return useSyncExternalStore(subscribe, () => window.location.pathname, serverPathname);
 }
 
 /** Current language and page, derived from the URL. */

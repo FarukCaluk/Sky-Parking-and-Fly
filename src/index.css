@@ -1,9 +1,31 @@
-@import '@fontsource/barlow-condensed/500.css';
-@import '@fontsource/barlow-condensed/600.css';
-@import '@fontsource/barlow-condensed/700.css';
-@import '@fontsource/barlow-condensed/800.css';
-@import '@fontsource-variable/geist/wght.css';
 @import 'tailwindcss';
+
+/*
+ * Barlow Condensed (SIL Open Font License, see assets/fonts/LICENSE.txt), the face of the sign: two weights cut down to
+ * the characters the pages use (scripts/subset-fonts.py). The build embeds them in this stylesheet, so the headline is
+ * set in the right face from the very first paint: nothing to fetch, nothing that swaps and moves the text. The rest of
+ * the text uses the phone's own font.
+ */
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: url('./assets/fonts/barlow-condensed-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+  src: url('./assets/fonts/barlow-condensed-800.woff2') format('woff2');
+}
+
+/* The first paint waits for the embedded font to be decoded, a few milliseconds (see index.html) */
+html.fonts-wait body {
+  visibility: hidden;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -43,7 +65,7 @@
 }
 
 @theme {
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-display: 'Barlow Condensed', 'Arial Narrow', 'Roboto Condensed', ui-sans-serif, system-ui, sans-serif;
 
   /* Also capped by the window height (three lines of it plus the lead, buttons and bar must fit one screen) */
@@ -207,7 +229,7 @@
 
 @utility label {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
 }

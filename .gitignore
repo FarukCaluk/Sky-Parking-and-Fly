@@ -1,7 +1,12 @@
 node_modules
 dist
+dist-server
 *.local
 .DS_Store
 coverage
 .vite
 *.tsbuildinfo
+.mcp.json
+
+# Mails written by MAIL_DRY_RUN (settings in .env.local are already ignored by *.local)
+.mail-preview

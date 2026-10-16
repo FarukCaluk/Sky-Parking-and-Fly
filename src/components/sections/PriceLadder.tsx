@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout';
 import { Reveal } from '@/components/ui/Reveal';
-import { PRICING_TIERS, SLIDER_MAX_DAYS } from '@/data/pricing';
+import { MIN_STAY_DAYS, PRICING_TIERS, SLIDER_MAX_DAYS } from '@/data/pricing';
 import { useStay } from '@/context/stayContext';
 import { useAnimatedNumber } from '@/hooks/useAnimatedNumber';
 import { useI18n } from '@/i18n/context';
@@ -12,7 +12,7 @@ import { useFormat } from '@/i18n/useFormat';
 import { cn } from '@/utils/cn';
 
 /** A typical stay for each tier, used when the visitor picks a tier instead of dragging the slider. */
-const TYPICAL_DAYS = { short: 7, mid: 14, long: 28 } as const;
+const TYPICAL_DAYS = { from2: 3, from5: 7, from11: 14, from21: 28 } as const;
 
 /** The price list as a tool: drag the length of the stay and watch the daily rate step down. */
 function PriceTool() {
@@ -21,7 +21,7 @@ function PriceTool() {
   const { quote, setDays } = useStay();
   const total = Math.round(useAnimatedNumber(quote.total));
   const sliderValue = Math.min(quote.days, SLIDER_MAX_DAYS);
-  const progress = ((sliderValue - 1) / (SLIDER_MAX_DAYS - 1)) * 100;
+  const progress = ((sliderValue - MIN_STAY_DAYS) / (SLIDER_MAX_DAYS - MIN_STAY_DAYS)) * 100;
 
   return (
     <div className="rounded-[10px] border border-line bg-surface p-6 shadow-panel sm:p-10">
@@ -52,7 +52,7 @@ function PriceTool() {
         <input
           id="stay-days"
           type="range"
-          min={1}
+          min={MIN_STAY_DAYS}
           max={SLIDER_MAX_DAYS}
           step={1}
           value={sliderValue}
@@ -63,7 +63,7 @@ function PriceTool() {
         />
       </div>
 
-      <div role="group" aria-label={t.price.unit} className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+      <div role="group" aria-label={t.price.unit} className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
         {PRICING_TIERS.map((tier) => {
           const selected = tier.id === quote.tier.id;
           return (
@@ -103,6 +103,7 @@ function PriceTool() {
           <p className={cn('mt-2 text-sm text-accent-text', quote.savings > 0 ? 'visible' : 'invisible')}>
             {t.price.saving(fmt.km(quote.savings))}
           </p>
+          {quote.extraDays > 0 && <p className="tabular mt-1 text-sm text-ink-muted">{fmt.quoteLine(quote)}</p>}
         </div>
         <Button to="reservation" size="lg" arrow>
           {t.nav.book}

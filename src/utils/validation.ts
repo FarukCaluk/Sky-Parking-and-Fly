@@ -1,4 +1,4 @@
-import type { GuestDetails, GuestField } from '@/types';
+import type { GuestDetails, GuestField } from '../types/index.ts';
 
 /** Why a field is invalid; the visible text comes from `messages.reservation.errors[field][code]`. */
 export type ValidationCode = 'required' | 'invalid';
@@ -33,13 +33,13 @@ export function normalizeCode(value: string): string {
 }
 
 /**
- * The name is always required. A reservation that is sent to us as a form also needs a phone number,
- * because it is the only way to answer it; a message sent from the visitor's own app carries their number.
- * E-mail and flight number are checked when filled in.
+ * The name is always required. A reservation that is sent to us as a form also needs a phone number, because it is
+ * the only way to reach the guest, and an e-mail address, because that is where the confirmation goes; a message sent
+ * from the visitor's own app carries their number. The flight number is checked when filled in.
  */
 export function validateGuest(
   guest: GuestDetails,
-  { requirePhone = false }: { requirePhone?: boolean } = {},
+  { requirePhone = false, requireEmail = false }: { requirePhone?: boolean; requireEmail?: boolean } = {},
 ): FieldErrors<GuestField> {
   const errors: FieldErrors<GuestField> = {};
 
@@ -55,7 +55,11 @@ export function validateGuest(
   }
 
   const email = guest.email.trim();
-  if (email && !EMAIL.test(email)) errors.email = 'invalid';
+  if (!email) {
+    if (requireEmail) errors.email = 'required';
+  } else if (!EMAIL.test(email)) {
+    errors.email = 'invalid';
+  }
 
   const flight = normalizeCode(guest.flight);
   if (flight && !FLIGHT.test(flight)) errors.flight = 'invalid';

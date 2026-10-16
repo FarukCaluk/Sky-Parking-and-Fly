@@ -1,3 +1,4 @@
+import { MAX_STAY_DAYS, MIN_STAY_DAYS } from '@/data/pricing';
 import type { GuestField, StayErrorCode } from '@/types';
 import type { ValidationCode } from '@/utils/validation';
 import type { Messages } from './messages';
@@ -9,8 +10,8 @@ export function fieldMessage(m: Messages, field: GuestField, code: ValidationCod
   return group?.[code];
 }
 
-/** Text for a stay validation code (needs `maxDays` for the "too long" message). */
-export function stayMessage(m: Messages, code: StayErrorCode, maxDays: number): string {
+/** Text for a stay validation code. The length messages quote the limit they are about. */
+export function stayMessage(m: Messages, code: StayErrorCode): string {
   const entry = m.stayErrors[code];
-  return typeof entry === 'function' ? entry(maxDays) : entry;
+  return typeof entry === 'function' ? entry(code === 'rangeTooShort' ? MIN_STAY_DAYS : MAX_STAY_DAYS) : entry;
 }

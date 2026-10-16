@@ -59,10 +59,10 @@ describe('dictionaries', () => {
     }
   });
 
-  it('keep the three price tiers of the original FAQ answer', () => {
+  it('list every band of the price list in the FAQ answer', () => {
     for (const lang of LANGS) {
       const priceItem = MESSAGES[lang].faq.items.find((item) => item.list);
-      expect(priceItem?.list?.map((row) => row.value.match(/\d+/)?.[0])).toEqual(['8', '7', '6']);
+      expect(priceItem?.list?.map((row) => row.value.match(/\d+/)?.[0])).toEqual(['9', '8', '7', '6', '5']);
     }
   });
 
@@ -86,15 +86,17 @@ describe('helpers', () => {
     expect(fieldMessage(MESSAGES.en, 'phone', 'required')).toBe(
       'Enter your phone number so we can confirm your dates.',
     );
-    // The e-mail is optional, so it only has an "invalid" message
-    expect(fieldMessage(MESSAGES.en, 'email', 'required')).toBeUndefined();
+    // The confirmation goes to the e-mail address, so the form asks for it
+    expect(fieldMessage(MESSAGES.en, 'email', 'required')).toBe(
+      'Enter the e-mail address where we should send the confirmation.',
+    );
     expect(fieldMessage(MESSAGES.bs, 'email', 'invalid')).toBe('E-mail adresa nije ispravna.');
   });
 
   it('resolve stay messages, including the one that needs a number', () => {
-    expect(stayMessage(MESSAGES.en, 'dropOffPast', 60)).toBe('The arrival time has already passed.');
-    expect(stayMessage(MESSAGES.en, 'rangeTooLong', 60)).toContain('60 days');
-    expect(stayMessage(MESSAGES.de, 'rangeTooLong', 60)).toContain('60 Tage');
-    expect(stayMessage(MESSAGES.bs, 'rangeTooLong', 60)).toContain('60 dana');
+    expect(stayMessage(MESSAGES.en, 'dropOffPast')).toBe('The arrival time has already passed.');
+    expect(stayMessage(MESSAGES.en, 'rangeTooLong')).toContain('60 days');
+    expect(stayMessage(MESSAGES.de, 'rangeTooLong')).toContain('60 Tage');
+    expect(stayMessage(MESSAGES.bs, 'rangeTooLong')).toContain('60 dana');
   });
 });

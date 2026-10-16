@@ -17,5 +17,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "eslint.config.js", "src/router/routes.ts"]
+  "include": ["vite.config.ts", "eslint.config.js", "src/router/routes.ts", "api", "scripts"]
 }

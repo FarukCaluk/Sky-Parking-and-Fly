@@ -9,7 +9,7 @@ import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 
 const triggerClass =
-  'flex h-11 w-full min-w-0 items-center gap-2 rounded-[6px] border border-line-strong bg-canvas px-3 text-left text-[1.0625rem] font-medium outline-none ' +
+  'flex h-11 w-full min-w-0 items-center gap-2 rounded-[6px] border border-line-strong bg-canvas px-3 text-left text-base font-medium outline-none sm:text-[1.0625rem] ' +
   'transition-[border-color,box-shadow] duration-200 hover:border-ink-faint focus-visible:border-accent-text focus-visible:ring-4 focus-visible:ring-accent/25 ' +
   'aria-expanded:border-accent-text data-[invalid=true]:border-danger';
 

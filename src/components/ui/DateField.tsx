@@ -204,7 +204,7 @@ export function DateField({ value, onChange, min, rangeFrom, label, invalid, cla
     <Picker
       label={`${label}, ${formatDMY(value) || '-'}`}
       title={t.picker.chooseDate}
-      icon={<CalendarDays className="size-[1.1rem] shrink-0 text-ink-faint" aria-hidden="true" />}
+      icon={<CalendarDays className="size-[1.1rem] shrink-0 text-ink-faint max-[339px]:hidden" aria-hidden="true" />}
       display={formatDMY(value)}
       invalid={invalid}
       className={className}

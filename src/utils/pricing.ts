@@ -1,24 +1,28 @@
-import { MAX_STAY_DAYS, PRICING_TIERS } from '@/data/pricing';
-import type { PricingTier, Quote, StayDraft, StayErrors } from '@/types';
-import { addDays, billableDays, toDate, toISODate } from './date';
+import { EXTRA_DAY_RATE, EXTRA_DAYS_AFTER, MAX_STAY_DAYS, MIN_STAY_DAYS, PRICING_TIERS } from '../data/pricing.ts';
+import type { PricingTier, Quote, StayDraft, StayErrors } from '../types/index.ts';
+import { addDays, billableDays, toDate, toISODate } from './date.ts';
 
 const FIRST_TIER = PRICING_TIERS[0] as PricingTier;
+const LAST_TIER = PRICING_TIERS[PRICING_TIERS.length - 1] as PricingTier;
 
+/** The band a number of days falls into. Beyond the last band the last one still applies (to the first 30 days). */
 export function resolveTier(days: number): PricingTier {
-  return PRICING_TIERS.find((t) => days >= t.minDays && (t.maxDays === null || days <= t.maxDays)) ?? FIRST_TIER;
+  return (
+    PRICING_TIERS.find((t) => days >= t.minDays && days <= t.maxDays) ??
+    (days < FIRST_TIER.minDays ? FIRST_TIER : LAST_TIER)
+  );
 }
 
-/** Whole stay at the daily rate of the tier it falls into, as the price list reads: "11-20 days: 7 KM per day". */
+/**
+ * Price of a stay of `rawDays` billed days: the whole stay at the daily rate of its band ("11-20 days: 7 KM per day"),
+ * and past 30 days the 30-day price plus a flat 5 KM for every further day. Never fewer than the minimum stay.
+ */
 export function calculateQuote(rawDays: number): Quote {
-  const days = Math.max(1, Math.floor(rawDays) || 1);
+  const days = Math.max(MIN_STAY_DAYS, Math.floor(rawDays) || MIN_STAY_DAYS);
   const tier = resolveTier(days);
-  return {
-    days,
-    tier,
-    ratePerDay: tier.rate,
-    total: tier.rate * days,
-    savings: (FIRST_TIER.rate - tier.rate) * days,
-  };
+  const extraDays = Math.max(0, days - EXTRA_DAYS_AFTER);
+  const total = tier.rate * (days - extraDays) + EXTRA_DAY_RATE * extraDays;
+  return { days, tier, ratePerDay: tier.rate, extraDays, total, savings: FIRST_TIER.rate * days - total };
 }
 
 /** Billable days for a stay draft, or `null` when the draft cannot be priced. */
@@ -47,7 +51,8 @@ export function validateStay(stay: StayDraft, now: Date = new Date()): StayError
 
   if (!errors.dropOff && !errors.pickUp) {
     const days = stayDays(stay);
-    if (days !== null && days > MAX_STAY_DAYS) errors.range = 'rangeTooLong';
+    if (days !== null && days < MIN_STAY_DAYS) errors.range = 'rangeTooShort';
+    else if (days !== null && days > MAX_STAY_DAYS) errors.range = 'rangeTooLong';
   }
 
   return errors;

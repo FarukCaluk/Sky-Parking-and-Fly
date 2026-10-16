@@ -9,39 +9,14 @@ import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 import { StayBar } from './StayBar';
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
-/** The name rises in word by word; the distance to the airport follows on its own line in the accent colour. */
-function HeroTitle({ title, distance }: { title: string; distance: string }) {
-  const reduce = useReducedMotion();
-  const words = title.split(' ');
-  const rise = (delay: number) => ({
-    initial: reduce ? (false as const) : { y: 56, opacity: 0, filter: 'blur(10px)' },
-    animate: { y: 0, opacity: 1, filter: 'blur(0px)' },
-    transition: { duration: 1, delay, ease: EASE },
-  });
-  return (
-    <h1 className="display text-hero max-w-[12ch] text-white">
-      {words.map((word, index) => (
-        <m.span key={`${word}-${index}`} {...rise(0.12 + index * 0.075)} className="mr-[0.22em] inline-block">
-          {word}
-        </m.span>
-      ))}
-      <m.span
-        {...rise(0.12 + words.length * 0.075)}
-        className="mt-[0.2em] block text-[0.46em] leading-none text-accent"
-      >
-        {distance}
-      </m.span>
-    </h1>
-  );
-}
-
 const messengerButton = 'bg-white/10 backdrop-blur-[6px] max-sm:flex-1';
 
 /**
  * One screen: headline, the two quickest ways to reach us, and the reservation bar docked at the bottom. The
  * headline scales with the height of the window (see `--text-hero`), so the bar stays in view on laptop screens.
+ *
+ * Nothing here fades or slides in: the first screen is in the prerendered HTML and must be readable the moment it is
+ * painted, on a phone on a slow connection too. Only the photograph drifts a little as the page scrolls.
  */
 export function Hero() {
   const { t } = useI18n();
@@ -54,13 +29,7 @@ export function Hero() {
     <section ref={ref} className="relative isolate z-10 flex min-h-svh flex-col bg-night">
       {/* Clipped here rather than on the section, so the date pickers can reach outside the hero */}
       <div className="absolute inset-0 -z-20 overflow-hidden">
-        <m.div
-          style={{ y: photoY }}
-          initial={reduce ? false : { scale: 1.12 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.2, ease: EASE }}
-          className="absolute inset-x-0 -top-[12%] bottom-0 will-change-transform"
-        >
+        <m.div style={{ y: photoY }} className="absolute inset-x-0 -top-[12%] bottom-0 will-change-transform">
           <Photo
             id="jet"
             alt={t.photos.jet}
@@ -81,22 +50,13 @@ export function Hero() {
       />
 
       <Container className="flex flex-1 flex-col justify-end pb-5 pt-[5.5rem] sm:pb-6">
-        <HeroTitle title={t.hero.title} distance={t.hero.distance} />
-        <m.p
-          initial={reduce ? false : { y: 24, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.9, delay: 0.7, ease: EASE }}
-          className="mt-4 max-w-[46ch] text-lg text-white/85 sm:mt-5 sm:text-xl lg:max-w-[56ch]"
-        >
-          {t.hero.lead}
-        </m.p>
+        <h1 className="display text-hero max-w-[12ch] text-white">
+          {t.hero.title}
+          <span className="mt-[0.2em] block text-[0.46em] leading-none text-accent">{t.hero.distance}</span>
+        </h1>
+        <p className="mt-4 max-w-[46ch] text-lg text-white/85 sm:mt-5 sm:text-xl lg:max-w-[56ch]">{t.hero.lead}</p>
 
-        <m.div
-          initial={reduce ? false : { y: 24, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.9, delay: 0.85, ease: EASE }}
-          className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 sm:mt-6"
-        >
+        <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 sm:mt-6">
           <p className="label hidden pr-1 text-[0.9375rem] text-white/75 sm:block">{t.hero.message}</p>
           <Button
             variant="onPhoto"
@@ -118,16 +78,11 @@ export function Hero() {
           >
             Viber
           </Button>
-        </m.div>
+        </div>
 
-        <m.div
-          initial={reduce ? false : { y: 36, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.9, delay: 0.95, ease: EASE }}
-          className="mt-4"
-        >
+        <div className="mt-4">
           <StayBar />
-        </m.div>
+        </div>
       </Container>
     </section>
   );

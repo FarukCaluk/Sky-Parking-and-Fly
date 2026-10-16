@@ -1,4 +1,4 @@
-import type { Messages } from './bs';
+import type { Messages } from './bs.ts';
 
 /** English plural: 1 day / 2+ days. */
 const plural = (count: number, one: string, many: string): string => (Math.abs(count) === 1 ? one : many);
@@ -75,12 +75,12 @@ const newsItems: Messages['news']['items'] = {
   longStay: {
     title: 'Long-term parking without worries: 11-20 and 21+ days',
     excerpt:
-      'For longer stays (business, visiting family, an extended holiday) the price drops to 7 KM per day (11-20 days) and 6 KM per day (21+).',
+      'For longer stays the price drops to 7 KM per day (11-20 days) and 6 KM per day (21-30 days), and every day after the 30th costs 5 KM.',
     alt: 'Cars parked on a gravel lot',
     blocks: [
       {
         type: 'p',
-        text: 'For longer stays (business, visiting family, an extended holiday) the price drops to **7 KM/day** (11-20 days) and **6 KM/day** (21+).',
+        text: 'For longer stays (business, visiting family, an extended holiday) the price drops to **7 KM/day** (11-20 days) and **6 KM/day** (21-30 days), and every day after the 30th costs **5 KM**.',
       },
       {
         type: 'p',
@@ -107,7 +107,7 @@ export const en: Messages = {
       pricing: {
         title: 'Parking prices | Sky Parking & Fly',
         description:
-          'Parking near Sarajevo airport: 8 KM per day (1-10 days), 7 KM (11-20 days), 6 KM (21+ days). Transfer and security included. Work out your stay.',
+          'Parking near Sarajevo airport: 9 KM per day (2-4 days), 8 KM (5-10), 7 KM (11-20), 6 KM (21-30), then 5 KM per extra day. Transfer and security included.',
       },
       facilities: {
         title: 'Facility and security | Sky Parking & Fly',
@@ -254,6 +254,7 @@ export const en: Messages = {
     time: 'Time',
     estimate: 'Estimated price',
     line: (days: string, rate: string) => `${days} × ${rate} per day`,
+    lineExtra: (days: string, first: string, extra: string) => `${days}: ${first} + ${extra}`,
   },
 
   stayErrors: {
@@ -261,6 +262,8 @@ export const en: Messages = {
     dropOffPast: 'The arrival time has already passed.',
     pickUpMissing: 'Choose a departure date and time.',
     pickUpBeforeDropOff: 'Departure must be after arrival.',
+    rangeTooShort: (minDays: number) =>
+      `The minimum parking time is ${minDays} ${plural(minDays, 'day', 'days')}. For a shorter stay, please contact us.`,
     rangeTooLong: (maxDays: number) =>
       `For stays longer than ${maxDays} days, call us and we will agree a special price.`,
   },
@@ -319,19 +322,39 @@ export const en: Messages = {
     saving: (amount: string) => `You save ${amount}`,
     approx: 'Estimated price',
     tiers: {
-      short: {
-        label: '1-10 days',
-        hint: 'The ideal solution for short stays and quick trips.',
-      },
-      mid: {
-        label: '11-20 days',
-        hint: 'The most popular choice for travellers staying longer, a great balance of price and convenience.',
-      },
-      long: {
-        label: '21+ days',
-        hint: 'The best value for long stays, maximum security at the best price.',
-      },
+      from2: { label: '2-4 days', hint: 'For shorter trips, weekend breaks and business flights.' },
+      from5: { label: '5-10 days', hint: 'Affordable parking for holidays and trips.' },
+      from11: { label: '11-20 days', hint: 'A lower daily price for a longer stay.' },
+      from21: { label: '21-30 days', hint: 'The best prices for longer journeys.' },
     },
+    extra: {
+      label: 'After day 30',
+      unit: 'KM for each additional day',
+      hint: (base: string, rate: string) =>
+        `The basic price of ${base} for 30 days goes up by ${rate} for every further day.`,
+    },
+    minStay: (days: string) => `The minimum parking time is ${days}.`,
+    howTitle: 'How is the number of days calculated?',
+    how: [
+      'The count starts at the exact time you arrive at the parking.',
+      'Every started 24-hour period counts as one day.',
+      'The daily price depends on the total number of counted days.',
+      'You see the exact number of days and the total amount before you send the reservation.',
+    ],
+    checkTitle: 'Check the price for your dates',
+    checkLead:
+      'Choose the date and time of arrival and return to see the number of parking days and the total price right away.',
+    result: { days: 'Counted days', rate: 'Price per day', extra: 'Additional days', total: 'Total' },
+    sameNextStep: 'The price stays the same in the next step of the reservation if you do not change your details.',
+    details: {
+      link: 'Detailed price list and examples',
+      title: 'Calculation examples',
+      note: 'The examples apply to exactly the stated number of counted days.',
+    },
+    supportTitle: 'Support on arrival and return',
+    supportText:
+      'Our team is at your disposal when you arrive, if your flight changes and when your return transfer is arranged.',
+    supportIncluded: 'The transfer between the parking and the airport is included in the price.',
     includedTitle: 'Included in the price',
     included: [
       'Free transfer to the airport',
@@ -409,12 +432,14 @@ export const en: Messages = {
         q: 'How much does parking cost per day and per week?',
         a: 'The parking price depends on the length of stay:',
         list: [
-          { label: '1-10 days', value: '8 KM per day' },
+          { label: '2-4 days', value: '9 KM per day' },
+          { label: '5-10 days', value: '8 KM per day' },
           { label: '11-20 days', value: '7 KM per day' },
-          { label: '21+ days', value: '6 KM per day' },
+          { label: '21-30 days', value: '6 KM per day' },
+          { label: 'After day 30', value: '5 KM for each additional day' },
         ],
         after:
-          'For longer stays, SKY Parking and Fly offers additional discounts and special benefits for regular clients.',
+          'The minimum parking time is 2 days. For longer stays, SKY Parking and Fly offers additional discounts and special benefits for regular clients.',
       },
       {
         q: 'Where exactly is Sky Parking and Fly located in relation to the airport?',
@@ -525,7 +550,7 @@ export const en: Messages = {
 
   reservation: {
     title: 'Reservation',
-    lead: 'Pick your dates, fill in your details and send your reservation. You get a confirmation by message or e-mail.',
+    lead: 'Pick your dates, fill in your details and send your reservation. You get a confirmation with your reservation code by e-mail right away.',
     stayTitle: 'Dates',
     guestTitle: 'Your details',
     fields: {
@@ -542,19 +567,16 @@ export const en: Messages = {
         required: 'Enter your phone number so we can confirm your dates.',
         invalid: 'The phone number is not valid (e.g. 061 123 456).',
       },
-      email: { invalid: 'The e-mail address is not valid.' },
+      email: {
+        required: 'Enter the e-mail address where we should send the confirmation.',
+        invalid: 'The e-mail address is not valid.',
+      },
       flight: { invalid: 'The flight number is not valid (e.g. FR 1234).' },
     },
     submit: {
       label: 'Send reservation',
       sending: 'Sending…',
-      note: 'Your reservation is e-mailed to our team, and you get a confirmation by message or e-mail.',
-    },
-    sent: {
-      title: 'Reservation sent',
-      text: 'We received your request. You get a confirmation of the dates by message or e-mail.',
-      another: 'New reservation',
-      home: 'Back to home',
+      note: 'Right after sending, you get an e-mail with the confirmation, your reservation code, the dates, the price and the rules.',
     },
     failed: {
       title: 'Sending failed',
@@ -564,6 +586,7 @@ export const en: Messages = {
       title: 'Your request',
       stay: 'Stay',
       rate: 'Price per day',
+      extra: 'Days after the 30th',
       total: 'Estimated total',
     },
     send: {
@@ -592,6 +615,56 @@ export const en: Messages = {
     },
   },
 
+  confirmation: {
+    title: 'Reservation successful',
+    subject: (code: string) => `Reservation successful ${code} | Sky Parking & Fly Sarajevo`,
+    period: (from: string, to: string) => `from ${from} to ${to}`,
+    codeLabel: 'Reservation code',
+    keepCode: 'Keep this code and quote it when you contact us.',
+    greeting: (name: string) => `Hello ${name},`,
+    intro:
+      'Thank you for reserving parking at Sky Parking and Fly Sarajevo. Your reservation has been received, and these are all the details.',
+    detailsTitle: 'Reservation details',
+    labels: {
+      arrival: 'Arrival',
+      departure: 'Departure',
+      days: 'Counted days',
+      vehicle: 'Vehicle',
+      name: 'Full name',
+      phone: 'Phone',
+      email: 'E-mail',
+      flight: 'Flight number',
+      note: 'Note',
+    },
+    priceTitle: 'Price',
+    priceTotal: 'Total price',
+    pricePayment: 'Payment in cash on arrival or departure.',
+    rulesTitle: 'Good to know',
+    rules: [
+      'Billing starts at the exact time you arrive at the parking. Every started 24-hour period counts as one day.',
+      'Flight delays: we monitor flights and are flexible with the pickup time, and we do not charge extra for minor delays.',
+      'If your return date changes, let us know as soon as you can and we will extend the reservation. Our team is also there for you when your flight changes.',
+      'When you are back and have your luggage, send a message or call. Our driver comes to pick you up and takes you back to your car.',
+      'The transfer to the terminal and back is free and included in the parking price. We help with suitcases, strollers and child seats.',
+      'You can keep your keys or leave them with us for safekeeping, whichever suits you.',
+      'Payment is in cash on arrival or departure. If you would like to pay another way, contact us in advance.',
+      'Please do not leave valuables, bags or cables in sight in the vehicle.',
+    ],
+    rulePrice: (rate: string) =>
+      `The daily price depends on the total number of counted days, and every day after the 30th costs ${rate}.`,
+    contactTitle: 'Questions or a change of plan?',
+    contactText: 'Message or call us. We are open non-stop, including holidays.',
+    contactLabels: { phone: 'Phone, WhatsApp and Viber', email: 'E-mail', address: 'Address' },
+    mailSent: (email: string) =>
+      `We sent a confirmation with these details to ${email}. If you do not see it, check your spam folder.`,
+    mailNotSent:
+      'The confirmation e-mail could not be sent right now. Keep your reservation code, and we will get back to you by message or e-mail.',
+    copyCode: 'Copy code',
+    copied: 'Code copied',
+    print: 'Print confirmation',
+    another: 'New reservation',
+    home: 'Back to home',
+  },
   viber: {
     title: 'Did Viber not open?',
     text: (number: string) =>
@@ -620,7 +693,7 @@ export const en: Messages = {
     docs: {
       terms: {
         title: 'Terms of use',
-        updated: 'October 15, 2026',
+        updated: 'October 16, 2026',
         sections: [
           {
             heading: 'Service',
@@ -632,7 +705,7 @@ export const en: Messages = {
           },
           {
             heading: 'Price',
-            body: 'The price is per day: 8 KM for a stay of 1 to 10 days, 7 KM for 11 to 20 days and 6 KM for 21 days or more. The amount shown on the site is an estimate, and we confirm the dates and price when you reserve.',
+            body: 'The price is per day: 9 KM for a stay of 2 to 4 days, 8 KM for 5 to 10 days, 7 KM for 11 to 20 days and 6 KM for 21 to 30 days, and every day after the 30th costs 5 KM. The minimum parking time is 2 days, and every started 24-hour period counts as one day. The amount shown on the site is an estimate, and we confirm the dates and price when you reserve.',
           },
           {
             heading: 'Payment',

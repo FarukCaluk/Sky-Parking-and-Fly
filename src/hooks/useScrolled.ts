@@ -1,10 +1,15 @@
-import { useMotionValueEvent, useScroll } from 'framer-motion';
-import { useState } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
-/** `true` once the page has scrolled past `threshold` px. Driven by Framer Motion's shared scroll observer. */
+const subscribe = (notify: () => void) => {
+  window.addEventListener('scroll', notify, { passive: true });
+  return () => window.removeEventListener('scroll', notify);
+};
+
+/**
+ * `true` once the page has scrolled past `threshold` px. On the server, and for the render that attaches React to the
+ * prerendered HTML, it is `false`, which is what that HTML shows; a page reloaded half way down catches up right after.
+ */
 export function useScrolled(threshold = 12): boolean {
-  const { scrollY } = useScroll();
-  const [scrolled, setScrolled] = useState(() => typeof window !== 'undefined' && window.scrollY > threshold);
-  useMotionValueEvent(scrollY, 'change', (value) => setScrolled(value > threshold));
-  return scrolled;
+  const getSnapshot = useCallback(() => window.scrollY > threshold, [threshold]);
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }

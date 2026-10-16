@@ -1,11 +1,11 @@
-import { lazy, type ComponentType, type LazyExoticComponent } from 'react';
+import type { ComponentType } from 'react';
+import { lazyComponent } from '@/components/lazy';
 import { registerPrefetcher } from '@/router/prefetch';
 import { ARTICLE_ROUTE_IDS, type ArticleRouteId, type RouteId } from '@/router/routes';
 import { runWhenIdle } from '@/utils/browser';
 import Home from './Home';
 
 export type PageKey = RouteId | 'notFound';
-type PageComponent = ComponentType | LazyExoticComponent<ComponentType>;
 type Loader = () => Promise<{ default: ComponentType }>;
 
 /** Every news article is its own route, but they all render through the one `Article` page. */
@@ -31,29 +31,25 @@ const LOADERS: Record<Exclude<PageKey, 'home'>, Loader> = {
   ...forArticles(loadArticle),
 };
 
-const ArticlePage = lazy(loadArticle);
+const LAZY = Object.fromEntries(
+  Object.entries(LOADERS).map(([page, load]) => [page, lazyComponent(load)] as const),
+) as Record<Exclude<PageKey, 'home'>, ReturnType<typeof lazyComponent<object>>>;
 
-export const PAGES: Record<PageKey, PageComponent> = {
+export const PAGES: Record<PageKey, ComponentType> = {
   home: Home,
-  pricing: lazy(LOADERS.pricing),
-  facilities: lazy(LOADERS.facilities),
-  shuttle: lazy(LOADERS.shuttle),
-  reviews: lazy(LOADERS.reviews),
-  news: lazy(LOADERS.news),
-  faq: lazy(LOADERS.faq),
-  contact: lazy(LOADERS.contact),
-  reservation: lazy(LOADERS.reservation),
-  terms: lazy(LOADERS.terms),
-  privacy: lazy(LOADERS.privacy),
-  cookies: lazy(LOADERS.cookies),
-  notFound: lazy(LOADERS.notFound),
-  ...forArticles(ArticlePage),
+  ...(Object.fromEntries(Object.entries(LAZY).map(([page, lazy]) => [page, lazy.Component] as const)) as Record<
+    Exclude<PageKey, 'home'>,
+    ComponentType
+  >),
 };
+
+/** Fetch a page's code. The home page is part of the main bundle. Once fetched, the page renders without a loading state. */
+export const loadPage = (page: PageKey): Promise<unknown> =>
+  page === 'home' ? Promise.resolve() : LAZY[page].preload();
 
 /** Warm a page's chunk (hover, focus or idle). Failures are ignored, the real navigation will retry. */
 export function prefetchPage(page: PageKey): void {
-  if (page === 'home') return;
-  void LOADERS[page]().catch(() => undefined);
+  void loadPage(page).catch(() => undefined);
 }
 
 registerPrefetcher(prefetchPage);

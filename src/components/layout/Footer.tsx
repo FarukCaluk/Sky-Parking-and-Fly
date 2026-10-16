@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout';
 import { Photo } from '@/components/ui/Photo';
 import { SITE, telLink, whatsappLink } from '@/data/site';
+import { useNow } from '@/hooks/useNow';
 import { useI18n } from '@/i18n/context';
 import { Link } from '@/router/Link';
 import { LEGAL_ROUTES, NAV_ROUTES } from '@/router/routes';
@@ -14,6 +15,7 @@ const headingClass = 'label mb-3 text-[0.9375rem] text-ink-faint';
 
 export default function Footer() {
   const { t } = useI18n();
+  const year = useNow().getFullYear();
 
   return (
     <footer className="relative mt-10 sm:mt-16">
@@ -122,7 +124,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col gap-4 border-t border-line py-7 text-sm text-ink-faint sm:flex-row sm:items-center sm:justify-between">
-          <p>{t.footer.rights(new Date().getFullYear())}</p>
+          <p>{t.footer.rights(year)}</p>
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

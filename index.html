@@ -3,21 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Sky Parking &amp; Fly | Privatni parking 800 m od aerodroma Sarajevo</title>
-    <meta
-      name="description"
-      content="Ograđen, osvijetljen i video nadziran parking kod aerodroma Sarajevo. Besplatan transfer do terminala i nazad, od 6 KM po danu."
-    />
+    <title>Sky Parking &amp; Fly</title>
     <meta name="theme-color" content="#f3f5f9" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#070c16" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="bs_BA" />
-    <meta property="og:title" content="Sky Parking &amp; Fly | Privatni parking 800 m od aerodroma Sarajevo" />
-    <meta
-      property="og:description"
-      content="Ograđen, osvijetljen i video nadziran parking kod aerodroma Sarajevo. Besplatan transfer do terminala i nazad."
-    />
     <meta property="og:image" content="__SITE_URL__/og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -33,10 +23,6 @@
     <script>
       (function () {
         var root = document.documentElement;
-        // Language comes from the URL: /en/... and /de/..., everything else is Bosnian
-        var lang = location.pathname.match(/^\/(en|de)(\/|$)/);
-        if (lang) root.lang = lang[1];
-
         // Apply the stored / system theme before first paint to avoid a flash.
         try {
           var stored = localStorage.getItem('spf-theme');
@@ -46,23 +32,23 @@
         } catch (e) {
           /* storage unavailable, the CSS media query fallback applies */
         }
-
-        // The home page opens on a full-bleed photo: start fetching the right crop before the app boots.
-        if (/^\/(en|de)?\/?$/.test(location.pathname)) {
-          var phone = window.matchMedia('(max-width: 767px)').matches;
-          var link = document.createElement('link');
-          link.rel = 'preload';
-          link.as = 'image';
-          link.type = 'image/avif';
-          link.setAttribute('fetchpriority', 'high');
-          link.setAttribute('imagesizes', '100vw');
-          link.setAttribute(
-            'imagesrcset',
-            phone
-              ? '/photos/jet-portrait-480.avif 480w, /photos/jet-portrait-800.avif 800w, /photos/jet-portrait-1000.avif 1000w'
-              : '/photos/jet-800.avif 800w, /photos/jet-1200.avif 1200w, /photos/jet-1600.avif 1600w, /photos/jet-2000.avif 2000w',
-          );
-          document.head.appendChild(link);
+        // Barlow Condensed is embedded in the stylesheet, but the browser still has to decode it, which it does after the
+        // first layout. Text drawn in a stand-in face and redrawn in Barlow a moment later would move everything around
+        // it, so the first paint waits for those few milliseconds. Whatever happens, the page is shown after 250 ms.
+        try {
+          if (document.fonts) {
+            root.classList.add('fonts-wait');
+            var show = function () {
+              root.classList.remove('fonts-wait');
+            };
+            Promise.all([
+              document.fonts.load('800 1em "Barlow Condensed"'),
+              document.fonts.load('700 1em "Barlow Condensed"'),
+            ]).then(show, show);
+            setTimeout(show, 250);
+          }
+        } catch (e) {
+          /* no font loading API: the text simply appears as it is */
         }
       })();
     </script>

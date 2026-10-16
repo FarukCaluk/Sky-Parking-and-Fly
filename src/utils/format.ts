@@ -1,5 +1,5 @@
-import { CURRENCY_LABEL } from '@/data/pricing';
-import type { Lang } from '@/router/routes';
+import { CURRENCY_LABEL } from '../data/pricing.ts';
+import type { Lang } from '../router/routes.ts';
 
 /** Thousands and decimal separators per language. */
 const SEPARATORS: Record<Lang, { group: string; decimal: string }> = {

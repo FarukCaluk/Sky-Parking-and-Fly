@@ -1,7 +1,7 @@
-import type { Lang } from '@/router/routes';
-import { bs, type Messages } from './bs';
-import { de } from './de';
-import { en } from './en';
+import type { Lang } from '../router/routes.ts';
+import { bs, type Messages } from './bs.ts';
+import { de } from './de.ts';
+import { en } from './en.ts';
 
 export type { Messages };
 

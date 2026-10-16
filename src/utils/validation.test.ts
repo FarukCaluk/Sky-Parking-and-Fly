@@ -37,6 +37,13 @@ describe('validateGuest', () => {
     expect(validateGuest({ ...guest, phone: '123' }, { requirePhone: true }).phone).toBe('invalid');
   });
 
+  it('also needs an e-mail address when the confirmation has to be mailed', () => {
+    const form = { requirePhone: true, requireEmail: true };
+    expect(validateGuest({ ...guest, phone: '061 123 456' }, form).email).toBe('required');
+    expect(validateGuest({ ...guest, phone: '061 123 456', email: 'amar@example.ba' }, form)).toEqual({});
+    expect(validateGuest({ ...guest, phone: '061 123 456', email: 'amar@' }, form).email).toBe('invalid');
+  });
+
   it('checks e-mail and flight number only when they are filled in', () => {
     expect(validateGuest({ ...guest, email: 'amar@' }).email).toBe('invalid');
     expect(validateGuest({ ...guest, email: 'amar@example.ba' }).email).toBeUndefined();

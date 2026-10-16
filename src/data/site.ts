@@ -14,18 +14,19 @@ export const SITE = {
   distanceMeters: 800,
 } as const;
 
+/**
+ * Public address of the site, `https://...` without a trailing slash: written in by the build (`SITE_URL`, or the Vercel
+ * production URL). Empty in development, where the address in the bar is used instead.
+ */
+declare const __SITE_URL__: string | undefined;
+export const SITE_ORIGIN: string = typeof __SITE_URL__ === 'string' ? __SITE_URL__ : '';
+
 export const MAPS_LINKS = {
   google: `https://www.google.com/maps/dir/?api=1&destination=${SITE.geo.lat},${SITE.geo.lng}`,
   apple: `https://maps.apple.com/?daddr=${SITE.geo.lat},${SITE.geo.lng}&dirflg=d`,
   /** OpenStreetMap embed, only loaded after the visitor asks for the map. */
   embed: `https://www.openstreetmap.org/export/embed.html?bbox=${SITE.geo.lng - 0.006},${SITE.geo.lat - 0.003},${SITE.geo.lng + 0.006},${SITE.geo.lat + 0.003}&layer=mapnik&marker=${SITE.geo.lat},${SITE.geo.lng}`,
 } as const;
-
-/**
- * Inbox that receives the reservations sent from the form. This is a TEST address for now; set
- * `VITE_RESERVATION_EMAIL` (for example to the business address) to change it without touching the code.
- */
-export const RESERVATION_INBOX: string = import.meta.env.VITE_RESERVATION_EMAIL?.trim() || 'farukcaluk12@gmail.com';
 
 export const telLink = `tel:${SITE.phone.e164}`;
 
