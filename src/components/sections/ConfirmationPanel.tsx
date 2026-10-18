@@ -1,4 +1,4 @@
-import { Check, CircleCheck, Copy, Printer } from 'lucide-react';
+import { Check, CircleCheck, Copy, Download, Printer } from 'lucide-react';
 import { forwardRef, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { useI18n } from '@/i18n/context';
@@ -41,6 +41,29 @@ export const ConfirmationPanel = forwardRef<HTMLDivElement, ConfirmationPanelPro
 ) {
   const { t } = useI18n();
   const [copied, setCopied] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
+
+  /** Makes the PDF on this device and saves it; the drawing code is fetched only now. */
+  const download = async () => {
+    setSaving(true);
+    setSaveFailed(false);
+    try {
+      const { confirmationPdf } = await import('@/utils/confirmationPdf');
+      const url = URL.createObjectURL(await confirmationPdf(c));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${c.code}.pdf`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    } catch {
+      setSaveFailed(true);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <div
@@ -104,11 +127,27 @@ export const ConfirmationPanel = forwardRef<HTMLDivElement, ConfirmationPanelPro
       <p className="mb-3 text-ink-muted">{c.contactText}</p>
       <Rows rows={c.contact} strong />
 
+      {saveFailed && (
+        <p role="alert" className="mt-6 text-sm text-danger print:hidden">
+          {t.confirmation.downloadFailed}
+        </p>
+      )}
+
       <div className="mt-10 flex flex-wrap gap-3 print:hidden">
+        <Button
+          variant="secondary"
+          onClick={() => void download()}
+          disabled={saving}
+          leftIcon={<Download className="size-5" aria-hidden="true" />}
+        >
+          {t.confirmation.download}
+        </Button>
+        {/* A phone's browser often has no print dialog: there the PDF is the way */}
         <Button
           variant="secondary"
           onClick={() => window.print()}
           leftIcon={<Printer className="size-5" aria-hidden="true" />}
+          className="max-sm:hidden"
         >
           {t.confirmation.print}
         </Button>

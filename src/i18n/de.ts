@@ -699,6 +699,9 @@ export const de: Messages = {
     copyCode: 'Code kopieren',
     copied: 'Code kopiert',
     print: 'Bestätigung drucken',
+    download: 'Bestätigung herunterladen (PDF)',
+    downloadFailed:
+      'Die Bestätigung konnte nicht erstellt werden. Bitte machen Sie einen Screenshot oder rufen Sie uns an.',
     another: 'Neue Reservierung',
     home: 'Zur Startseite',
   },

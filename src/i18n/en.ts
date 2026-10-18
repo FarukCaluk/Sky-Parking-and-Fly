@@ -685,6 +685,8 @@ export const en: Messages = {
     copyCode: 'Copy code',
     copied: 'Code copied',
     print: 'Print confirmation',
+    download: 'Download confirmation (PDF)',
+    downloadFailed: 'We could not make the confirmation. Please take a screenshot or call us.',
     another: 'New reservation',
     home: 'Back to home',
   },

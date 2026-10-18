@@ -722,6 +722,8 @@ export const bs = {
     copyCode: 'Kopiraj kod',
     copied: 'Kod je kopiran',
     print: 'Odštampaj potvrdu',
+    download: 'Preuzmi potvrdu (PDF)',
+    downloadFailed: 'Potvrdu nismo uspjeli napraviti. Napravite snimak ekrana ili nas nazovite.',
     another: 'Nova rezervacija',
     home: 'Na početnu',
   },
