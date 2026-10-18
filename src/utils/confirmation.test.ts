@@ -32,7 +32,7 @@ describe('buildConfirmation', () => {
       { label: 'Obračunati dani', value: '8 dana' },
       { label: 'Vozilo', value: 'VW Golf 7' },
       { label: 'Ime i prezime', value: 'Amar Hodžić' },
-      { label: 'Telefon', value: '+38762963901' },
+      { label: 'Telefon', value: '062 963 901' },
       { label: 'E-mail', value: 'amar@example.ba' },
       { label: 'Broj leta', value: 'FR 1234' },
     ]);

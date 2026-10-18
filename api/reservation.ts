@@ -29,7 +29,7 @@ interface Payload {
   trap: string;
 }
 
-const LIMITS = { name: 80, phone: 30, email: 120, make: 60, flight: 12, note: 400 } as const;
+const LIMITS = { name: 80, phone: 30, email: 120, make: 60, flight: 30, note: 400 } as const;
 const MAX_BODY = 20_000;
 
 const json = (body: unknown, status = 200, headers: Record<string, string> = {}): Response =>
@@ -176,7 +176,7 @@ export default {
     const days = stayDays(stay);
     if (
       days === null ||
-      hasErrors(validateGuest(guest, { requirePhone: true, requireEmail: true })) ||
+      hasErrors(validateGuest(guest, { requirePhone: true, requireEmail: true, requireMake: true })) ||
       hasErrors(validateStay(stay, new Date(0)))
     ) {
       return json({ error: 'invalid' }, 400);

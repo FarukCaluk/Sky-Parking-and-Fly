@@ -613,7 +613,7 @@ export const bs = {
     guestTitle: 'Vaši podaci',
     fields: {
       name: { label: 'Ime i prezime', placeholder: 'Amar Hodžić' },
-      phone: { label: 'Telefon', placeholder: '061 123 456' },
+      phone: { label: 'Telefon', placeholder: '+387 61 123 456' },
       email: { label: 'E-mail', placeholder: 'ime@primjer.ba' },
       make: { label: 'Marka vozila', placeholder: 'Npr. VW Golf 7' },
       flight: { label: 'Broj leta', placeholder: 'FR 1234' },
@@ -623,13 +623,13 @@ export const bs = {
       name: { required: 'Unesite ime i prezime.', invalid: 'Ime mora sadržavati slova.' },
       phone: {
         required: 'Unesite broj telefona da vam možemo potvrditi termin.',
-        invalid: 'Broj telefona nije ispravan (npr. 061 123 456).',
+        invalid: 'Broj telefona nije ispravan. Unesite ga s pozivnim brojem, npr. +387 61 123 456.',
       },
       email: {
         required: 'Unesite e-mail na koji da pošaljemo potvrdu rezervacije.',
         invalid: 'E-mail adresa nije ispravna.',
       },
-      flight: { invalid: 'Broj leta nije ispravan (npr. FR 1234).' },
+      make: { required: 'Unesite marku i model vozila.' },
     },
     submit: {
       label: 'Pošalji rezervaciju',

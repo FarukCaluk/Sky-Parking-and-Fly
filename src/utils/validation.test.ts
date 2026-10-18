@@ -1,25 +1,31 @@
 import { describe, expect, it } from 'vitest';
 import type { GuestDetails } from '@/types';
-import { isValidPhone, normalizeCode, normalizePhone, toInternationalPhone, validateGuest } from './validation';
+import { isValidPhone, normalizeCode, normalizePhone, validateGuest } from './validation';
 
 const guest: GuestDetails = { name: 'Amar Hodžić', phone: '', email: '', make: '', flight: '', note: '' };
 
 describe('phone', () => {
-  it.each(['061 123 456', '+387 62 963 901', '00387 62 963 901', '(033) 123-456', '+49 170 1234567'])(
-    'accepts %s',
-    (value) => {
-      expect(isValidPhone(value)).toBe(true);
-    },
-  );
+  it.each([
+    '061 123 456',
+    '+387 62 963 901',
+    '00387 62 963 901',
+    '(033) 123-456',
+    '+49 170 1234567',
+    '0151 23456789',
+    '+1 (415) 555-2671',
+    '+44 7911 123456',
+    '+90 532 123 45 67',
+  ])('accepts %s', (value) => {
+    expect(isValidPhone(value)).toBe(true);
+  });
 
-  it.each(['', '12345', 'abc', '+38', '06123'])('rejects %s', (value) => {
+  it.each(['', '12345', 'abc', '+38', '06123', '+49 abc 12345', '1234567890123456789'])('rejects %s', (value) => {
     expect(isValidPhone(value)).toBe(false);
   });
 
-  it('normalises to international form', () => {
+  it('strips the separators and writes a leading 00 as +', () => {
     expect(normalizePhone('00387 62 963 901')).toBe('+38762963901');
-    expect(toInternationalPhone('062 963 901')).toBe('+38762963901');
-    expect(toInternationalPhone('+49 170 1234567')).toBe('+491701234567');
+    expect(normalizePhone('(033) 123-456')).toBe('033123456');
   });
 });
 
@@ -44,15 +50,22 @@ describe('validateGuest', () => {
     expect(validateGuest({ ...guest, phone: '061 123 456', email: 'amar@' }, form).email).toBe('invalid');
   });
 
-  it('checks e-mail and flight number only when they are filled in', () => {
+  it('checks the e-mail address only when it is filled in', () => {
     expect(validateGuest({ ...guest, email: 'amar@' }).email).toBe('invalid');
     expect(validateGuest({ ...guest, email: 'amar@example.ba' }).email).toBeUndefined();
-    expect(validateGuest({ ...guest, flight: 'nope' }).flight).toBe('invalid');
-    expect(validateGuest({ ...guest, flight: 'fr 1234' }).flight).toBeUndefined();
   });
 
-  it('accepts any vehicle make', () => {
-    expect(validateGuest({ ...guest, make: 'VW Golf 7' })).toEqual({});
+  it('needs the make of the car when the reservation is sent as a form', () => {
+    expect(validateGuest(guest, { requireMake: true }).make).toBe('required');
+    expect(validateGuest({ ...guest, make: '  ' }, { requireMake: true }).make).toBe('required');
+    expect(validateGuest({ ...guest, make: 'VW Golf 7' }, { requireMake: true })).toEqual({});
+    expect(validateGuest(guest).make).toBeUndefined();
+  });
+
+  it('never rejects a flight number, however it is written', () => {
+    for (const flight of ['nope', 'fr 1234', 'LH 1234 / OS 5678', 'ba-8741']) {
+      expect(validateGuest({ ...guest, flight }).flight).toBeUndefined();
+    }
   });
 });
 

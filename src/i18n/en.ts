@@ -575,7 +575,7 @@ export const en: Messages = {
     guestTitle: 'Your details',
     fields: {
       name: { label: 'Full name', placeholder: 'Amar Hodžić' },
-      phone: { label: 'Phone', placeholder: '061 123 456' },
+      phone: { label: 'Phone', placeholder: '+387 61 123 456' },
       email: { label: 'E-mail', placeholder: 'name@example.com' },
       make: { label: 'Car make', placeholder: 'E.g. VW Golf 7' },
       flight: { label: 'Flight number', placeholder: 'FR 1234' },
@@ -585,13 +585,13 @@ export const en: Messages = {
       name: { required: 'Enter your name.', invalid: 'The name must contain letters.' },
       phone: {
         required: 'Enter your phone number so we can confirm your dates.',
-        invalid: 'The phone number is not valid (e.g. 061 123 456).',
+        invalid: 'The phone number is not valid. Enter it with the country code, e.g. +387 61 123 456.',
       },
       email: {
         required: 'Enter the e-mail address where we should send the confirmation.',
         invalid: 'The e-mail address is not valid.',
       },
-      flight: { invalid: 'The flight number is not valid (e.g. FR 1234).' },
+      make: { required: 'Enter the make and model of your car.' },
     },
     submit: {
       label: 'Send reservation',

@@ -5,7 +5,7 @@ import type { Lang } from '../router/routes.ts';
 import type { GuestDetails, Quote, StayDraft } from '../types/index.ts';
 import { formatDateLong, formatDMY } from './date.ts';
 import { formatKM } from './format.ts';
-import { normalizeCode, toInternationalPhone } from './validation.ts';
+import { normalizeCode } from './validation.ts';
 
 /**
  * The confirmation of a reservation: one description of what the guest booked, what it costs and which rules apply,
@@ -67,7 +67,7 @@ export function buildConfirmation({ code, stay, quote, guest, lang }: Confirmati
   const make = guest.make.trim();
   if (make) details.push({ label: c.labels.vehicle, value: make });
   details.push({ label: c.labels.name, value: guest.name.trim() });
-  details.push({ label: c.labels.phone, value: toInternationalPhone(guest.phone.trim()) });
+  details.push({ label: c.labels.phone, value: guest.phone.trim() });
   const email = guest.email.trim();
   if (email) details.push({ label: c.labels.email, value: email });
   const flight = normalizeCode(guest.flight);

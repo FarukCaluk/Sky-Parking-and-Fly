@@ -7,7 +7,6 @@ export type FieldErrors<K extends string> = Partial<Record<K, ValidationCode>>;
 
 const HAS_LETTERS = /\p{L}{2,}/u;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const FLIGHT = /^[A-Z0-9]{2}\s?\d{1,4}[A-Z]?$/;
 
 /** Strip formatting from a phone number; `00...` becomes `+...`. */
 export function normalizePhone(value: string): string {
@@ -15,31 +14,31 @@ export function normalizePhone(value: string): string {
   return stripped.startsWith('00') ? `+${stripped.slice(2)}` : stripped;
 }
 
+/**
+ * Guests come from many countries, so no national format is expected: any number of 6 to 18 digits, with an optional
+ * `+` or `00` in front and the usual separators (spaces, dots, dashes, brackets), is accepted.
+ */
 export function isValidPhone(value: string): boolean {
-  const phone = normalizePhone(value);
-  // International (+387...) or local trunk format (061..., 033...)
-  return /^\+\d{8,15}$/.test(phone) || /^0\d{7,9}$/.test(phone);
+  return /^\+?\d{6,18}$/.test(normalizePhone(value));
 }
 
-/** Convert a locally written number to E.164 when it is a Bosnian one. */
-export function toInternationalPhone(value: string): string {
-  const phone = normalizePhone(value);
-  return /^0\d{7,9}$/.test(phone) ? `+387${phone.slice(1)}` : phone;
-}
-
-/** Upper-case and collapse whitespace; used for flight numbers. */
+/** Upper-case and collapse whitespace; used for flight numbers (which are never checked: airlines write them in many ways). */
 export function normalizeCode(value: string): string {
   return value.toUpperCase().replace(/\s+/g, ' ').trim();
 }
 
 /**
  * The name is always required. A reservation that is sent to us as a form also needs a phone number, because it is
- * the only way to reach the guest, and an e-mail address, because that is where the confirmation goes; a message sent
- * from the visitor's own app carries their number. The flight number is checked when filled in.
+ * the only way to reach the guest, an e-mail address, because that is where the confirmation goes, and the make of
+ * the car; a message sent from the visitor's own app carries their number. The flight number is free text.
  */
 export function validateGuest(
   guest: GuestDetails,
-  { requirePhone = false, requireEmail = false }: { requirePhone?: boolean; requireEmail?: boolean } = {},
+  {
+    requirePhone = false,
+    requireEmail = false,
+    requireMake = false,
+  }: { requirePhone?: boolean; requireEmail?: boolean; requireMake?: boolean } = {},
 ): FieldErrors<GuestField> {
   const errors: FieldErrors<GuestField> = {};
 
@@ -61,8 +60,7 @@ export function validateGuest(
     errors.email = 'invalid';
   }
 
-  const flight = normalizeCode(guest.flight);
-  if (flight && !FLIGHT.test(flight)) errors.flight = 'invalid';
+  if (requireMake && !guest.make.trim()) errors.make = 'required';
 
   return errors;
 }

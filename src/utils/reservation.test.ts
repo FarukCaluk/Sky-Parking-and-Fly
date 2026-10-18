@@ -31,7 +31,7 @@ describe('buildReservationText', () => {
     ]);
   });
 
-  it('normalises phone and flight number and keeps e-mail, vehicle and note', () => {
+  it('writes the phone as typed, normalises the flight number and keeps e-mail, vehicle and note', () => {
     const text = buildReservationText(MESSAGES.bs.reservation.message, fmt, stay, quote, {
       name: 'Amar',
       phone: '062 963 901',
@@ -40,7 +40,7 @@ describe('buildReservationText', () => {
       flight: 'fr  1234',
       note: 'Kombi',
     });
-    expect(text).toContain('Telefon: +38762963901');
+    expect(text).toContain('Telefon: 062 963 901');
     expect(text).toContain('E-mail: amar@example.ba');
     expect(text).toContain('Vozilo: VW Golf 7');
     expect(text).toContain('Let: FR 1234');

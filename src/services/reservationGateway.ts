@@ -5,7 +5,7 @@ import type { GuestDetails, Quote, StayDraft } from '@/types';
 import { formatDMY } from '@/utils/date';
 import { formatKM } from '@/utils/format';
 import { createReservationCode } from '@/utils/reservationCode';
-import { normalizeCode, toInternationalPhone } from '@/utils/validation';
+import { normalizeCode } from '@/utils/validation';
 
 /**
  * A reservation goes to our mail function (`/api/reservation`), which mails us and mails the confirmation to the guest.
@@ -61,7 +61,7 @@ export function buildMailFields(
     _captcha: 'false',
     'Kod rezervacije': code,
     'Ime i prezime': guest.name.trim(),
-    Telefon: toInternationalPhone(guest.phone.trim()),
+    Telefon: guest.phone.trim(),
     Dolazak: when(stay.dropOffDate, stay.dropOffTime),
     Odlazak: when(stay.pickUpDate, stay.pickUpTime),
     Boravak: bs.units.days(quote.days),

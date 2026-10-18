@@ -1,6 +1,6 @@
 import type { Messages } from '@/i18n/messages';
 import type { GuestDetails, Quote, StayDraft } from '@/types';
-import { normalizeCode, toInternationalPhone } from './validation';
+import { normalizeCode } from './validation';
 
 export interface ReservationFormat {
   /** `2026-10-12` + `10:00` in the visitor's language */
@@ -31,7 +31,7 @@ export function buildReservationText(
   const name = guest.name.trim();
   if (name) lines.push(m.name(name));
   const phone = guest.phone.trim();
-  if (phone) lines.push(m.phone(toInternationalPhone(phone)));
+  if (phone) lines.push(m.phone(phone));
   const email = guest.email.trim();
   if (email) lines.push(m.email(email));
   const make = guest.make.trim();

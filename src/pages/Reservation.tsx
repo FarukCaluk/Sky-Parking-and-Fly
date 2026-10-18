@@ -55,7 +55,12 @@ export default function Reservation() {
     null,
   );
 
-  const guestErrors = validateGuest(guest, { requirePhone: attempt === 'submit', requireEmail: attempt === 'submit' });
+  const submitting = attempt === 'submit';
+  const guestErrors = validateGuest(guest, {
+    requirePhone: submitting,
+    requireEmail: submitting,
+    requireMake: submitting,
+  });
   const stayError = stayErrors.dropOff ?? stayErrors.pickUp ?? stayErrors.range;
   const messageInvalid = hasErrors(validateGuest(guest)) || stayError !== undefined;
 
@@ -94,7 +99,10 @@ export default function Reservation() {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (busy.current) return;
-    if (hasErrors(validateGuest(guest, { requirePhone: true, requireEmail: true })) || stayError !== undefined) {
+    if (
+      hasErrors(validateGuest(guest, { requirePhone: true, requireEmail: true, requireMake: true })) ||
+      stayError !== undefined
+    ) {
       reveal('submit');
       return;
     }
@@ -243,7 +251,7 @@ export default function Reservation() {
                     />
                   )}
                 </Field>
-                <Field label={t.reservation.fields.make.label} optional>
+                <Field label={t.reservation.fields.make.label} error={errorFor('make')}>
                   {(p) => (
                     <input
                       {...p}
@@ -252,13 +260,15 @@ export default function Reservation() {
                       autoComplete="off"
                       value={guest.make}
                       onChange={set('make')}
+                      onBlur={touch('make')}
+                      required
                       placeholder={t.reservation.fields.make.placeholder}
                       maxLength={60}
                       className={cn(p.className, 'h-12')}
                     />
                   )}
                 </Field>
-                <Field label={t.reservation.fields.flight.label} optional error={errorFor('flight')}>
+                <Field label={t.reservation.fields.flight.label} optional>
                   {(p) => (
                     <input
                       {...p}
@@ -269,7 +279,6 @@ export default function Reservation() {
                       spellCheck={false}
                       value={guest.flight}
                       onChange={set('flight')}
-                      onBlur={touch('flight')}
                       placeholder={t.reservation.fields.flight.placeholder}
                       className={cn(p.className, 'h-12 uppercase placeholder:normal-case')}
                     />

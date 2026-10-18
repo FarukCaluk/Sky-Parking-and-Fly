@@ -32,7 +32,7 @@ describe('buildMailFields', () => {
       _subject: 'Nova rezervacija SKY-2010-7K3Q: Amar Hodžić, 20.10.2026 - 27.10.2026',
       'Kod rezervacije': 'SKY-2010-7K3Q',
       'Ime i prezime': 'Amar Hodžić',
-      Telefon: '+38762963901',
+      Telefon: '062 963 901',
       Dolazak: '20.10.2026 u 10:00',
       Odlazak: '27.10.2026 u 18:30',
       Boravak: '8 dana',

@@ -589,7 +589,7 @@ export const de: Messages = {
     guestTitle: 'Ihre Angaben',
     fields: {
       name: { label: 'Vor- und Nachname', placeholder: 'Amar Hodžić' },
-      phone: { label: 'Telefon', placeholder: '061 123 456' },
+      phone: { label: 'Telefon', placeholder: '+387 61 123 456' },
       email: { label: 'E-Mail', placeholder: 'name@beispiel.de' },
       make: { label: 'Automarke', placeholder: 'Z. B. VW Golf 7' },
       flight: { label: 'Flugnummer', placeholder: 'FR 1234' },
@@ -599,13 +599,13 @@ export const de: Messages = {
       name: { required: 'Geben Sie Ihren Namen ein.', invalid: 'Der Name muss Buchstaben enthalten.' },
       phone: {
         required: 'Geben Sie Ihre Telefonnummer an, damit wir den Termin bestätigen können.',
-        invalid: 'Die Telefonnummer ist nicht gültig (z. B. 061 123 456).',
+        invalid: 'Die Telefonnummer ist nicht gültig. Geben Sie sie mit Landesvorwahl ein, z. B. +387 61 123 456.',
       },
       email: {
         required: 'Geben Sie die E-Mail-Adresse ein, an die wir die Bestätigung senden sollen.',
         invalid: 'Die E-Mail-Adresse ist nicht gültig.',
       },
-      flight: { invalid: 'Die Flugnummer ist nicht gültig (z. B. FR 1234).' },
+      make: { required: 'Bitte geben Sie Marke und Modell Ihres Autos an.' },
     },
     submit: {
       label: 'Reservierung senden',
