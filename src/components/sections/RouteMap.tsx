@@ -1,43 +1,36 @@
 import { m, useTransform, type MotionValue } from 'framer-motion';
 import { Plane } from 'lucide-react';
+import { ROUTE_MAP as MAP } from '@/data/routeMap';
 import { useI18n } from '@/i18n/context';
 import { cn } from '@/utils/cn';
 
-/** Two cubic Bezier segments from the parking (bottom left) to the airport (top right), in viewBox units. */
-const SEGMENTS = [
-  [
-    [104, 404],
-    [104, 326],
-    [238, 338],
-    [300, 268],
-  ],
-  [
-    [300, 268],
-    [362, 198],
-    [496, 224],
-    [496, 112],
-  ],
-] as const;
-const PATH = 'M104 404 C104 326 238 338 300 268 C362 198 496 224 496 112';
-const START = SEGMENTS[0][0];
-const END = SEGMENTS[1][3];
-
 type Point = readonly [number, number];
 
-const cubic = (p: readonly [Point, Point, Point, Point], t: number): Point => {
-  const u = 1 - t;
-  const a = u * u * u;
-  const b = 3 * u * u * t;
-  const c = 3 * u * t * t;
-  const d = t * t * t;
-  return [a * p[0][0] + b * p[1][0] + c * p[2][0] + d * p[3][0], a * p[0][1] + b * p[1][1] + c * p[2][1] + d * p[3][1]];
+const [START, END] = [MAP.parking, MAP.airport] as const;
+const ROUTE_PATH = `M${MAP.route.map((point) => point.join(' ')).join('L')}`;
+
+/** Distance along the route at every corner, to place the shuttle by how far it has driven, not by corner. */
+const DISTANCES = MAP.route.reduce<number[]>((all, point, index) => {
+  const previous = MAP.route[index - 1];
+  all.push(previous ? all[index - 1]! + Math.hypot(point[0] - previous[0], point[1] - previous[1]) : 0);
+  return all;
+}, []);
+const TOTAL = DISTANCES.at(-1)!;
+
+/** Point along the whole route for `t` in 0..1. */
+const pointAt = (t: number): Point => {
+  const wanted = Math.min(1, Math.max(0, t)) * TOTAL;
+  const next = Math.max(
+    1,
+    DISTANCES.findIndex((distance) => distance >= wanted),
+  );
+  const [from, to] = [MAP.route[next - 1]!, MAP.route[next]!];
+  const span = DISTANCES[next]! - DISTANCES[next - 1]!;
+  const along = span === 0 ? 0 : (wanted - DISTANCES[next - 1]!) / span;
+  return [from[0] + (to[0] - from[0]) * along, from[1] + (to[1] - from[1]) * along];
 };
 
-/** Point along the whole route for `t` in 0..1 (each segment gets half of the range). */
-const pointAt = (t: number): Point => {
-  const clamped = Math.min(1, Math.max(0, t));
-  return clamped < 0.5 ? cubic(SEGMENTS[0], clamped * 2) : cubic(SEGMENTS[1], (clamped - 0.5) * 2);
-};
+const percent = (value: number, of: number) => `${((value / of) * 100).toFixed(2)}%`;
 
 interface RouteMapProps {
   /** 0 = at the parking, 1 = at the airport */
@@ -50,8 +43,8 @@ interface RouteMapProps {
 }
 
 /**
- * Schematic of the one thing the business sells: the short ride between the lot and the airport.
- * A diagram, not a map, and labelled as such.
+ * The one thing the business sells, on the real map: the road from the lot to the airport entrance, drawn from
+ * OpenStreetMap data (`scripts/build-route-map.mjs`), with the shuttle driving along it.
  */
 export function RouteMap({ dot, drawn, activeStep, className }: RouteMapProps) {
   const { t } = useI18n();
@@ -68,85 +61,122 @@ export function RouteMap({ dot, drawn, activeStep, className }: RouteMapProps) {
       aria-label={t.journey.map.aria}
       className={cn('relative overflow-hidden rounded-[10px] border border-line bg-surface', className)}
     >
-      <svg viewBox="0 0 600 520" className="size-full" aria-hidden="true" focusable="false">
-        {/* runway behind the airport */}
-        <g transform="rotate(-22 440 96)">
-          <rect x="300" y="82" width="300" height="30" rx="3" className="fill-ink/[0.06]" />
-          <line x1="312" x2="588" y1="97" y2="97" className="stroke-ink/25" strokeWidth="2" strokeDasharray="16 12" />
-        </g>
+      <svg viewBox={`0 0 ${MAP.width} ${MAP.height}`} className="size-full" aria-hidden="true" focusable="false">
+        {/* the airport: apron, taxiways, runway, terminal */}
+        <path d={MAP.apron} className="fill-ink/[0.05]" />
+        <path d={MAP.taxiways} fill="none" className="stroke-ink/[0.09]" strokeWidth="7" strokeLinejoin="round" />
+        <path d={MAP.runway} fill="none" className="stroke-ink/[0.1]" strokeWidth="28" />
+        <path d={MAP.runway} fill="none" className="stroke-ink/30" strokeWidth="2" strokeDasharray="14 12" />
+        <path d={MAP.buildings} className="fill-ink/[0.08]" />
+        <path d={MAP.terminal} className="fill-ink/[0.2]" />
 
+        {/* streets */}
         <path
-          d={PATH}
+          d={MAP.roads.minor}
+          fill="none"
+          className="stroke-ink/[0.16]"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d={MAP.roads.major}
+          fill="none"
+          className="stroke-ink/[0.26]"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        {/* the road to the airport: a light edge keeps it apart from the streets it uses */}
+        <path
+          d={ROUTE_PATH}
+          fill="none"
+          className="stroke-surface"
+          strokeWidth="11"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d={ROUTE_PATH}
           fill="none"
           className="stroke-line-strong"
           strokeWidth="3"
           strokeLinecap="round"
-          strokeDasharray="1 11"
+          strokeLinejoin="round"
+          strokeDasharray="1 9"
         />
         <m.path
-          d={PATH}
+          d={ROUTE_PATH}
           fill="none"
           className="stroke-accent"
-          strokeWidth="5"
+          strokeWidth="5.5"
           strokeLinecap="round"
+          strokeLinejoin="round"
           style={{ pathLength: drawn }}
         />
 
         {/* parking */}
         <g transform={`translate(${START[0]} ${START[1]})`}>
           <rect
-            x="-30"
-            y="-30"
-            width="60"
-            height="60"
-            rx="8"
+            x="-22"
+            y="-22"
+            width="44"
+            height="44"
+            rx="7"
             className={cn(
               'fill-canvas transition-[stroke] duration-500',
               parkingLit ? 'stroke-accent' : 'stroke-line-strong',
             )}
-            strokeWidth="4"
+            strokeWidth="3.5"
           />
           <text
             textAnchor="middle"
             dominantBaseline="central"
             y="2"
-            className="fill-ink font-display text-[44px] font-extrabold"
+            className="fill-ink font-display text-[32px] font-extrabold"
           >
             P
           </text>
         </g>
 
-        {/* airport */}
+        {/* airport entrance */}
         <g transform={`translate(${END[0]} ${END[1]})`}>
           <circle
-            r="32"
+            r="23"
             className={cn(
               'fill-canvas transition-[stroke] duration-500',
               airportLit ? 'stroke-accent' : 'stroke-line-strong',
             )}
-            strokeWidth="4"
+            strokeWidth="3.5"
           />
-          <Plane x={-16} y={-16} width={32} height={32} strokeWidth={1.75} className="stroke-ink" />
+          <Plane x={-12} y={-12} width={24} height={24} strokeWidth={1.75} className="stroke-ink" />
         </g>
 
         {/* shuttle */}
         <m.g style={{ x, y, opacity: dotOpacity }}>
-          <circle r="10" className="origin-center animate-halo fill-accent/50 [transform-box:fill-box]" />
-          <circle r="10" className="fill-accent stroke-canvas" strokeWidth="3" />
+          <circle r="9" className="origin-center animate-halo fill-accent/50 [transform-box:fill-box]" />
+          <circle r="9" className="fill-accent stroke-canvas" strokeWidth="3" />
         </m.g>
       </svg>
 
-      <div className="pointer-events-none absolute left-[17.3%] top-[89%] -translate-x-1/2 text-center">
-        <p className="display text-[1.375rem] leading-none text-ink">{t.journey.map.parking}</p>
-      </div>
-      <div className="pointer-events-none absolute left-[82.7%] top-[36%] -translate-x-1/2 text-center">
-        <p className="display text-[1.375rem] leading-none text-ink">{t.journey.map.airport}</p>
-      </div>
-      <div className="pointer-events-none absolute left-[57%] top-[60%]">
-        <p className="display tabular text-[clamp(2.75rem,2rem+3vw,4.5rem)] leading-[0.9] text-ink">
+      <p
+        className="display pointer-events-none absolute -translate-x-1/2 rounded-[4px] bg-surface/85 px-1.5 py-0.5 text-[1.125rem] leading-none text-ink"
+        style={{ left: percent(START[0], MAP.width), top: percent(START[1] + 30, MAP.height) }}
+      >
+        {t.journey.map.parking}
+      </p>
+      <p
+        className="display pointer-events-none absolute -translate-x-1/2 rounded-[4px] bg-surface/85 px-1.5 py-0.5 text-[1.125rem] leading-none text-ink"
+        style={{ left: percent(END[0], MAP.width), top: percent(END[1] + 31, MAP.height) }}
+      >
+        {t.journey.map.airport}
+      </p>
+      <div className="pointer-events-none absolute bottom-3 left-3 rounded-[8px] bg-surface/90 px-3.5 py-2.5 backdrop-blur-[2px] sm:bottom-4 sm:left-4 sm:px-4 sm:py-3">
+        <p className="display tabular text-[clamp(2.25rem,1.7rem+2.4vw,3.5rem)] leading-[0.9] text-ink">
           {t.journey.map.distance}
         </p>
-        <p className="label mt-1 text-[1.0625rem] text-accent-text">{t.journey.map.time}</p>
+        <p className="label mt-1 text-[1rem] text-accent-text">{t.journey.map.time}</p>
       </div>
       <p className="pointer-events-none absolute bottom-3 right-4 text-[0.75rem] text-ink-faint">
         {t.journey.map.note}

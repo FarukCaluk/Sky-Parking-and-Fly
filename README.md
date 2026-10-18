@@ -105,6 +105,12 @@ soon as the page is live either way.
 - All visible text, including the FAQ and the legal pages: the three dictionaries in `src/i18n`. `bs.ts` defines the
   shape, `en.ts` and `de.ts` are typed against it, so a missing key is a compile error. A test also fails on em or en
   dashes in visible copy.
+- The logo (`src/components/layout/logoPaths.ts`) is the supplied artwork traced into three vector layers, drawn once per
+  page. Photographs and posters of the lot are in `public/photos` (AVIF and WebP in three widths) and listed in
+  `src/data/photos.ts`. The news dates are in `src/data/news.ts`.
+- The map of the route from the lot to the airport (`src/data/routeMap.ts`) is OpenStreetMap data (© OpenStreetMap
+  contributors) turned into SVG paths by `node scripts/build-route-map.mjs`, with the real road from OSRM (837 m).
+  The site loads no map service for it. Run the script again only to change the section or refresh the data.
 - **Check before launch:** the legal pages are short, factual summaries of what the business states on its own site.
   They are not legal advice. The street number is 38 in the visible address of the original site, while its map link
   points at number 34.

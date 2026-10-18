@@ -1,6 +1,7 @@
 import { LazyMotion, MotionConfig } from 'framer-motion';
 import { Suspense, useEffect } from 'react';
 import { Footer, prefetchChrome } from '@/components/lazy';
+import { LogoSymbol } from '@/components/layout/Logo';
 import { Navbar } from '@/components/layout/Navbar';
 import { RouteAnnouncer } from '@/components/layout/RouteAnnouncer';
 import { ViberFallback } from '@/components/layout/ViberFallback';
@@ -48,6 +49,7 @@ function Shell() {
   return (
     <StayProvider>
       <SkipLink />
+      <LogoSymbol />
       <Navbar />
       <main id="sadrzaj" tabIndex={-1} className="outline-none">
         <Suspense fallback={<PageFallback />}>

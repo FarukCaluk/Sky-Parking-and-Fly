@@ -279,6 +279,17 @@ export const bs = {
       'Ulaz na parking: siva limena ograda s plavom tablom Sky Parking & Fly i strelicom ULAZ, a iza nje šljunčani parking s automobilima',
     sign: 'Tabla Sky Parking & Fly Sarajevo: parking kod aerodroma Sarajevo, 24h nadzor i transfer, ULAZ i telefon 062/963/901',
     pole: 'Plava oznaka Privatni parking i stub s video nadzornom kamerom i reflektorom',
+    galleryLot: 'Automobili parkirani u nizu na šljunčanom parkingu, u pozadini planina',
+    galleryCars: 'Bijeli Golf i crni Audi parkirani na parkingu, okruženi zelenilom',
+    galleryGate: 'Crni automobil ulazi na parking kroz limenu kapiju',
+    galleryField: 'Prostran šljunčani parking s ogradom i kapijom',
+    galleryCamera: 'Video nadzorna kamera i LED reflektor na stubu',
+    posterCare:
+      'Plakat Sky Parking & Fly: Parkiraj bez brige! Siguran video nadzor 24/7, blizu aerodroma, fleksibilno dnevni i noćni parking',
+    posterAerial:
+      'Plakat Sky Parking & Fly: Vaš automobil na sigurnom. Pogled iz zraka na parking kraj piste aerodroma Sarajevo',
+    posterTravel:
+      'Plakat Sky Parking & Fly: Vi putujete, mi čuvamo! Parkirajte s povjerenjem, sigurnost na prvom mjestu',
   },
 
   hero: {
@@ -344,12 +355,12 @@ export const bs = {
       },
     },
     map: {
-      aria: 'Shema puta od parkinga do aerodroma: 800 metara, 1 do 2 minute vožnje',
+      aria: 'Karta puta od parkinga do aerodroma: 800 metara, 1 do 2 minute vožnje',
       parking: 'Parking',
       airport: 'Aerodrom',
       distance: '800 m',
       time: '1-2 min',
-      note: 'Shema, nije u mjerilu',
+      note: '© OpenStreetMap',
     },
   },
 
@@ -529,6 +540,11 @@ export const bs = {
         title: 'Pregled pri preuzimanju',
         text: 'Ako želite, pri preuzimanju zajedno uradimo kratak vizuelni pregled auta.',
       },
+    },
+    gallery: {
+      title: 'Parking u slikama',
+      lead: 'Fotografije našeg parkinga: ograđen prostor, osvjetljenje i video nadzor.',
+      postersTitle: 'Iz naših objava',
     },
     find: {
       title: 'Kako nas prepoznati',

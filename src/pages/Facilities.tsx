@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout';
 import { Photo } from '@/components/ui/Photo';
+import { Gallery } from '@/components/sections/Gallery';
 import { Reveal } from '@/components/ui/Reveal';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { MAPS_LINKS, SITE } from '@/data/site';
@@ -53,6 +54,8 @@ export default function Facilities() {
           </ul>
         </Container>
       </section>
+
+      <Gallery />
 
       <section aria-labelledby="find-title" className="pb-24 sm:pb-32">
         <Container className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">

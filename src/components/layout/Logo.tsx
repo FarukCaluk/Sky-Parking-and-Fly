@@ -1,48 +1,44 @@
 import { cn } from '@/utils/cn';
-import { LOGO_PATHS, WORDMARK_VIEWBOX } from './logoPaths';
+import { LOGO } from './logoPaths';
 
-/** Brand colours as on the sign: white script and PARKING, orange & and SARAJEVO, teal FLY. */
-function palette(onPhoto: boolean) {
-  return {
-    ink: onPhoto ? 'fill-white' : 'fill-ink',
-    amp: onPhoto ? 'fill-accent' : 'fill-accent-text',
-    fly: onPhoto ? 'fill-[#8bd6d9]' : 'fill-[#0b7a84] dark:fill-[#7fd0d3]',
-  };
-}
+const VIEW_BOX = `0 0 ${LOGO.width} ${LOGO.height}`;
 
-/** Horizontal lockup for the navigation bar: script "Sky" beside PARKING&FLY / SARAJEVO. */
-export function Logo({ className, onPhoto = false }: { className?: string; onPhoto?: boolean }) {
-  const c = palette(onPhoto);
+/**
+ * The logo, drawn once for the whole page: the navigation bar and the footer both point at it (`<use>`), so its outline
+ * is in the HTML a single time. The script "Sky" takes the colour of the text around it (black on the light page, white
+ * on the dark one and on a photograph); PARKING & FLY and SARAJEVO keep the colours of the sign.
+ */
+export function LogoSymbol() {
   return (
-    <span className={cn('inline-flex items-center gap-2', className)}>
-      <svg viewBox="92 68 330 240" aria-hidden="true" focusable="false" className={cn('h-9 w-auto shrink-0', c.ink)}>
-        <path d={LOGO_PATHS.sky} />
-      </svg>
-      <svg
-        viewBox={WORDMARK_VIEWBOX}
-        aria-hidden="true"
-        focusable="false"
-        className="h-[1.875rem] w-auto shrink-0 max-[23.75rem]:hidden"
-      >
-        <path d={LOGO_PATHS.parking} className={c.ink} />
-        <path d={LOGO_PATHS.amp} className={c.amp} />
-        <path d={LOGO_PATHS.fly} className={c.fly} />
-        <path d={LOGO_PATHS.sarajevo} className={c.amp} />
-      </svg>
-    </span>
+    <svg aria-hidden="true" focusable="false" className="absolute size-0 overflow-hidden">
+      <symbol id="spf-logo" viewBox={VIEW_BOX}>
+        <path fillRule="evenodd" fill="currentColor" d={LOGO.sky} />
+        <path fillRule="evenodd" fill={LOGO.teal} d={LOGO.parking} />
+        <path fillRule="evenodd" fill={LOGO.orange} d={LOGO.sarajevo} />
+      </symbol>
+    </svg>
   );
 }
 
-/** Stacked lockup (script above the lettering), the way the sign is laid out. */
-export function LogoStack({ className, label }: { className?: string; label: string }) {
-  const c = palette(false);
+/** The logo for the navigation bar. */
+export function Logo({ className, onPhoto = false }: { className?: string; onPhoto?: boolean }) {
   return (
-    <svg viewBox="60 70 392 380" role="img" aria-label={label} className={cn('h-auto w-44 shrink-0', className)}>
-      <path d={LOGO_PATHS.sky} className={c.ink} />
-      <path d={LOGO_PATHS.parking} className={c.ink} />
-      <path d={LOGO_PATHS.amp} className={c.amp} />
-      <path d={LOGO_PATHS.fly} className={c.fly} />
-      <path d={LOGO_PATHS.sarajevo} className={c.amp} />
+    <svg
+      viewBox={VIEW_BOX}
+      aria-hidden="true"
+      focusable="false"
+      className={cn('h-[3.25rem] w-auto shrink-0 lg:h-14', onPhoto ? 'text-white' : 'text-ink', className)}
+    >
+      <use href="#spf-logo" />
+    </svg>
+  );
+}
+
+/** The logo at footer size, with an accessible name. */
+export function LogoStack({ className, label }: { className?: string; label: string }) {
+  return (
+    <svg viewBox={VIEW_BOX} role="img" aria-label={label} className={cn('h-auto w-44 shrink-0 text-ink', className)}>
+      <use href="#spf-logo" />
     </svg>
   );
 }

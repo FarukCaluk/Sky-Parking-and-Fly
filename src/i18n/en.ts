@@ -242,6 +242,16 @@ export const en: Messages = {
       'The entrance: a grey sheet-metal fence with a blue Sky Parking & Fly sign and an ULAZ (entrance) arrow, and a gravel lot with cars behind it',
     sign: 'The Sky Parking & Fly Sarajevo sign: parking near Sarajevo airport, 24h surveillance and transfer, ULAZ (entrance) and phone 062/963/901',
     pole: 'A blue Private parking sign and a pole with a video surveillance camera and a floodlight',
+    galleryLot: 'Cars parked in a row on a gravel lot, a mountain in the background',
+    galleryCars: 'A white Golf and a black Audi parked on the lot, surrounded by greenery',
+    galleryGate: 'A black car drives into the lot through the metal gate',
+    galleryField: 'A spacious gravel lot with a fence and a gate',
+    galleryCamera: 'A video surveillance camera and an LED floodlight on a pole',
+    posterCare:
+      'Sky Parking & Fly poster: Park without worry! Video surveillance 24/7, close to the airport, flexible day and night parking',
+    posterAerial:
+      'Sky Parking & Fly poster: Your car is safe. An aerial view of the lot beside the runway of Sarajevo airport',
+    posterTravel: 'Sky Parking & Fly poster: You travel, we keep watch! Park with confidence, safety comes first',
   },
 
   hero: {
@@ -307,12 +317,12 @@ export const en: Messages = {
       },
     },
     map: {
-      aria: 'Diagram of the route from the parking to the airport: 800 metres, 1 to 2 minutes by car',
+      aria: 'Map of the route from the parking to the airport: 800 metres, 1 to 2 minutes by car',
       parking: 'Parking',
       airport: 'Airport',
       distance: '800 m',
       time: '1-2 min',
-      note: 'Diagram, not to scale',
+      note: '© OpenStreetMap',
     },
   },
 
@@ -492,6 +502,11 @@ export const en: Messages = {
         title: 'Check at pickup',
         text: 'If you like, we do a short visual check of the car together when you collect it.',
       },
+    },
+    gallery: {
+      title: 'The parking in pictures',
+      lead: 'Photographs of our lot: a fenced space with lighting and video surveillance.',
+      postersTitle: 'From our posts',
     },
     find: {
       title: 'How to recognise us',

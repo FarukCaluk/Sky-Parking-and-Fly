@@ -1,7 +1,7 @@
 import type { PhotoId } from './photos.ts';
 
 /**
- * The news posts, newest first: the four latest of parkingandfly.ba/novosti. Only what does not change with the
+ * The news posts, newest first: the four posts of parkingandfly.ba/novosti (dated 2026, as the business asked). Only what does not change with the
  * language lives here (date, photograph, address); the texts are in the dictionaries (`news.items` in `src/i18n`).
  *
  * Pure data with no `@/` imports, because the route table reads it and the Vite config (sitemap) reads the route
@@ -19,7 +19,7 @@ interface NewsEntry {
 export const NEWS = [
   {
     id: 'checklist',
-    date: '2025-11-12',
+    date: '2026-10-09',
     photo: 'newsChecklist',
     slugs: {
       bs: 'check-lista-prije-puta-5-sitnica-koje-cine-veliku-razliku',
@@ -29,7 +29,7 @@ export const NEWS = [
   },
   {
     id: 'security',
-    date: '2025-11-11',
+    date: '2026-10-02',
     // The original post uses a Facebook-style graphic with the text baked in; the clean photograph of the same pole
     // translates and crops properly
     photo: 'pole',
@@ -41,7 +41,7 @@ export const NEWS = [
   },
   {
     id: 'transfer',
-    date: '2025-11-10',
+    date: '2026-09-25',
     photo: 'newsTransfer',
     slugs: {
       bs: 'transfer-do-aerodroma-korak-po-korak',
@@ -51,7 +51,7 @@ export const NEWS = [
   },
   {
     id: 'longStay',
-    date: '2025-11-09',
+    date: '2026-09-18',
     photo: 'newsLongStay',
     slugs: {
       bs: 'dugo-parkiranje-bez-brige-11-20-i-21-dana',

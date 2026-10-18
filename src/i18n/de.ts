@@ -242,6 +242,17 @@ export const de: Messages = {
       'Der Eingang: ein grauer Blechzaun mit blauem Sky-Parking-&-Fly-Schild und dem Pfeil ULAZ (Eingang), dahinter ein Kiesparkplatz mit Autos',
     sign: 'Das Schild von Sky Parking & Fly Sarajevo: Parken am Flughafen Sarajevo, 24h Überwachung und Transfer, ULAZ (Eingang) und Telefon 062/963/901',
     pole: 'Ein blaues Schild Privatparkplatz und ein Mast mit Überwachungskamera und Flutlicht',
+    galleryLot: 'Autos in einer Reihe auf einem Schotterparkplatz, im Hintergrund ein Berg',
+    galleryCars: 'Ein weißer Golf und ein schwarzer Audi auf dem Parkplatz, umgeben von Grün',
+    galleryGate: 'Ein schwarzes Auto fährt durch das Blechtor auf den Parkplatz',
+    galleryField: 'Ein weitläufiger Schotterparkplatz mit Zaun und Tor',
+    galleryCamera: 'Eine Überwachungskamera und ein LED-Flutlicht an einem Mast',
+    posterCare:
+      'Plakat Sky Parking & Fly: Parken ohne Sorgen! Videoüberwachung rund um die Uhr, nah am Flughafen, flexibel Tag und Nacht',
+    posterAerial:
+      'Plakat Sky Parking & Fly: Ihr Auto ist sicher. Luftbild des Parkplatzes neben der Landebahn des Flughafens Sarajevo',
+    posterTravel:
+      'Plakat Sky Parking & Fly: Sie reisen, wir passen auf! Parken mit Vertrauen, Sicherheit steht an erster Stelle',
   },
 
   hero: {
@@ -307,12 +318,12 @@ export const de: Messages = {
       },
     },
     map: {
-      aria: 'Skizze der Strecke vom Parkplatz zum Flughafen: 800 Meter, 1 bis 2 Minuten Fahrt',
+      aria: 'Karte der Strecke vom Parkplatz zum Flughafen: 800 Meter, 1 bis 2 Minuten Fahrt',
       parking: 'Parkplatz',
       airport: 'Flughafen',
       distance: '800 m',
       time: '1-2 Min.',
-      note: 'Skizze, nicht maßstabsgetreu',
+      note: '© OpenStreetMap',
     },
   },
 
@@ -499,6 +510,11 @@ export const de: Messages = {
         title: 'Kontrolle bei der Abholung',
         text: 'Wenn Sie möchten, machen wir bei der Abholung gemeinsam einen kurzen Sichtcheck des Autos.',
       },
+    },
+    gallery: {
+      title: 'Der Parkplatz in Bildern',
+      lead: 'Fotos unseres Parkplatzes: eingezäunt, beleuchtet und videoüberwacht.',
+      postersTitle: 'Aus unseren Beiträgen',
     },
     find: {
       title: 'So erkennen Sie uns',
