@@ -18,7 +18,7 @@ export default function Facilities() {
       <PageHeader
         title={t.facilities.title}
         lead={t.facilities.lead}
-        photo={{ id: 'entrance', alt: t.photos.entrance, position: '38% 55%' }}
+        photo={{ id: 'entrance', alt: t.photos.entrance, position: '30% 58%' }}
       />
 
       <section className="py-20 sm:py-28 lg:py-32">

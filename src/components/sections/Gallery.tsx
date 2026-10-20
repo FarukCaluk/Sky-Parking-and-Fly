@@ -8,6 +8,12 @@ import { cn } from '@/utils/cn';
 /** The photographs of the lot: two wide ones, then three smaller (the last one spans the row on a phone). */
 const TILES: { id: PhotoId; className: string; sizes: string; position?: string }[] = [
   {
+    id: 'galleryPlane',
+    className: 'col-span-2 aspect-[3/2] sm:col-span-6 sm:aspect-[21/9]',
+    sizes: '(min-width: 1344px) 1344px, 100vw',
+    position: '50% 80%',
+  },
+  {
     id: 'galleryLot',
     className: 'col-span-2 sm:col-span-3 aspect-[4/3]',
     sizes: '(min-width: 1344px) 660px, (min-width: 640px) 50vw, 100vw',

@@ -16,6 +16,7 @@ export type PhotoId =
   | 'galleryGate'
   | 'galleryField'
   | 'galleryCamera'
+  | 'galleryPlane'
   | 'posterCare'
   | 'posterAerial'
   | 'posterTravel';
@@ -45,9 +46,9 @@ export const PHOTOS: Record<PhotoId, PhotoDef> = {
     main: { prefix: 'jet', widths: WIDTHS },
     portrait: { prefix: 'jet-portrait', widths: [480, 800, 1000], width: 1000, height: 1004 },
   },
-  entrance: { width: 2000, height: 1334, main: { prefix: 'entrance', widths: WIDTHS } },
-  sign: { width: 2000, height: 1334, main: { prefix: 'sign', widths: WIDTHS } },
-  pole: { width: 2000, height: 1334, main: { prefix: 'pole', widths: WIDTHS } },
+  entrance: { width: 2000, height: 1333, main: { prefix: 'entrance', widths: WIDTHS } },
+  sign: { width: 2000, height: 1333, main: { prefix: 'sign', widths: WIDTHS } },
+  pole: { width: 2000, height: 1333, main: { prefix: 'pole', widths: WIDTHS } },
   newsChecklist: { width: 1200, height: 1200, main: { prefix: 'news-checklist', widths: NEWS_WIDTHS } },
   newsTransfer: { width: 1200, height: 1200, main: { prefix: 'news-transfer', widths: NEWS_WIDTHS } },
   newsLongStay: { width: 1200, height: 1200, main: { prefix: 'news-long-stay', widths: NEWS_WIDTHS } },
@@ -55,6 +56,7 @@ export const PHOTOS: Record<PhotoId, PhotoDef> = {
   galleryCars: { width: 1200, height: 1200, main: { prefix: 'gallery-cars', widths: GALLERY_WIDTHS } },
   galleryGate: { width: 1200, height: 1200, main: { prefix: 'gallery-gate', widths: GALLERY_WIDTHS } },
   galleryField: { width: 1200, height: 1200, main: { prefix: 'gallery-field', widths: GALLERY_WIDTHS } },
+  galleryPlane: { width: 2000, height: 1333, main: { prefix: 'gallery-plane', widths: [480, 800, 1200, 1600] } },
   galleryCamera: { width: 1200, height: 1200, main: { prefix: 'gallery-camera', widths: GALLERY_WIDTHS } },
   posterCare: { width: 1200, height: 1481, main: { prefix: 'poster-care', widths: GALLERY_WIDTHS } },
   posterAerial: { width: 1200, height: 1481, main: { prefix: 'poster-aerial', widths: GALLERY_WIDTHS } },

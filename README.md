@@ -141,7 +141,7 @@ is what a "page path contains /uspjesna-rezervacija" trigger in the container co
 `dataLayer`, for tags that want them.
 
 `SITE_URL` (build time, optional) is the public origin written into `sitemap.xml`, canonical URLs and social cards. It
-defaults to the Vercel production URL; set it when you attach a custom domain.
+defaults to https://parkingandfly.ba.
 
 ## Deployment
 

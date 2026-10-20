@@ -9,7 +9,7 @@ const newsItems: Messages['news']['items'] = {
     title: 'Checkliste vor der Reise: 5 Kleinigkeiten, die einen großen Unterschied machen',
     excerpt:
       'Ein paar kurze Dinge, bevor Sie in den Transfer steigen: Schlösser und Fenster, Wertsachen, ein Foto vom Zustand, Reifen und Zeitplanung.',
-    alt: 'Ein Mann im Anzug notiert den Zustand eines Autos neben dem Außenspiegel',
+    alt: 'Das Schild Sky Parking & Fly Sarajevo am Zaun des Parkplatzes: 24h Überwachung und Transfer, EINFAHRT und Telefon 062/963/901',
     blocks: [
       { type: 'heading', text: 'Checkliste vor der Reise: Auto abstellen ohne Sorgen' },
       { type: 'p', text: 'Ein paar kurze Dinge, bevor Sie in den Transfer steigen:' },
@@ -53,7 +53,7 @@ const newsItems: Messages['news']['items'] = {
     title: 'Transfer zum Flughafen, Schritt für Schritt',
     excerpt:
       'Sie kommen an und parken (oder geben den Schlüssel ab), wir helfen mit dem Gepäck, und der Transfer bis zum Terminaleingang dauert etwa eine Minute.',
-    alt: 'Ein Reisender im Anzug mit Tasche vor einem Flugzeug',
+    alt: 'Ein Flugzeug startet über den Autos auf dem Parkplatz am Flughafen',
     blocks: [
       { type: 'heading', text: 'Kostenloser Transfer zum Flughafen: So läuft er ab' },
       {
@@ -76,7 +76,7 @@ const newsItems: Messages['news']['items'] = {
     title: 'Langzeitparken ohne Sorgen: 11-20 und 21+ Tage',
     excerpt:
       'Bei längeren Aufenthalten sinkt der Preis auf 7 KM pro Tag (11-20 Tage) und 6 KM pro Tag (21-30 Tage), und jeder Tag nach dem 30. kostet 5 KM.',
-    alt: 'Autos auf einem Kiesparkplatz',
+    alt: 'Eine Reihe von Autos auf einem Kiesparkplatz, dahinter ein Flugzeug',
     blocks: [
       {
         type: 'p',
@@ -247,6 +247,7 @@ export const de: Messages = {
     galleryGate: 'Ein schwarzes Auto fährt durch das Blechtor auf den Parkplatz',
     galleryField: 'Ein weitläufiger Schotterparkplatz mit Zaun und Tor',
     galleryCamera: 'Eine Überwachungskamera und ein LED-Flutlicht an einem Mast',
+    galleryPlane: 'Ein Flugzeug startet über den auf dem Parkplatz abgestellten Autos',
     posterCare:
       'Plakat Sky Parking & Fly: Parken ohne Sorgen! Videoüberwachung rund um die Uhr, nah am Flughafen, flexibel Tag und Nacht',
     posterAerial:

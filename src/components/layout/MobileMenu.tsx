@@ -24,6 +24,8 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
       transition={{ duration: 0.25 }}
       className="fixed inset-0 z-30 flex flex-col overflow-y-auto bg-canvas px-5 pb-8 pt-24 sm:px-8"
     >
+      <LanguageLinks segmented onNavigate={onClose} className="mb-5" />
+
       <nav aria-label={t.nav.aria}>
         <ul className="border-t border-line">
           {NAV_ROUTES.map((id, index) => (
@@ -73,8 +75,7 @@ export function MobileMenu({ onClose }: { onClose: () => void }) {
             Viber
           </Button>
         </div>
-        <div className="flex items-center justify-between border-t border-line pt-4">
-          <LanguageLinks onNavigate={onClose} />
+        <div className="flex items-center justify-end border-t border-line pt-4">
           <ThemeToggle />
         </div>
       </div>

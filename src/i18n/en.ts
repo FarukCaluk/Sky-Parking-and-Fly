@@ -9,7 +9,7 @@ const newsItems: Messages['news']['items'] = {
     title: 'Pre-trip checklist: 5 small things that make a big difference',
     excerpt:
       'A few quick things before you hop on the transfer: locks and windows, valuables, a photo of the car, tyres and timing.',
-    alt: 'A man in a suit noting down the condition of a car next to its wing mirror',
+    alt: 'The Sky Parking & Fly Sarajevo sign on the lot fence: 24h surveillance and transfer, ENTRANCE and phone 062/963/901',
     blocks: [
       { type: 'heading', text: 'Pre-trip checklist: leave your car without a worry' },
       { type: 'p', text: 'A few quick things before you hop on the transfer:' },
@@ -53,7 +53,7 @@ const newsItems: Messages['news']['items'] = {
     title: 'Airport transfer, step by step',
     excerpt:
       'You arrive and park (or hand over the key), we help with the luggage, and the transfer to the terminal entrance takes about a minute.',
-    alt: 'A traveller in a suit with a bag in front of a plane',
+    alt: 'A plane taking off over the cars parked at the lot near the airport',
     blocks: [
       { type: 'heading', text: 'Free airport transfer: what it looks like' },
       {
@@ -76,7 +76,7 @@ const newsItems: Messages['news']['items'] = {
     title: 'Long-term parking without worries: 11-20 and 21+ days',
     excerpt:
       'For longer stays the price drops to 7 KM per day (11-20 days) and 6 KM per day (21-30 days), and every day after the 30th costs 5 KM.',
-    alt: 'Cars parked on a gravel lot',
+    alt: 'A row of cars parked on a gravel lot with a plane behind them',
     blocks: [
       {
         type: 'p',
@@ -247,6 +247,7 @@ export const en: Messages = {
     galleryGate: 'A black car drives into the lot through the metal gate',
     galleryField: 'A spacious gravel lot with a fence and a gate',
     galleryCamera: 'A video surveillance camera and an LED floodlight on a pole',
+    galleryPlane: 'A plane taking off over the cars parked on the lot',
     posterCare:
       'Sky Parking & Fly poster: Park without worry! Video surveillance 24/7, close to the airport, flexible day and night parking',
     posterAerial:

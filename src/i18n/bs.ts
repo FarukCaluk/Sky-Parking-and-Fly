@@ -49,7 +49,7 @@ const newsItems: Record<NewsId, NewsArticleText> = {
   checklist: {
     title: 'Check-lista prije puta: 5 sitnica koje čine veliku razliku',
     excerpt: 'Kratke stvari prije nego pređeš u transfer: brave i prozori, vrijednosti, fotka stanja, gume i tajming.',
-    alt: 'Čovjek u odijelu bilježi stanje vozila pored retrovizora',
+    alt: 'Tabla Sky Parking & Fly Sarajevo na ogradi parkinga: 24h nadzor i transfer, ULAZ i telefon 062/963/901',
     blocks: [
       { type: 'heading', text: 'Check-lista prije puta: ostavi auto bez brige' },
       { type: 'p', text: 'Kratke stvari prije nego pređeš u transfer:' },
@@ -90,7 +90,7 @@ const newsItems: Record<NewsId, NewsArticleText> = {
     title: 'Transfer do aerodroma, korak po korak',
     excerpt:
       'Stigneš na parking i parkiraš (ili predaš ključ), mi pomažemo s prtljagom, a transfer do ulaza u terminal traje oko jedan minut.',
-    alt: 'Putnik u odijelu s torbom ispred aviona',
+    alt: 'Avion polijeće iznad automobila parkiranih na parkingu kod aerodroma',
     blocks: [
       { type: 'heading', text: 'Besplatan transfer do aerodroma: kako izgleda' },
       {
@@ -113,7 +113,7 @@ const newsItems: Record<NewsId, NewsArticleText> = {
     title: 'Dugo parkiranje bez brige: 11-20 i 21+ dana',
     excerpt:
       'Za duže boravke cijena pada na 7 KM/dan (11-20 dana) i 6 KM/dan (21-30 dana), a svaki dan nakon 30. košta 5 KM.',
-    alt: 'Automobili parkirani na šljunčanom parkingu',
+    alt: 'Niz automobila parkiranih na šljunčanom parkingu, a iza njih se vidi avion',
     blocks: [
       {
         type: 'p',
@@ -276,7 +276,7 @@ export const bs = {
   photos: {
     jet: 'Avion polijeće iznad automobila parkiranih na parkingu Sky Parking & Fly, a iza njih se vide planine',
     entrance:
-      'Ulaz na parking: siva limena ograda s plavom tablom Sky Parking & Fly i strelicom ULAZ, a iza nje šljunčani parking s automobilima',
+      'Ulaz na parking: siva limena ograda s tablom Sky Parking & Fly i strelicom ULAZ, plava oznaka Privatni parking i stub s video nadzornom kamerom',
     sign: 'Tabla Sky Parking & Fly Sarajevo: parking kod aerodroma Sarajevo, 24h nadzor i transfer, ULAZ i telefon 062/963/901',
     pole: 'Plava oznaka Privatni parking i stub s video nadzornom kamerom i reflektorom',
     galleryLot: 'Automobili parkirani u nizu na šljunčanom parkingu, u pozadini planina',
@@ -284,6 +284,7 @@ export const bs = {
     galleryGate: 'Crni automobil ulazi na parking kroz limenu kapiju',
     galleryField: 'Prostran šljunčani parking s ogradom i kapijom',
     galleryCamera: 'Video nadzorna kamera i LED reflektor na stubu',
+    galleryPlane: 'Avion polijeće iznad automobila parkiranih na parkingu',
     posterCare:
       'Plakat Sky Parking & Fly: Parkiraj bez brige! Siguran video nadzor 24/7, blizu aerodroma, fleksibilno dnevni i noćni parking',
     posterAerial:

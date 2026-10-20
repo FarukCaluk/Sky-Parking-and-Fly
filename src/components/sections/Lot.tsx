@@ -26,7 +26,7 @@ export function Lot() {
                 id="entrance"
                 alt={t.photos.entrance}
                 sizes="(min-width: 1344px) 1344px, 100vw"
-                position="30% 54%"
+                position="30% 58%"
                 className="size-full object-cover"
               />
             </div>
