@@ -5,6 +5,9 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/reservation.ts": { "includeFiles": "src/**/*.ts" }
+  },
   "redirects": [
     { "source": "/cjenovnik", "destination": "/cijene", "permanent": true },
     { "source": "/rezervacije", "destination": "/rezervacija", "permanent": true },
