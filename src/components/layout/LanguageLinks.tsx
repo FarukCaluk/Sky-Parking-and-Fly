@@ -36,7 +36,7 @@ export function LanguageLinks({ className, onPhoto = false, onNavigate, segmente
               lang={code}
               hrefLang={code}
               aria-current={active ? 'true' : undefined}
-              aria-label={t.language.switchTo(t.language.names[code])}
+              aria-label={`${t.language.codes[code]}: ${t.language.switchTo(t.language.names[code])}`}
               onClick={onNavigate}
               className={cn(
                 segmented
