@@ -16,7 +16,7 @@ import { hasErrors, validateGuest } from '../src/utils/validation.ts';
  * page. Mail goes out over SMTP, configured with environment variables:
  *   SMTP_HOST, SMTP_PORT (465 by default), SMTP_USER, SMTP_PASS   the mailbox that sends, e.g. info@parkingandfly.ba
  *   SMTP_FROM       optional sender, e.g. "Sky Parking & Fly <info@parkingandfly.ba>" (defaults to SMTP_USER)
- *   RESERVATION_EMAIL   where our copy goes (defaults to the test inbox)
+ *   RESERVATION_EMAIL   where our copy goes (defaults to booking@parkingandfly.ba)
  *   MAIL_DRY_RUN=1  write the mails to .mail-preview/ instead of sending them (for trying it out)
  * Without SMTP settings the answer is 503, and the site falls back to its form service, which mails only us.
  */

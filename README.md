@@ -123,8 +123,8 @@ Variables.
 **Reservation mail** (read by `api/reservation.ts`): `SMTP_HOST`, `SMTP_PORT` (465 or 587), `SMTP_USER` and `SMTP_PASS` are
 the mailbox that sends, for example the mailbox of `info@parkingandfly.ba` from the hosting provider (a Gmail address
 with an app password works for testing). `SMTP_FROM` is the sender shown to the guest (defaults to `SMTP_USER`),
-`RESERVATION_EMAIL` is where our copy goes. It defaults to a **test address** (`src/data/inbox.ts`), so set it to the
-business address when going live. `MAIL_DRY_RUN=1` writes both mails to `.mail-preview/` instead of sending them, which
+`RESERVATION_EMAIL` is where our copy goes. It defaults to the booking mailbox (`src/data/inbox.ts`); set it to another one to
+redirect the reservations. `MAIL_DRY_RUN=1` writes both mails to `.mail-preview/` instead of sending them, which
 is the way to look at them without a mailbox. The function only accepts posts from the site's own pages, limits requests
 per address, and checks the reservation again before sending anything.
 

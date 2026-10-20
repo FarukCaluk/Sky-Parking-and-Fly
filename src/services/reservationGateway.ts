@@ -17,7 +17,7 @@ const API = '/api/reservation';
 const FORMSUBMIT = 'https://formsubmit.co/ajax';
 const TIMEOUT_MS = 20_000;
 
-/** Inbox of the fallback: the business address once `VITE_RESERVATION_EMAIL` is set, a test address until then. */
+/** Inbox of the fallback: `VITE_RESERVATION_EMAIL` when set, the booking mailbox of the business otherwise. */
 const INBOX: string = import.meta.env.VITE_RESERVATION_EMAIL?.trim() || DEFAULT_RESERVATION_INBOX;
 
 export type ReservationErrorCode = 'network' | 'timeout' | 'rejected';
