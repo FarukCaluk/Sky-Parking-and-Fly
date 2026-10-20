@@ -6,30 +6,340 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "api/reservation.ts": { "includeFiles": "src/**/*.ts" }
+    "api/reservation.ts": {
+      "includeFiles": "src/**/*.ts"
+    }
   },
   "redirects": [
-    { "source": "/cjenovnik", "destination": "/cijene", "permanent": true },
-    { "source": "/rezervacije", "destination": "/rezervacija", "permanent": true },
-    { "source": "/o-nama", "destination": "/objekat", "permanent": true },
-    { "source": "/lokacija", "destination": "/kontakt", "permanent": true }
+    {
+      "source": "/en/",
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/de/",
+      "destination": "/de",
+      "permanent": true
+    },
+    {
+      "source": "/pocetna",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/pocetna",
+      "destination": "/en",
+      "permanent": true
+    },
+    {
+      "source": "/de/pocetna",
+      "destination": "/de",
+      "permanent": true
+    },
+    {
+      "source": "/o-nama",
+      "destination": "/objekat",
+      "permanent": true
+    },
+    {
+      "source": "/en/o-nama",
+      "destination": "/en/facilities",
+      "permanent": true
+    },
+    {
+      "source": "/de/o-nama",
+      "destination": "/de/einrichtungen",
+      "permanent": true
+    },
+    {
+      "source": "/cjenovnik",
+      "destination": "/cijene",
+      "permanent": true
+    },
+    {
+      "source": "/en/cjenovnik",
+      "destination": "/en/pricing",
+      "permanent": true
+    },
+    {
+      "source": "/de/cjenovnik",
+      "destination": "/de/preise",
+      "permanent": true
+    },
+    {
+      "source": "/rezervacije",
+      "destination": "/rezervacija",
+      "permanent": true
+    },
+    {
+      "source": "/en/rezervacije",
+      "destination": "/en/reservation",
+      "permanent": true
+    },
+    {
+      "source": "/de/rezervacije",
+      "destination": "/de/reservierung",
+      "permanent": true
+    },
+    {
+      "source": "/lokacija",
+      "destination": "/kontakt",
+      "permanent": true
+    },
+    {
+      "source": "/en/lokacija",
+      "destination": "/en/contact",
+      "permanent": true
+    },
+    {
+      "source": "/de/lokacija",
+      "destination": "/de/kontakt",
+      "permanent": true
+    },
+    {
+      "source": "/en/kontakt",
+      "destination": "/en/contact",
+      "permanent": true
+    },
+    {
+      "source": "/en/novosti",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/novosti",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/en/cesta-pitanja",
+      "destination": "/en/faq",
+      "permanent": true
+    },
+    {
+      "source": "/de/cesta-pitanja",
+      "destination": "/de/haeufige-fragen",
+      "permanent": true
+    },
+    {
+      "source": "/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/kako-zapravo-funkcionise-sky-parking-and-fly",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/kako-zapravo-funkcionise-sky-parking-and-fly",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/kako-zapravo-funkcionise-sky-parking-and-fly",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/en/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
+      "destination": "/en/news",
+      "permanent": true
+    },
+    {
+      "source": "/de/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
+      "destination": "/de/neuigkeiten",
+      "permanent": true
+    },
+    {
+      "source": "/en/check-lista-prije-puta-5-sitnica-koje-cine-veliku-razliku",
+      "destination": "/en/pre-trip-checklist-5-small-things-that-make-a-big-difference",
+      "permanent": true
+    },
+    {
+      "source": "/de/check-lista-prije-puta-5-sitnica-koje-cine-veliku-razliku",
+      "destination": "/de/checkliste-vor-der-reise-5-kleinigkeiten-mit-grosser-wirkung",
+      "permanent": true
+    },
+    {
+      "source": "/en/sigurnost-na-prvom-mjestu-sta-tacno-radimo-da-ti-auto-bude-miran",
+      "destination": "/en/safety-first-what-we-do-so-you-can-relax-about-your-car",
+      "permanent": true
+    },
+    {
+      "source": "/de/sigurnost-na-prvom-mjestu-sta-tacno-radimo-da-ti-auto-bude-miran",
+      "destination": "/de/sicherheit-an-erster-stelle-was-wir-genau-tun",
+      "permanent": true
+    },
+    {
+      "source": "/en/transfer-do-aerodroma-korak-po-korak",
+      "destination": "/en/airport-transfer-step-by-step",
+      "permanent": true
+    },
+    {
+      "source": "/de/transfer-do-aerodroma-korak-po-korak",
+      "destination": "/de/transfer-zum-flughafen-schritt-fuer-schritt",
+      "permanent": true
+    },
+    {
+      "source": "/en/dugo-parkiranje-bez-brige-11-20-i-21-dana",
+      "destination": "/en/long-term-parking-without-worries-11-20-and-21-days",
+      "permanent": true
+    },
+    {
+      "source": "/de/dugo-parkiranje-bez-brige-11-20-i-21-dana",
+      "destination": "/de/langzeitparken-ohne-sorgen-11-20-und-21-tage",
+      "permanent": true
+    },
+    {
+      "source": "/recenzije/:slug",
+      "destination": "/recenzije",
+      "permanent": true
+    },
+    {
+      "source": "/en/recenzije/:slug",
+      "destination": "/en/reviews",
+      "permanent": true
+    },
+    {
+      "source": "/de/recenzije/:slug",
+      "destination": "/de/bewertungen",
+      "permanent": true
+    },
+    {
+      "source": "/en/recenzije",
+      "destination": "/en/reviews",
+      "permanent": true
+    },
+    {
+      "source": "/de/recenzije",
+      "destination": "/de/bewertungen",
+      "permanent": true
+    },
+    {
+      "source": "/category/:path*",
+      "destination": "/novosti",
+      "permanent": true
+    },
+    {
+      "source": "/author/:path*",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
       "source": "/photos/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     }
   ]
