@@ -129,6 +129,189 @@ const newsItems: Record<NewsId, NewsArticleText> = {
       },
     ],
   },
+  tips: {
+    title: 'Top 5 savjeta za bezbrižno putovanje iz Sarajeva',
+    excerpt:
+      'Dođi ranije, rezerviši parking unaprijed, koristi online check-in, javi nam detalje leta i spremi dokumenta: pet sitnica za putovanje bez nervoze.',
+    alt: 'Siva limena ograda parkinga s tablom Sky Parking & Fly: 24h nadzor i transfer, ULAZ i telefon 062/963/901',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Planiranje putovanja može biti iscrpljujuće, ali s pravim savjetima sve ide mnogo lakše. Evo pet preporuka koje ti mogu uštedjeti stres na dan polaska:',
+      },
+      {
+        type: 'checks',
+        items: [
+          '**Dođi ranije:** preporučuje se dolazak najmanje 2 sata prije leta, pogotovo za međunarodne destinacije.',
+          '**Rezerviši parking unaprijed:** naš privatni parking se brzo popuni, naročito tokom praznika i sezone godišnjih odmora.',
+          '**Koristi online check-in:** uštedi vrijeme i izbjegni redove na šalterima.',
+          '**Javi nam detalje leta:** ako znamo kad se vraćaš, čekamo te tačno na vrijeme.',
+          '**Dokumenta u ručni prtljag:** pasoš ili lična karta i karta za let neka budu pri ruci, a ne na dnu kofera.',
+        ],
+      },
+      { type: 'p', text: 'Naša usluga nije samo parkiranje: želimo da cijelo putovanje krene glatko i bez nervoze.' },
+    ],
+  },
+  process: {
+    title: 'Kako funkcioniše naš servis za preuzimanje i vraćanje vozila?',
+    excerpt:
+      'Rezervacija, dolazak 10-15 minuta ranije, besplatan transfer, siguran parking i povratak: cijeli proces je jednostavan i bez skrivenih troškova.',
+    alt: 'Crni automobil ulazi na parking kroz limenu kapiju',
+    blocks: [
+      { type: 'heading', text: 'Jednostavnost i brzina procesa' },
+      {
+        type: 'p',
+        text: 'Jedna od stvari koje klijenti najviše cijene kod našeg parkinga je jednostavnost i brzina. Evo kako to izgleda u praksi:',
+      },
+      {
+        type: 'steps',
+        items: [
+          '**Rezervacija:** rezervišeš preko sajta, telefonom, WhatsAppom ili Viberom.',
+          '**Dolazak na parking:** dolaziš 10-15 minuta prije vremena kada treba da budeš na terminalu.',
+          '**Besplatan transfer:** naš vozač te prevozi direktno do ulaza u aerodrom.',
+          '**Sigurnost dok si odsutan:** tvoje vozilo je parkirano, nadgledano i osigurano.',
+          '**Povratak:** po slijetanju nam javiš porukom ili pozivom, a mi te za nekoliko minuta čekamo ispred terminala.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Sistem je jednostavan, brz i bez skrivenih troškova. Naša misija je da ti pružimo maksimalnu udobnost i sigurnost, da se ti možeš fokusirati na putovanje.',
+      },
+    ],
+  },
+  compare: {
+    title: 'Uporedili smo cijene: privatni i zvanični aerodromski parking',
+    excerpt:
+      'Privatni parking kod aerodroma je znatno jeftiniji, uz nadzor, transfer u cijeni i rezervaciju unaprijed. Za sedam dana razlika može biti oko 100 KM.',
+    alt: 'Bijeli Golf i crni Audi parkirani jedan do drugog na šljunčanom parkingu, u prvom planu crveni automobil',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Većina putnika pretpostavlja da je zvanični aerodromski parking najlogičniji izbor, ali kad se pogledaju brojke, situacija je sasvim drugačija.',
+      },
+      { type: 'heading', text: 'Zvanični aerodromski parking' },
+      {
+        type: 'checks',
+        items: [
+          'Cijene od 20 do 25 KM dnevno (prema našem poređenju)',
+          'Ograničen broj mjesta, često prepun',
+          'Bez personalizirane usluge',
+        ],
+      },
+      { type: 'heading', text: 'Privatni parking kod aerodroma' },
+      {
+        type: 'checks',
+        items: [
+          '**Od 9 KM dnevno** za kraće boravke, a od **6 KM** za duže (21-30 dana)',
+          'Ograđen i osvijetljen prostor, video nadzor 24/7',
+          'Besplatan transfer do terminala uključen u cijenu',
+          'Rezervacija unaprijed, s tačnom cijenom prije slanja',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Ako putuješ 7 dana, kod nas to košta 56 KM (7 × 8 KM), a razlika u odnosu na zvanični parking može biti oko 100 KM. Pored uštede dobijaš i sigurnost i podršku koja te čeka. Naš cilj nije samo da čuvamo tvoj automobil, nego da budemo dio tvog bezbrižnog putovanja.',
+      },
+    ],
+  },
+  why: {
+    title: 'Zašto izabrati privatni parking kod aerodroma Sarajevo?',
+    excerpt:
+      'Nekoliko minuta od ulaza, ograđen i pod nadzorom 24/7, besplatan transfer, povoljnije cijene i online rezervacija: pet razloga za privatni parking.',
+    alt: 'Automobili parkirani u nizu na šljunčanom parkingu, u pozadini planina',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Putovanje avionom samo po sebi može biti stresno: pakovanje, rasporedi letova, provjere dokumenata. Posljednje što ti treba je briga o sigurnosti vozila dok si odsutan. Upravo tu uskače privatni parking kod Međunarodnog aerodroma Sarajevo.',
+      },
+      { type: 'heading', text: 'Zašto odabrati privatni parking' },
+      {
+        type: 'checks',
+        items: [
+          '**Blizina:** parking je na 800 m od glavnog ulaza na aerodrom, oko jedan minut vožnje.',
+          '**Sigurnost:** vozilo je pod video nadzorom 24/7, a prostor je ograđen i osvijetljen.',
+          '**Transfer:** besplatan i brz do terminala i nazad.',
+          '**Cijena:** znatno povoljnija nego na zvaničnom parkingu, posebno za duži boravak.',
+          '**Online rezervacija:** garantuje mjesto i štedi tvoje vrijeme.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Bilo da putuješ na nekoliko dana ili nekoliko sedmica, cilj nam je da ti pružimo mir i sigurnost. Tim je profesionalan, usluga brza i organizovana, a tvoje zadovoljstvo na prvom mjestu. Probaj nas jednom i nećeš više razmišljati o drugom parkingu.',
+      },
+    ],
+  },
+  how: {
+    title: 'Kako zapravo funkcioniše SKY Parking and Fly?',
+    excerpt:
+      'Dođeš, parkiraš, naš vozač te za oko minut odveze do ulaza u aerodrom, a po povratku te vraća do auta. Bez kruženja i bez skrivenih taksi.',
+    alt: 'Prostran šljunčani parking s ogradom i kapijom',
+    blocks: [
+      { type: 'heading', text: 'Besplatan transfer do ulaza i nazad' },
+      {
+        type: 'p',
+        text: 'Dođeš kod nas, parkiraš (ili predaš ključ ako želiš da mi parkiramo), ubaciš kofer u vozilo i naš vozač te odveze do samog ulaza u Aerodrom Sarajevo, sve skupa oko jednog minuta. Nema kruženja oko terminala, nema natezanja s rampama, nema kazni.',
+      },
+      {
+        type: 'p',
+        text: 'Po povratku nam javiš porukom ili pozivom čim preuzmeš prtljag: naš vozač dolazi odmah po tebe i vraća te do auta.',
+      },
+      {
+        type: 'p',
+        text: 'Parking je ograđen, dobro osvijetljen i pod nadzorom, a ekipa je na terenu. Ako se planovi pomjere (raniji let, kasniji povratak), mi se prilagodimo, ali sigurnost je uvijek fiksna tačka.',
+      },
+      { type: 'p', text: 'Cijena je jednostavna: što duže ostaješ, manje plaćaš. Bez sitnih slova i skrivenih taksi.' },
+    ],
+  },
+  prices: {
+    title: 'Cijene bez iznenađenja: što duže ostaješ, manje plaćaš',
+    excerpt:
+      'Od 9 KM po danu za kratka putovanja do 6 KM za duže boravke, a svaki dan nakon 30. košta 5 KM. Transfer je uvijek uključen.',
+    alt: 'Stub s video nadzornom kamerom i LED reflektorom na plavom nebu',
+    blocks: [
+      { type: 'heading', text: 'Cijene parkinga: SKY Parking and Fly' },
+      { type: 'p', text: 'Držimo jednostavnu matematiku: što duže ostaješ, manje plaćaš.' },
+      {
+        type: 'checks',
+        items: [
+          '**2-4 dana:** 9 KM/dan',
+          '**5-10 dana:** 8 KM/dan',
+          '**11-20 dana:** 7 KM/dan',
+          '**21-30 dana:** 6 KM/dan',
+          '**Nakon 30. dana:** 5 KM za svaki dodatni dan (30 dana je 180 KM)',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Minimalno trajanje parkiranja je 2 dana. U cijenu je uključen besplatan transfer do terminala i nazad. Nema naknada za kišu, snijeg ili pun mjesec.',
+      },
+      {
+        type: 'p',
+        text: 'Na stranici Cijene možeš odmah izračunati tačan iznos za svoje datume i sate, a ista cijena te čeka i u koraku rezervacije.',
+      },
+    ],
+  },
+  weekend: {
+    title: 'Vikend put bez trošenja živaca: kratko parkiranje od 2 do 4 dana',
+    excerpt:
+      'Parkiraš blizu aerodroma, vozač te za oko minut preveze do ulaza, a po povratku te vraća do auta. Kratko putovanje, kratke procedure.',
+    alt: 'Avion polijeće iznad niza parkiranih automobila, a u prvom planu je velik tamnoplavi automobil',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Skok do Evrope od petka do nedjelje? Parkiraš blizu aerodroma i naš vozač te preveze do polaska: oko minut do ulaza. Nema jurnjave po parkingu ispred terminala ni natezanja s torbama kroz gužvu.',
+      },
+      {
+        type: 'p',
+        text: 'Po povratku pošalješ poruku "Tu sam", vozač dolazi i vraća te do auta. Vozilo te čeka kako si ga ostavio: zaključano, pod nadzorom, bez iznenađenja.',
+      },
+      {
+        type: 'p',
+        text: 'Putuješ s djecom ili imaš "hand luggage + tri kese"? Pomažemo oko utovara i istovara bez drame. Kratko putovanje, kratke procedure, tačno tako.',
+      },
+      { type: 'p', text: 'Za kratke boravke cijena je **9 KM po danu** (2-4 dana), a minimalno trajanje je 2 dana.' },
+    ],
+  },
 };
 
 export const bs = {

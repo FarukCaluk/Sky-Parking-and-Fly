@@ -11,6 +11,13 @@ export type PhotoId =
   | 'newsChecklist'
   | 'newsTransfer'
   | 'newsLongStay'
+  | 'newsTips'
+  | 'newsProcess'
+  | 'newsCompare'
+  | 'newsWhy'
+  | 'newsHow'
+  | 'newsPrices'
+  | 'newsWeekend'
   | 'galleryLot'
   | 'galleryCars'
   | 'galleryGate'
@@ -52,6 +59,13 @@ export const PHOTOS: Record<PhotoId, PhotoDef> = {
   newsChecklist: { width: 1200, height: 1200, main: { prefix: 'news-checklist', widths: NEWS_WIDTHS } },
   newsTransfer: { width: 1200, height: 1200, main: { prefix: 'news-transfer', widths: NEWS_WIDTHS } },
   newsLongStay: { width: 1200, height: 1200, main: { prefix: 'news-long-stay', widths: NEWS_WIDTHS } },
+  newsTips: { width: 1200, height: 1200, main: { prefix: 'news-tips', widths: NEWS_WIDTHS } },
+  newsProcess: { width: 1200, height: 1200, main: { prefix: 'news-process', widths: NEWS_WIDTHS } },
+  newsCompare: { width: 1200, height: 1200, main: { prefix: 'news-compare', widths: NEWS_WIDTHS } },
+  newsWhy: { width: 1200, height: 1200, main: { prefix: 'news-why', widths: NEWS_WIDTHS } },
+  newsHow: { width: 1200, height: 1200, main: { prefix: 'news-how', widths: NEWS_WIDTHS } },
+  newsPrices: { width: 1200, height: 1200, main: { prefix: 'news-prices', widths: NEWS_WIDTHS } },
+  newsWeekend: { width: 1200, height: 1200, main: { prefix: 'news-weekend', widths: NEWS_WIDTHS } },
   galleryLot: { width: 1200, height: 1200, main: { prefix: 'gallery-lot', widths: GALLERY_WIDTHS } },
   galleryCars: { width: 1200, height: 1200, main: { prefix: 'gallery-cars', widths: GALLERY_WIDTHS } },
   galleryGate: { width: 1200, height: 1200, main: { prefix: 'gallery-gate', widths: GALLERY_WIDTHS } },

@@ -95,29 +95,31 @@ function ArticleView({ route }: { route: ArticleRouteId }) {
             {t.news.more}
           </h2>
           <ul role="list" className="mt-8 border-t border-line">
-            {NEWS.filter((other) => other.id !== entry.id).map((other) => (
-              <li key={other.id} className="border-b border-line">
-                <Link
-                  route={articleRouteOf(other.id)}
-                  className="group/row grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-5 transition-colors duration-300 hover:bg-ink/[0.035] sm:grid-cols-[7rem_1fr_auto] sm:px-3"
-                >
-                  <time
-                    dateTime={other.date}
-                    className="label col-span-2 text-[0.9375rem] text-accent-text sm:col-span-1"
+            {NEWS.filter((other) => other.id !== entry.id)
+              .slice(0, 5)
+              .map((other) => (
+                <li key={other.id} className="border-b border-line">
+                  <Link
+                    route={articleRouteOf(other.id)}
+                    className="group/row grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-5 transition-colors duration-300 hover:bg-ink/[0.035] sm:grid-cols-[7rem_1fr_auto] sm:px-3"
                   >
-                    {formatDMY(other.date)}
-                  </time>
-                  <span className="font-display text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] font-bold leading-[1.1]">
-                    {t.news.items[other.id].title}
-                  </span>
-                  <ArrowUpRight
-                    className="size-6 text-ink-faint transition-[transform,color] duration-300 ease-signal group-hover/row:-translate-y-0.5 group-hover/row:translate-x-0.5 group-hover/row:text-accent-text"
-                    strokeWidth={1.75}
-                    aria-hidden="true"
-                  />
-                </Link>
-              </li>
-            ))}
+                    <time
+                      dateTime={other.date}
+                      className="label col-span-2 text-[0.9375rem] text-accent-text sm:col-span-1"
+                    >
+                      {formatDMY(other.date)}
+                    </time>
+                    <span className="font-display text-[clamp(1.25rem,1.05rem+0.8vw,1.75rem)] font-bold leading-[1.1]">
+                      {t.news.items[other.id].title}
+                    </span>
+                    <ArrowUpRight
+                      className="size-6 text-ink-faint transition-[transform,color] duration-300 ease-signal group-hover/row:-translate-y-0.5 group-hover/row:translate-x-0.5 group-hover/row:text-accent-text"
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </li>
+              ))}
           </ul>
         </Container>
       </section>

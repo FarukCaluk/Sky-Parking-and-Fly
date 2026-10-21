@@ -19,7 +19,7 @@ export function NewsTeaser() {
             {t.news.all}
           </Button>
         </Reveal>
-        <NewsGrid className="mt-10 sm:mt-12" />
+        <NewsGrid limit={4} className="mt-10 sm:mt-12" />
       </Container>
     </section>
   );

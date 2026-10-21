@@ -51,11 +51,11 @@ export function NewsCard({ entry }: { entry: NewsEntry }) {
   );
 }
 
-/** The posts, two by two on a wide screen. Used by the News page and by the home page. */
-export function NewsGrid({ className }: { className?: string }) {
+/** The posts, two by two on a wide screen. Used by the News page (all of them) and by the home page (the latest). */
+export function NewsGrid({ className, limit }: { className?: string; limit?: number }) {
   return (
     <ul role="list" className={cn('grid gap-4 lg:grid-cols-2 lg:gap-6', className)}>
-      {NEWS.map((entry, index) => (
+      {NEWS.slice(0, limit).map((entry, index) => (
         <li key={entry.id}>
           <Reveal y={24} delay={(index % 2) * 0.08} className="h-full">
             <NewsCard entry={entry} />

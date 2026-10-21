@@ -122,111 +122,6 @@
       "permanent": true
     },
     {
-      "source": "/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
-      "source": "/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
-      "source": "/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
-      "source": "/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
-      "source": "/kako-zapravo-funkcionise-sky-parking-and-fly",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/kako-zapravo-funkcionise-sky-parking-and-fly",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/kako-zapravo-funkcionise-sky-parking-and-fly",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
-      "source": "/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
-      "source": "/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
-      "destination": "/novosti",
-      "permanent": true
-    },
-    {
-      "source": "/en/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
-      "destination": "/en/news",
-      "permanent": true
-    },
-    {
-      "source": "/de/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
-      "destination": "/de/neuigkeiten",
-      "permanent": true
-    },
-    {
       "source": "/en/check-lista-prije-puta-5-sitnica-koje-cine-veliku-razliku",
       "destination": "/en/pre-trip-checklist-5-small-things-that-make-a-big-difference",
       "permanent": true
@@ -264,6 +159,76 @@
     {
       "source": "/de/dugo-parkiranje-bez-brige-11-20-i-21-dana",
       "destination": "/de/langzeitparken-ohne-sorgen-11-20-und-21-tage",
+      "permanent": true
+    },
+    {
+      "source": "/en/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
+      "destination": "/en/top-5-tips-for-a-stress-free-trip-from-sarajevo",
+      "permanent": true
+    },
+    {
+      "source": "/de/top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva",
+      "destination": "/de/top-5-tipps-fuer-eine-stressfreie-reise-ab-sarajevo",
+      "permanent": true
+    },
+    {
+      "source": "/en/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
+      "destination": "/en/how-our-car-drop-off-and-pick-up-service-works",
+      "permanent": true
+    },
+    {
+      "source": "/de/kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila",
+      "destination": "/de/so-funktioniert-unser-service-fuer-abgabe-und-rueckgabe",
+      "permanent": true
+    },
+    {
+      "source": "/en/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
+      "destination": "/en/prices-compared-private-vs-official-airport-parking",
+      "permanent": true
+    },
+    {
+      "source": "/de/uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking",
+      "destination": "/de/preisvergleich-privater-und-offizieller-flughafenparkplatz",
+      "permanent": true
+    },
+    {
+      "source": "/en/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
+      "destination": "/en/why-choose-a-private-parking-lot-near-sarajevo-airport",
+      "permanent": true
+    },
+    {
+      "source": "/de/zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo",
+      "destination": "/de/warum-ein-privater-parkplatz-am-flughafen-sarajevo",
+      "permanent": true
+    },
+    {
+      "source": "/en/kako-zapravo-funkcionise-sky-parking-and-fly",
+      "destination": "/en/how-sky-parking-and-fly-really-works",
+      "permanent": true
+    },
+    {
+      "source": "/de/kako-zapravo-funkcionise-sky-parking-and-fly",
+      "destination": "/de/wie-sky-parking-and-fly-wirklich-funktioniert",
+      "permanent": true
+    },
+    {
+      "source": "/en/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
+      "destination": "/en/prices-without-surprises-the-longer-you-stay-the-less-you-pay",
+      "permanent": true
+    },
+    {
+      "source": "/de/cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas",
+      "destination": "/de/preise-ohne-ueberraschungen-je-laenger-desto-guenstiger",
+      "permanent": true
+    },
+    {
+      "source": "/en/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
+      "destination": "/en/weekend-trip-without-the-stress-short-term-parking",
+      "permanent": true
+    },
+    {
+      "source": "/de/vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana",
+      "destination": "/de/wochenendreise-ohne-stress-kurzzeitparken",
       "permanent": true
     },
     {

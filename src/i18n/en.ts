@@ -92,6 +92,195 @@ const newsItems: Messages['news']['items'] = {
       },
     ],
   },
+  tips: {
+    title: 'Top 5 tips for a stress-free trip from Sarajevo',
+    excerpt:
+      'Arrive early, book parking in advance, use online check-in, tell us your flight details and keep your documents at hand: five small things for a calm departure.',
+    alt: 'The grey metal fence of the lot with the Sky Parking & Fly sign: 24h surveillance and transfer, ENTRANCE and phone 062/963/901',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Planning a trip can be exhausting, but with the right habits everything gets easier. Here are five tips that can save you stress on the day you leave:',
+      },
+      {
+        type: 'checks',
+        items: [
+          '**Arrive early:** we recommend getting to the airport at least 2 hours before your flight, especially for international destinations.',
+          '**Book your parking in advance:** our private lot fills up quickly, especially during holidays and the summer season.',
+          '**Use online check-in:** save time and skip the queues at the desks.',
+          '**Tell us your flight details:** if we know when you are coming back, we are there to meet you right on time.',
+          '**Documents in your hand luggage:** keep your passport or ID card and your boarding pass at hand, not at the bottom of a suitcase.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Our service is not just parking: we want your whole trip to start smoothly and without nerves.',
+      },
+    ],
+  },
+  process: {
+    title: 'How does our car drop-off and pick-up service work?',
+    excerpt:
+      'Booking, arriving 10-15 minutes early, a free transfer, a safe lot and the return: the whole process is simple and has no hidden costs.',
+    alt: 'A black car driving into the lot through the metal gate',
+    blocks: [
+      { type: 'heading', text: 'A simple, fast process' },
+      {
+        type: 'p',
+        text: 'One of the things our clients appreciate most is how simple and quick it all is. This is how it works in practice:',
+      },
+      {
+        type: 'steps',
+        items: [
+          '**Booking:** you reserve through the website, by phone, on WhatsApp or on Viber.',
+          '**Arriving at the lot:** you come 10-15 minutes before the time you need to be at the terminal.',
+          '**Free transfer:** our driver takes you straight to the airport entrance.',
+          '**Safety while you are away:** your vehicle is parked, watched over and secured.',
+          '**The return:** after you land, you send a message or call, and a few minutes later we are waiting for you in front of the terminal.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'The system is simple, fast and has no hidden costs. Our mission is to give you maximum comfort and safety, so you can focus on your trip.',
+      },
+    ],
+  },
+  compare: {
+    title: 'We compared the prices: private vs official airport parking',
+    excerpt:
+      'A private lot by the airport is much cheaper, with surveillance, a transfer included and booking in advance. For seven days the difference can be around 100 KM.',
+    alt: 'A white Golf and a black Audi parked next to each other on a gravel lot, a red car in the foreground',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Most travellers assume the official airport parking is the obvious choice, but once you look at the numbers the picture is quite different.',
+      },
+      { type: 'heading', text: 'Official airport parking' },
+      {
+        type: 'checks',
+        items: [
+          'Prices of 20 to 25 KM per day (by our comparison)',
+          'A limited number of spaces, often full',
+          'No personal service',
+        ],
+      },
+      { type: 'heading', text: 'A private lot by the airport' },
+      {
+        type: 'checks',
+        items: [
+          '**From 9 KM per day** for shorter stays and **from 6 KM** for longer ones (21-30 days)',
+          'A fenced and lit lot with video surveillance 24/7',
+          'A free transfer to the terminal included in the price',
+          'Booking in advance, with the exact price shown before you send it',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'If you travel for 7 days, it costs 56 KM with us (7 × 8 KM), and the difference compared with the official parking can be around 100 KM. Besides the saving, you get safety and support waiting for you. Our goal is not only to look after your car, but to be part of your worry-free trip.',
+      },
+    ],
+  },
+  why: {
+    title: 'Why choose a private parking lot near Sarajevo airport?',
+    excerpt:
+      'A few minutes from the entrance, fenced and watched 24/7, a free transfer, better prices and online booking: five reasons to choose a private lot.',
+    alt: 'Cars parked in a row on a gravel lot with a mountain in the background',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Flying can be stressful in itself: packing, flight times, document checks. The last thing you need is to worry about your car while you are away. That is where a private parking lot near Sarajevo International Airport comes in.',
+      },
+      { type: 'heading', text: 'Why choose a private lot' },
+      {
+        type: 'checks',
+        items: [
+          '**Close by:** the lot is 800 m from the main airport entrance, about a minute by car.',
+          '**Safe:** your vehicle is under video surveillance 24/7 and the lot is fenced and lit.',
+          '**Transfer:** free and quick, to the terminal and back.',
+          '**Price:** much lower than at the official parking, especially for a longer stay.',
+          '**Online booking:** it guarantees your spot and saves your time.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Whether you travel for a few days or a few weeks, our goal is to give you peace of mind and safety. Our team is professional, the service is quick and organised, and your satisfaction comes first. Try us once, and you will not think about another parking lot again.',
+      },
+    ],
+  },
+  how: {
+    title: 'How does SKY Parking and Fly really work?',
+    excerpt:
+      'You arrive, you park, our driver takes you to the airport entrance in about a minute, and brings you back to your car on return. No circling, no hidden fees.',
+    alt: 'A spacious gravel lot with a fence and a gate',
+    blocks: [
+      { type: 'heading', text: 'A free transfer to the entrance and back' },
+      {
+        type: 'p',
+        text: 'You come to us, park (or hand over the key if you want us to park), put your suitcase in the vehicle, and our driver takes you right to the entrance of Sarajevo Airport, all in about a minute. No circling around the terminal, no fighting with barriers, no fines.',
+      },
+      {
+        type: 'p',
+        text: 'On your return you message or call us as soon as you pick up your luggage: our driver comes for you right away and takes you back to your car.',
+      },
+      {
+        type: 'p',
+        text: 'The lot is fenced, well lit and watched, with our team on site. If plans change (an earlier flight, a later return), we adapt, but safety is always the fixed point.',
+      },
+      {
+        type: 'p',
+        text: 'The price is simple: the longer you stay, the less you pay. No small print and no hidden fees.',
+      },
+    ],
+  },
+  prices: {
+    title: 'Prices without surprises: the longer you stay, the less you pay',
+    excerpt:
+      'From 9 KM a day for short trips down to 6 KM for longer stays, and every day after the 30th costs 5 KM. The transfer is always included.',
+    alt: 'A pole with a video surveillance camera and an LED floodlight against a blue sky',
+    blocks: [
+      { type: 'heading', text: 'Parking prices at SKY Parking and Fly' },
+      { type: 'p', text: 'We keep the maths simple: the longer you stay, the less you pay.' },
+      {
+        type: 'checks',
+        items: [
+          '**2-4 days:** 9 KM/day',
+          '**5-10 days:** 8 KM/day',
+          '**11-20 days:** 7 KM/day',
+          '**21-30 days:** 6 KM/day',
+          '**After day 30:** 5 KM for every extra day (30 days come to 180 KM)',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'The minimum stay is 2 days. A free transfer to the terminal and back is included in the price. There are no fees for rain, snow or a full moon.',
+      },
+      {
+        type: 'p',
+        text: 'On the Prices page you can work out the exact amount for your dates and times right away, and the same price waits for you at the reservation step.',
+      },
+    ],
+  },
+  weekend: {
+    title: 'Weekend trip without the stress: short-term parking for 2 to 4 days',
+    excerpt:
+      'You park near the airport, the driver takes you to the entrance in about a minute, and brings you back to your car on return. A short trip, short procedures.',
+    alt: 'A plane taking off over a row of parked cars, with a large dark blue car in the foreground',
+    blocks: [
+      {
+        type: 'p',
+        text: 'A quick hop to Europe from Friday to Sunday? You park near the airport and our driver takes you to departures: about a minute to the entrance. No rushing around the parking in front of the terminal and no struggling with bags through the crowd.',
+      },
+      {
+        type: 'p',
+        text: 'On your return you send a message saying "I am here", the driver comes and takes you back to your car. Your vehicle waits for you just as you left it: locked, watched, with no surprises.',
+      },
+      {
+        type: 'p',
+        text: 'Travelling with children, or with "hand luggage plus three carrier bags"? We help with loading and unloading, without the drama. A short trip, short procedures, exactly that.',
+      },
+      { type: 'p', text: 'For short stays the price is **9 KM per day** (2-4 days), and the minimum stay is 2 days.' },
+    ],
+  },
 };
 
 export const en: Messages = {

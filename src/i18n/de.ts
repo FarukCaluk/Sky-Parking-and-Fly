@@ -92,6 +92,198 @@ const newsItems: Messages['news']['items'] = {
       },
     ],
   },
+  tips: {
+    title: 'Top 5 Tipps für eine stressfreie Reise ab Sarajevo',
+    excerpt:
+      'Früh kommen, Parkplatz vorab buchen, online einchecken, uns die Flugdaten mitteilen und die Papiere griffbereit halten: fünf Kleinigkeiten für einen ruhigen Start.',
+    alt: 'Der graue Blechzaun des Parkplatzes mit dem Schild Sky Parking & Fly: 24h Überwachung und Transfer, EINFAHRT und Telefon 062/963/901',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Eine Reise zu planen kann anstrengend sein, aber mit den richtigen Gewohnheiten wird alles leichter. Hier sind fünf Tipps, die Ihnen am Abreisetag Stress ersparen:',
+      },
+      {
+        type: 'checks',
+        items: [
+          '**Früh kommen:** wir empfehlen, mindestens 2 Stunden vor dem Flug am Flughafen zu sein, besonders bei internationalen Zielen.',
+          '**Parkplatz vorab buchen:** unser privater Parkplatz ist schnell voll, vor allem an Feiertagen und in der Urlaubssaison.',
+          '**Online einchecken:** das spart Zeit und Warteschlangen am Schalter.',
+          '**Flugdaten mitteilen:** wenn wir wissen, wann Sie zurückkommen, warten wir pünktlich auf Sie.',
+          '**Papiere ins Handgepäck:** Reisepass oder Personalausweis und Bordkarte gehören griffbereit, nicht auf den Boden des Koffers.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Unser Service ist nicht nur Parken: Wir möchten, dass Ihre ganze Reise reibungslos und ohne Nervosität beginnt.',
+      },
+    ],
+  },
+  process: {
+    title: 'Wie funktioniert unser Service für Abgabe und Rückgabe des Autos?',
+    excerpt:
+      'Buchung, Ankunft 10-15 Minuten früher, kostenloser Transfer, sicherer Parkplatz und Rückkehr: der ganze Ablauf ist einfach und ohne versteckte Kosten.',
+    alt: 'Ein schwarzes Auto fährt durch das Blechtor auf den Parkplatz',
+    blocks: [
+      { type: 'heading', text: 'Ein einfacher, schneller Ablauf' },
+      {
+        type: 'p',
+        text: 'Was unsere Kunden am meisten schätzen, ist, wie einfach und schnell alles geht. So sieht es in der Praxis aus:',
+      },
+      {
+        type: 'steps',
+        items: [
+          '**Buchung:** Sie reservieren über die Website, telefonisch, per WhatsApp oder Viber.',
+          '**Ankunft am Parkplatz:** Sie kommen 10-15 Minuten vor dem Zeitpunkt, zu dem Sie am Terminal sein müssen.',
+          '**Kostenloser Transfer:** unser Fahrer bringt Sie direkt zum Eingang des Flughafens.',
+          '**Sicherheit während Ihrer Abwesenheit:** Ihr Fahrzeug ist abgestellt, überwacht und gesichert.',
+          '**Rückkehr:** nach der Landung schicken Sie eine Nachricht oder rufen an, und wenige Minuten später warten wir vor dem Terminal auf Sie.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Das System ist einfach, schnell und ohne versteckte Kosten. Unser Ziel ist maximaler Komfort und Sicherheit, damit Sie sich auf Ihre Reise konzentrieren können.',
+      },
+    ],
+  },
+  compare: {
+    title: 'Wir haben die Preise verglichen: privater und offizieller Flughafenparkplatz',
+    excerpt:
+      'Ein privater Parkplatz am Flughafen ist deutlich günstiger, mit Überwachung und Transfer im Preis. Bei sieben Tagen kann der Unterschied rund 100 KM betragen.',
+    alt: 'Ein weißer Golf und ein schwarzer Audi nebeneinander auf einem Kiesparkplatz, im Vordergrund ein rotes Auto',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Die meisten Reisenden nehmen an, dass der offizielle Flughafenparkplatz die naheliegende Wahl ist, aber ein Blick auf die Zahlen zeigt ein ganz anderes Bild.',
+      },
+      { type: 'heading', text: 'Offizieller Flughafenparkplatz' },
+      {
+        type: 'checks',
+        items: [
+          'Preise von 20 bis 25 KM pro Tag (nach unserem Vergleich)',
+          'Begrenzte Zahl an Plätzen, oft voll',
+          'Kein persönlicher Service',
+        ],
+      },
+      { type: 'heading', text: 'Privater Parkplatz am Flughafen' },
+      {
+        type: 'checks',
+        items: [
+          '**Ab 9 KM pro Tag** für kürzere Aufenthalte und **ab 6 KM** für längere (21-30 Tage)',
+          'Eingezäunt und beleuchtet, Videoüberwachung rund um die Uhr',
+          'Kostenloser Transfer zum Terminal im Preis inbegriffen',
+          'Reservierung im Voraus, mit dem genauen Preis vor dem Absenden',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Bei 7 Tagen zahlen Sie bei uns 56 KM (7 × 8 KM), und der Unterschied zum offiziellen Parkplatz kann rund 100 KM betragen. Neben der Ersparnis bekommen Sie Sicherheit und Unterstützung. Unser Ziel ist nicht nur, Ihr Auto zu bewachen, sondern Teil Ihrer sorgenfreien Reise zu sein.',
+      },
+    ],
+  },
+  why: {
+    title: 'Warum einen privaten Parkplatz am Flughafen Sarajevo wählen?',
+    excerpt:
+      'Wenige Minuten vom Eingang, eingezäunt und rund um die Uhr überwacht, kostenloser Transfer, günstige Preise, Online-Buchung: fünf Gründe für einen privaten Parkplatz.',
+    alt: 'Autos in einer Reihe auf einem Kiesparkplatz, im Hintergrund ein Berg',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Fliegen kann schon an sich stressig sein: Packen, Flugzeiten, Dokumentenkontrollen. Das Letzte, was Sie brauchen, ist die Sorge um Ihr Auto während Ihrer Abwesenheit. Genau hier hilft ein privater Parkplatz am Internationalen Flughafen Sarajevo.',
+      },
+      { type: 'heading', text: 'Warum ein privater Parkplatz' },
+      {
+        type: 'checks',
+        items: [
+          '**Nähe:** der Parkplatz liegt 800 m vom Haupteingang des Flughafens, etwa eine Minute mit dem Auto.',
+          '**Sicherheit:** Ihr Fahrzeug steht rund um die Uhr unter Videoüberwachung, der Platz ist eingezäunt und beleuchtet.',
+          '**Transfer:** kostenlos und schnell, zum Terminal und zurück.',
+          '**Preis:** deutlich günstiger als auf dem offiziellen Parkplatz, besonders bei längeren Aufenthalten.',
+          '**Online-Buchung:** sie garantiert Ihren Platz und spart Zeit.',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Ob Sie für ein paar Tage oder ein paar Wochen verreisen, unser Ziel ist, Ihnen Ruhe und Sicherheit zu geben. Unser Team ist professionell, der Service schnell und organisiert, und Ihre Zufriedenheit steht an erster Stelle. Probieren Sie uns einmal aus, und Sie denken nicht mehr an einen anderen Parkplatz.',
+      },
+    ],
+  },
+  how: {
+    title: 'Wie funktioniert SKY Parking and Fly wirklich?',
+    excerpt:
+      'Sie parken, unser Fahrer bringt Sie in etwa einer Minute zum Eingang des Flughafens und bei der Rückkehr zu Ihrem Auto zurück. Ohne versteckte Gebühren.',
+    alt: 'Ein weitläufiger Schotterparkplatz mit Zaun und Tor',
+    blocks: [
+      { type: 'heading', text: 'Kostenloser Transfer zum Eingang und zurück' },
+      {
+        type: 'p',
+        text: 'Sie kommen zu uns, parken (oder übergeben den Schlüssel, wenn wir parken sollen), laden den Koffer ein, und unser Fahrer bringt Sie bis zum Eingang des Flughafens Sarajevo, alles in etwa einer Minute. Kein Kreisen um das Terminal, kein Ärger mit Schranken, keine Strafen.',
+      },
+      {
+        type: 'p',
+        text: 'Bei der Rückkehr melden Sie sich per Nachricht oder Anruf, sobald Sie Ihr Gepäck haben: unser Fahrer kommt sofort und bringt Sie zu Ihrem Auto zurück.',
+      },
+      {
+        type: 'p',
+        text: 'Der Parkplatz ist eingezäunt, gut beleuchtet und überwacht, unser Team ist vor Ort. Ändern sich die Pläne (früherer Flug, spätere Rückkehr), passen wir uns an, aber die Sicherheit ist immer der feste Punkt.',
+      },
+      {
+        type: 'p',
+        text: 'Der Preis ist einfach: je länger Sie bleiben, desto weniger zahlen Sie. Ohne Kleingedrucktes und ohne versteckte Gebühren.',
+      },
+    ],
+  },
+  prices: {
+    title: 'Preise ohne Überraschungen: je länger Sie bleiben, desto weniger zahlen Sie',
+    excerpt:
+      'Ab 9 KM pro Tag für kurze Reisen bis 6 KM für längere Aufenthalte, jeder Tag nach dem 30. kostet 5 KM. Der Transfer ist immer inbegriffen.',
+    alt: 'Ein Mast mit Überwachungskamera und LED-Flutlicht vor blauem Himmel',
+    blocks: [
+      { type: 'heading', text: 'Parkpreise bei SKY Parking and Fly' },
+      { type: 'p', text: 'Wir halten die Rechnung einfach: je länger Sie bleiben, desto weniger zahlen Sie.' },
+      {
+        type: 'checks',
+        items: [
+          '**2-4 Tage:** 9 KM/Tag',
+          '**5-10 Tage:** 8 KM/Tag',
+          '**11-20 Tage:** 7 KM/Tag',
+          '**21-30 Tage:** 6 KM/Tag',
+          '**Nach dem 30. Tag:** 5 KM für jeden weiteren Tag (30 Tage ergeben 180 KM)',
+        ],
+      },
+      {
+        type: 'p',
+        text: 'Die Mindestdauer beträgt 2 Tage. Ein kostenloser Transfer zum Terminal und zurück ist im Preis inbegriffen. Es gibt keine Gebühren für Regen, Schnee oder Vollmond.',
+      },
+      {
+        type: 'p',
+        text: 'Auf der Seite Preise können Sie den genauen Betrag für Ihre Daten und Uhrzeiten sofort berechnen, und derselbe Preis erwartet Sie im Reservierungsschritt.',
+      },
+    ],
+  },
+  weekend: {
+    title: 'Wochenendreise ohne Stress: Kurzzeitparken für 2 bis 4 Tage',
+    excerpt:
+      'Sie parken in Flughafennähe, der Fahrer bringt Sie in etwa einer Minute zum Eingang und bei der Rückkehr wieder zu Ihrem Auto. Kurze Reise, kurze Wege.',
+    alt: 'Ein Flugzeug startet über einer Reihe geparkter Autos, im Vordergrund ein großes dunkelblaues Auto',
+    blocks: [
+      {
+        type: 'p',
+        text: 'Ein kurzer Sprung nach Europa von Freitag bis Sonntag? Sie parken in der Nähe des Flughafens und unser Fahrer bringt Sie zum Abflug: etwa eine Minute bis zum Eingang. Kein Gehetze auf dem Parkplatz vor dem Terminal und kein Gezerre mit Taschen durch das Gedränge.',
+      },
+      {
+        type: 'p',
+        text: 'Bei der Rückkehr schicken Sie die Nachricht "Ich bin da", der Fahrer kommt und bringt Sie zu Ihrem Auto zurück. Ihr Fahrzeug wartet so, wie Sie es abgestellt haben: abgeschlossen, überwacht, ohne Überraschungen.',
+      },
+      {
+        type: 'p',
+        text: 'Sie reisen mit Kindern oder mit "Handgepäck plus drei Tüten"? Wir helfen beim Ein- und Ausladen, ganz ohne Drama. Kurze Reise, kurze Wege, genau so.',
+      },
+      {
+        type: 'p',
+        text: 'Für kurze Aufenthalte kostet es **9 KM pro Tag** (2-4 Tage), die Mindestdauer beträgt 2 Tage.',
+      },
+    ],
+  },
 };
 
 export const de: Messages = {

@@ -59,6 +59,76 @@ export const NEWS = [
       de: 'langzeitparken-ohne-sorgen-11-20-und-21-tage',
     },
   },
+  {
+    id: 'tips',
+    date: '2026-09-11',
+    photo: 'newsTips',
+    slugs: {
+      bs: 'top-5-savjeta-za-bezbrizno-putovanje-iz-sarajeva',
+      en: 'top-5-tips-for-a-stress-free-trip-from-sarajevo',
+      de: 'top-5-tipps-fuer-eine-stressfreie-reise-ab-sarajevo',
+    },
+  },
+  {
+    id: 'process',
+    date: '2026-09-04',
+    photo: 'newsProcess',
+    slugs: {
+      bs: 'kako-funkcionise-nas-servis-za-preuzimanje-i-vracanje-vozila',
+      en: 'how-our-car-drop-off-and-pick-up-service-works',
+      de: 'so-funktioniert-unser-service-fuer-abgabe-und-rueckgabe',
+    },
+  },
+  {
+    id: 'compare',
+    date: '2026-08-28',
+    photo: 'newsCompare',
+    slugs: {
+      bs: 'uporedili-smo-cijene-privatni-vs-zvanicni-aerodromski-parking',
+      en: 'prices-compared-private-vs-official-airport-parking',
+      de: 'preisvergleich-privater-und-offizieller-flughafenparkplatz',
+    },
+  },
+  {
+    id: 'why',
+    date: '2026-08-21',
+    photo: 'newsWhy',
+    slugs: {
+      bs: 'zasto-izabrati-privatni-parking-kod-aerodroma-sarajevo',
+      en: 'why-choose-a-private-parking-lot-near-sarajevo-airport',
+      de: 'warum-ein-privater-parkplatz-am-flughafen-sarajevo',
+    },
+  },
+  {
+    id: 'how',
+    date: '2026-08-14',
+    photo: 'newsHow',
+    slugs: {
+      bs: 'kako-zapravo-funkcionise-sky-parking-and-fly',
+      en: 'how-sky-parking-and-fly-really-works',
+      de: 'wie-sky-parking-and-fly-wirklich-funktioniert',
+    },
+  },
+  {
+    id: 'prices',
+    date: '2026-08-07',
+    photo: 'newsPrices',
+    slugs: {
+      bs: 'cijene-bez-iznenadjenja-sto-duze-ostajes-manje-placas',
+      en: 'prices-without-surprises-the-longer-you-stay-the-less-you-pay',
+      de: 'preise-ohne-ueberraschungen-je-laenger-desto-guenstiger',
+    },
+  },
+  {
+    id: 'weekend',
+    date: '2026-07-31',
+    photo: 'newsWeekend',
+    slugs: {
+      bs: 'vikend-put-bez-trosenja-zivaca-kratko-parkiranje-1-4-dana',
+      en: 'weekend-trip-without-the-stress-short-term-parking',
+      de: 'wochenendreise-ohne-stress-kurzzeitparken',
+    },
+  },
 ] as const satisfies readonly NewsEntry[];
 
 export type NewsId = (typeof NEWS)[number]['id'];
